@@ -50,6 +50,29 @@ out=$(node gb-host.js test/page-test.js 2>>"$log"); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PAGE OK"; then ok "page-test.js"; else bad "page-test.js (rc=$rc)"; fi
 
+# 5d. console drain: every line printed right before phantom.exit (or before an idle exit) must arrive.
+# test/drain-test.js prints 300 console lines + 1 system.stdout line + 1 console.error + a last line.
+drain_ok=1; drain_n=0
+for i in $(seq 1 10); do
+  out=$(node gb-host.js test/drain-test.js 2>"$log.err"); rc=$?
+  [ "$rc" -eq 3 ] && [ "$(printf '%s\n' "$out" | wc -l)" -eq 302 ] && printf '%s' "$out" | tail -n 1 | grep -q "^drain last$" && [ "$(grep -c '^drain stderr line$' "$log.err")" -eq 1 ] || { drain_ok=0; drain_n=$i; }
+done
+if [ "$drain_ok" -eq 1 ]; then ok "console drain before phantom.exit (10 runs, all 302 stdout lines + stderr line)"; else bad "console drain before phantom.exit (run $drain_n lost output, rc=$rc)"; fi
+# Fault injection: delay each console write 300 ms. Without a real drain the exit path loses lines (verified: 1 of 302 arrive).
+out=$(GB_TEST_CONSOLE_DELAY_MS=300 node gb-host.js test/drain-test.js 2>/dev/null); rc=$?
+if [ "$rc" -eq 3 ] && [ "$(printf '%s\n' "$out" | wc -l)" -eq 302 ]; then ok "console drain with delayed delivery (phantom.exit)"; else bad "console drain with delayed delivery (rc=$rc, lines=$(printf '%s\n' "$out" | wc -l))"; fi
+out=$(GB_TEST_CONSOLE_DELAY_MS=300 node gb-host.js test/drain-test.js idle 2>/dev/null); rc=$?
+if [ "$rc" -eq 0 ] && [ "$(printf '%s\n' "$out" | wc -l)" -eq 302 ]; then ok "console drain with delayed delivery (idle exit)"; else bad "console drain idle exit (rc=$rc, lines=$(printf '%s\n' "$out" | wc -l))"; fi
+rm -f "$log.err"
+
+# 5e. shim CLI contract (PhantomJS 2.1.1): --version, unknown option, known-but-unsupported option
+out=$(./bin/phantomjs --version 2>/dev/null); rc=$?
+if [ "$rc" -eq 0 ] && [ "$out" = "2.1.1" ]; then ok "shim --version prints 2.1.1"; else bad "shim --version (rc=$rc, out=$out)"; fi
+out=$(./bin/phantomjs --bogus 2>/dev/null); err=$(./bin/phantomjs --bogus 2>&1 >/dev/null); rc=$?
+if [ "$rc" -eq 1 ] && [ -z "$out" ] && [ "$err" = "Error: Unknown option: bogus" ]; then ok "shim unknown option (stderr text, exit 1)"; else bad "shim unknown option (rc=$rc, err=$err)"; fi
+out=$(./bin/phantomjs --webdriver=4444 2>/dev/null); err=$(./bin/phantomjs --webdriver=4444 2>&1 >/dev/null); rc=$?
+if [ "$rc" -eq 1 ] && [ -z "$out" ] && printf '%s' "$err" | grep -q "not supported" && ! printf '%s' "$err" | grep -q "cannot read script"; then ok "shim unsupported option fails honestly"; else bad "shim unsupported option (rc=$rc, err=$err)"; fi
+
 # 6. loadspeed.js (unmodified PhantomJS example): exit 0, title as text, no [object Promise]
 node proofs/serve-test-page.js test-page.html 0 > "${TMPDIR:-/tmp}/gb-svc-$$.log" 2>&1 &
 sv=$!

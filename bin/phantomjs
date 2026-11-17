@@ -6,8 +6,60 @@ const path = require('path');
 const { spawn } = require('child_process');
 const os = require('os');
 
+// ---- CLI contract (PhantomJS 2.1.1, the version phantomjs-prebuilt ships) ----
+// Options come before the script path; the first non-option argument is the
+// script and everything after it belongs to the script.
+const PHANTOM_VERSION = '2.1.1';
+// Every option PhantomJS 2.1.1 knows (src/config.cpp). GhostBridge implements
+// --version/-v, --help/-h and the two boolean options in SUPPORTED_BOOL (handled
+// by gb-host.js); every other known option fails loudly instead of being ignored
+// or mistaken for a script path.
+// Exit status for an unknown option: 1 (as requested for this shim). The real
+// 2.1.1 binary prints the same message to stderr but exits 0 (measured in
+// Session 5), so phantomjs-prebuilt's testPhantomRunError, which expects the
+// message from stderr after a clean exit, cannot pass while this is 1.
+const UNKNOWN_OPTION_EXIT = 1;
+const SUPPORTED_BOOL = new Set(['local-url-access', 'ignore-ssl-errors']);
+const KNOWN_OPTIONS = new Set([
+  'config', 'cookies-file', 'debug', 'disk-cache', 'disk-cache-path', 'ignore-ssl-errors',
+  'load-images', 'local-storage-path', 'local-storage-quota', 'local-url-access',
+  'local-to-remote-url-access', 'max-disk-cache-size', 'offline-storage-path',
+  'offline-storage-quota', 'output-encoding', 'proxy', 'proxy-auth', 'proxy-type',
+  'remote-debugger-autorun', 'remote-debugger-port', 'script-encoding', 'ssl-certificates-path',
+  'ssl-client-certificate-file', 'ssl-client-key-file', 'ssl-client-key-passphrase',
+  'ssl-protocol', 'web-security', 'webdriver', 'webdriver-logfile', 'webdriver-loglevel',
+  'webdriver-selenium-grid-hub', 'wd', 'w',
+]);
+const HELP = 'Usage: phantomjs [options] script.[js|coffee] [script argument [script argument ...]]\n' +
+  '\n  -v, --version  Prints out PhantomJS version\n  -h, --help     Prints out this help\n' +
+  '\nThis is GhostBridge, a PhantomJS-compatible runtime. Other PhantomJS command-line\n' +
+  'options are recognized but not supported; they are rejected with an error.\n';
+
+const argv = process.argv.slice(2);
+for (let i = 0; i < argv.length; i++) {
+  const a = argv[i];
+  if (!a.startsWith('-') || a === '-') break; // first non-option = script path
+  if (a === '-v' || a === '--version') { process.stdout.write(PHANTOM_VERSION + '\n'); process.exit(0); }
+  if (a === '-h' || a === '--help') { process.stdout.write(HELP); process.exit(0); }
+  const name = a.replace(/^--?/, '').split('=')[0];
+  if (!a.startsWith('--') || !KNOWN_OPTIONS.has(name)) {
+    process.stderr.write('Error: Unknown option: ' + name + '\n');
+    process.exit(UNKNOWN_OPTION_EXIT);
+  }
+  if (SUPPORTED_BOOL.has(name)) {
+    const v = a.slice(a.indexOf('=') + 1);
+    if (!a.includes('=') || !/^(true|yes|false|no)$/i.test(v)) {
+      process.stderr.write('Error: Invalid value for --' + name + ': ' + (a.includes('=') ? v : '(missing)') + '\n');
+      process.exit(1);
+    }
+    continue; // forwarded to the host with the rest of argv
+  }
+  process.stderr.write('Error: Option --' + name + ' is not supported by GhostBridge\n');
+  process.exit(1);
+}
+
 const host = path.join(__dirname, '..', 'gb-host.js');
-const child = spawn(process.execPath, [host, ...process.argv.slice(2)], { stdio: 'inherit' });
+const child = spawn(process.execPath, [host, ...argv], { stdio: 'inherit' });
 
 for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   process.on(sig, () => { try { child.kill(sig); } catch (e) { /* already gone */ } });

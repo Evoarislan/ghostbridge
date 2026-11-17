@@ -26,6 +26,7 @@ const { findExecutable } = require('./gb-chromium.js');
 const { createFsHost } = require('./gb-fs.js');
 const pageSupport = require('./gb-page.js');
 
+const CONSOLE_DRAIN_MS = +(process.env.GB_CONSOLE_DRAIN_MS || 3000); // upper bound on waiting for console output at exit
 const WATCHDOG_MS = +(process.env.GB_WATCHDOG_MS || 60000);
 
 // Set true once terminate() runs, so a teardown race (e.g. a pending
@@ -85,6 +86,24 @@ async function main() {
     console.error('usage: ghostbridge <script.js> [args...]');
     process.exit(1);
   }
+  // Leading options (the shim forwards the PhantomJS options GhostBridge supports).
+  const options = { localUrlAccess: true, ignoreSslErrors: false };
+  while (argv.length && /^--[a-z-]+=/.test(argv[0])) {
+    const [k, v] = [argv[0].slice(2, argv[0].indexOf('=')), argv[0].slice(argv[0].indexOf('=') + 1)];
+    const bool = /^(true|yes)$/i.test(v) ? true : /^(false|no)$/i.test(v) ? false : null;
+    if ((k === 'local-url-access' || k === 'ignore-ssl-errors') && bool === null) {
+      console.error('Error: Invalid value for --' + k + ': ' + v);
+      process.exit(1);
+    }
+    if (k === 'local-url-access') options.localUrlAccess = bool;
+    else if (k === 'ignore-ssl-errors') options.ignoreSslErrors = bool;
+    else { console.error('Error: Option --' + k + ' is not supported by GhostBridge'); process.exit(1); }
+    argv.shift();
+  }
+  if (argv.length === 0) {
+    console.error('usage: ghostbridge [options] <script.js> [args...]');
+    process.exit(1);
+  }
   const scriptArg = argv[0];
   const userArgs = argv.slice(1);
   const scriptAbs = path.resolve(scriptArg);
@@ -135,6 +154,16 @@ async function main() {
     fsHost: createFsHost(),
     syncInFlight: 0,
     piggyback: [],
+    consoleSeen: 0,
+    options,
+    stdin: { buf: '', eof: false, started: false, waiter: null },
+  };
+  ctx.dispatch = dispatch;
+  // Page events: ride on the reply of a blocking sync op when one is in flight
+  // (so they run before that call returns, as PhantomJS would), else dispatch.
+  ctx.emit = (pageId, type, arg) => {
+    if (ctx.syncInFlight > 0) ctx.piggyback.push({ pageId, type, arg });
+    else dispatch(ctx, pageId, type, arg).catch(() => {});
   };
 
   // A consumer that closes our stdout/stderr early (e.g. `| head`) is not a
@@ -167,7 +196,8 @@ async function main() {
     ctx.browser = await puppeteer.launch({
       executablePath: exec,
       headless: true,
-      args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
+      args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+        .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : []),
     });
   } catch (e) {
     console.error('ghostbridge: chromium launch failed: ' + e.message);
@@ -184,11 +214,22 @@ async function main() {
   // ---- the dedicated runtime page (NOT the page under test) ----
   ctx.runtimePage = await ctx.browser.newPage();
   // The user script's own console.log writes to the host's real stdout.
+  // Console events reach the host asynchronously over CDP, so exit has to wait
+  // for them (see drainConsole). `consoleSeen` counts lines actually written.
+  // GB_TEST_CONSOLE_DELAY_MS is a fault-injection seam used only by the gate:
+  // it delays each write to prove the exit path really waits.
+  const consoleDelay = +(process.env.GB_TEST_CONSOLE_DELAY_MS || 0);
   ctx.runtimePage.on('console', (m) => {
     ctx.state.lastActivity = Date.now(); // user output is activity; don't trip the watchdog
     const t = m.text();
-    if (m.type() === 'error') process.stderr.write(t + '\n');
-    else process.stdout.write(t + '\n');
+    const isErr = m.type() === 'error';
+    const write = () => {
+      if (isErr) process.stderr.write(t + '\n');
+      else process.stdout.write(t + '\n');
+      ctx.consoleSeen++;
+    };
+    if (consoleDelay > 0) setTimeout(write, consoleDelay);
+    else write();
   });
   // An uncaught error in the runtime (incl. the user script) is fatal.
   ctx.runtimePage.on('pageerror', (err) => {
@@ -282,13 +323,15 @@ async function handleChannel(req, res, ctx) {
 
   if (op === 'evaluate') {
     const { pageId, src, args } = payload || {};
-    const target = ctx.targetPages[pageId];
-    if (!target) return reply({ ok: false, error: 'no such page ' + pageId });
+    let target;
+    try { target = await pageSupport.ensureTarget(ctx, pageId); } catch (e) {
+      return reply({ ok: false, error: 'no such page ' + pageId });
+    }
     try {
-      // Reconstruct the user function in the TARGET page and call it with args.
-      // The value comes back synchronously to the script because the runtime
-      // is blocked on the sync XHR until we respond here.
-      const value = await target.page.evaluate(
+      // Reconstruct the user function in the TARGET page (current frame) and call
+      // it with args. The value comes back synchronously to the script because the
+      // runtime is blocked on the sync XHR until we respond here.
+      const value = await pageSupport.frameOf(target).evaluate(
         (s, a) => { const f = eval('(' + s + ')'); return f(...a); },
         src, args || []
       );
@@ -301,58 +344,27 @@ async function handleChannel(req, res, ctx) {
   if (op === 'open') {
     // open() is callback-shaped in PhantomJS: return immediately, deliver
     // status later. So we ack now and drive the navigation asynchronously.
-    const { pageId, url, config } = payload || {};
+    const { pageId, url, config, http } = payload || {};
     pageSupport.mergeCfg(ctx, pageId, config);
     sendJson(res, { ok: true });
     ctx.state.inFlightOpens++;
     (async () => {
-      let tpage;
       try {
         ctx.state.lastActivity = Date.now();
-        tpage = await ctx.browser.newPage();
-        const defaultUA = await tpage.evaluate(() => navigator.userAgent);
-        ctx.targetPages[pageId] = { page: tpage, defaultUA };
-        ctx.state.openPages++;
+        const entry = await pageSupport.ensureTarget(ctx, pageId);
+        entry.frame = null;
         await pageSupport.applyConfig(ctx, pageId);
-        // JS dialogs in the target page would block the page (and any pending
-        // evaluate) forever, so settle them at once, then report alerts to
-        // page.onAlert. Dismiss happens BEFORE dispatch: the runtime may be
-        // blocked on the sync call that triggered the dialog. confirm/prompt
-        // are dismissed (false/null); no onConfirm/onPrompt yet.
-        tpage.on('dialog', async (d) => {
-          const type = d.type(), message = d.message();
-          let piggybacked = false;
-          if (type === 'alert' && ctx.syncInFlight > 0) {
-            piggybacked = true;
-            // A sync op (evaluate, page.injectJs) is blocking the runtime:
-            // piggyback the alert on that op's response so onAlert fires
-            // before the call returns, as in PhantomJS.
-            ctx.piggyback.push({ pageId, type: 'alert', arg: message });
-          }
-          try { if (type === 'alert') await d.accept(); else await d.dismiss(); } catch { /* already handled */ }
-          if (type === 'alert' && !piggybacked) {
-            try { await dispatch(ctx, pageId, 'alert', message); } catch { /* runtime gone */ }
-          }
-        });
-        // uncaught errors in the target page -> page.onError(message, trace)
-        tpage.on('pageerror', async (err) => {
-          try { await dispatch(ctx, pageId, 'error', pageSupport.errorPayload(err)); } catch { /* runtime gone */ }
-        });
-        // target page console -> runtime onConsoleMessage (or stdout fallback)
-        tpage.on('console', async (m) => {
-          const loc = m.location();
-          try {
-            await dispatch(ctx, pageId, 'console', {
-              message: m.text(),
-              line: loc ? loc.lineNumber : 0,
-              sourceId: loc ? loc.url : '',
-            });
-          } catch { /* runtime page may be gone */ }
-        });
+        if (http && (http.method !== 'GET' || http.headers)) {
+          await pageSupport.ensureIntercept(ctx, pageId, entry);
+          let href = url;
+          try { href = new URL(url).href; } catch { /* leave as given */ }
+          entry.nextHttp = Object.assign({ url: href }, http);
+        }
         let status = 'success';
         try {
-          await tpage.goto(url, { waitUntil: 'load', timeout: 30000 });
+          await entry.page.goto(url, { waitUntil: 'load', timeout: 30000 });
         } catch { status = 'fail'; }
+        entry.nextHttp = null;
         await dispatch(ctx, pageId, 'loadFinished', status);
         await dispatch(ctx, pageId, 'openCallback', status);
       } catch { /* page creation failed */ } finally {
@@ -362,11 +374,29 @@ async function handleChannel(req, res, ctx) {
     return;
   }
 
+  if (op === 'exitRequested') {
+    // phantom.exit() was called; the exit itself follows from a later task.
+    ctx.state.pendingExit = payload && payload.code != null ? payload.code : 0;
+    return sendJson(res, { ok: true });
+  }
+
+  if (op === 'closePage') {
+    await pageSupport.closeTarget(ctx, (payload || {}).pageId);
+    return sendJson(res, { ok: true });
+  }
+
+  if (op === 'cookies') {
+    try { return sendJson(res, { ok: true, value: await pageSupport.cookieOp(ctx, payload || {}) }); }
+    catch (e) { return sendJson(res, { ok: false, error: 'cookies: ' + (e && e.message ? e.message : String(e)) }); }
+  }
+
+  if (op === 'stdin') return handleStdin(res, ctx, (payload || {}).fn);
+
   if (op === 'exit') {
     // Do NOT respond: the browser close aborts the pending sync XHR and the
     // runtime stops with it. phantom.exit(code) is synchronous in effect.
     const code = payload && payload.code != null ? payload.code : 0;
-    terminate(ctx, code);
+    terminate(ctx, code, { expectedConsole: payload && payload.consoleCount });
     return;
   }
 
@@ -426,6 +456,43 @@ async function handleChannel(req, res, ctx) {
   return sendJson(res, { ok: false, error: 'unknown op ' + op });
 }
 
+// system.stdin: line-buffered reads of the host's stdin. readLine blocks (the
+// response is held) until a full line or EOF; the PhantomJS script that called
+// it is blocked in its sync XHR meanwhile, exactly like a blocking read.
+function stdinPump(ctx) {
+  const st = ctx.stdin;
+  const w = st.waiter;
+  if (!w) return;
+  const nl = st.buf.indexOf('\n');
+  let value;
+  if (w.fn === 'readLine') {
+    if (nl >= 0) { value = st.buf.slice(0, nl).replace(/\r$/, ''); st.buf = st.buf.slice(nl + 1); }
+    else if (st.eof) { value = st.buf; st.buf = ''; }
+    else return;
+  } else { // read: everything until EOF
+    if (!st.eof) return;
+    value = st.buf; st.buf = '';
+  }
+  st.waiter = null;
+  sendJson(w.res, { ok: true, value });
+}
+
+function handleStdin(res, ctx, fn) {
+  const st = ctx.stdin;
+  if (!st.started) {
+    st.started = true;
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (c) => { st.buf += c; ctx.state.lastActivity = Date.now(); stdinPump(ctx); });
+    process.stdin.on('end', () => { st.eof = true; stdinPump(ctx); });
+    process.stdin.on('error', () => { st.eof = true; stdinPump(ctx); });
+  }
+  if (fn === 'atEnd') return sendJson(res, { ok: true, value: st.eof && st.buf.length === 0 });
+  if (fn !== 'readLine' && fn !== 'read') return sendJson(res, { ok: false, error: 'stdin.' + fn + ' is not supported' });
+  if (st.waiter) return sendJson(res, { ok: false, error: 'stdin: concurrent read' });
+  st.waiter = { res, fn };
+  stdinPump(ctx);
+}
+
 // Host -> runtime event delivery. Runs in the runtime page's main world.
 // The runtime must be idle (not blocked on a sync XHR) for this to run;
 // between top-level and handlers it is, which is when events arrive.
@@ -447,22 +514,56 @@ async function drain(ctx) {
       terminate(ctx, 124);
       return;
     }
-    // Idle: top-level finished and nothing open or in flight -> exit 0
-    // (matches PhantomJS: a script that ends with no pending work exits 0).
+    // Idle: top-level finished and nothing open or in flight -> exit
+    // (matches PhantomJS: a script that ends with no pending work exits 0, or
+    // with the code of a phantom.exit() already requested). A pending timer
+    // keeps the script alive, as it does in PhantomJS.
     if (ctx.state.topDone && ctx.state.openPages === 0 && ctx.state.inFlightOpens === 0) {
-      terminate(ctx, 0);
-      return;
+      let timers = 1;
+      try {
+        timers = await Promise.race([
+          ctx.runtimePage.evaluate(() => window.__gbPendingTimers()),
+          new Promise((r) => setTimeout(() => r(1), 1000)), // runtime blocked (e.g. in a stdin read): not idle
+        ]);
+      } catch { timers = 1; }
+      if (!timers || ctx.state.pendingExit != null) {
+        terminate(ctx, ctx.state.pendingExit != null ? ctx.state.pendingExit : 0, { probeConsole: true });
+        return;
+      }
     }
     await new Promise((r) => setTimeout(r, 25));
   }
 }
 
-function terminate(ctx, code) {
+// Wait (bounded) until the host has written every console line the runtime
+// produced. The runtime counts its console calls (gb-runtime.js); on
+// phantom.exit the count rides on the exit message (the runtime is blocked
+// then), on idle exit it is read with an evaluate.
+async function drainConsole(ctx, expected, probe) {
+  const deadline = Date.now() + CONSOLE_DRAIN_MS;
+  if (expected == null && probe && ctx.runtimePage) {
+    try {
+      expected = await Promise.race([
+        ctx.runtimePage.evaluate(() => window.__gbConsoleCount || 0),
+        new Promise((r) => setTimeout(() => r(null), CONSOLE_DRAIN_MS)),
+      ]);
+    } catch { expected = null; }
+  }
+  if (expected == null) return;
+  while (ctx.consoleSeen < expected && Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, 5));
+  }
+}
+
+function terminate(ctx, code, opts) {
   if (ctx.state.terminating) return;
   ctx.state.terminating = true;
   __terminating = true;
   ctx.state.exitCode = code;
   (async () => {
+    if (opts && (opts.expectedConsole != null || opts.probeConsole)) {
+      try { await drainConsole(ctx, opts.expectedConsole, opts.probeConsole); } catch {}
+    }
     try { if (ctx.browser) await ctx.browser.close(); } catch {}
     try { if (ctx.server) ctx.server.close(); } catch {}
     process.exit(code);

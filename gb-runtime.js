@@ -20,6 +20,45 @@
   var CHANNEL = INIT.channelUrl;
   if (!CHANNEL) throw new Error('gb-runtime: no channel configured');
 
+  // Console output reaches the host asynchronously (CDP events). Count every
+  // call that produces one so phantom.exit can tell the host how many lines to
+  // wait for before closing the browser (gb-host.js drainConsole).
+  window.__gbConsoleCount = 0;
+  ['log', 'info', 'warn', 'error', 'debug'].forEach(function (m) {
+    var orig = console[m];
+    // After phantom.exit() console output is dropped, as in PhantomJS 2.1.1 (checked
+    // against the real binary: console.log after exit() never prints, while
+    // system.stdout and fs calls still run).
+    console[m] = function () {
+      if (window.__gbExiting) return undefined;
+      window.__gbConsoleCount++;
+      return orig.apply(console, arguments);
+    };
+  });
+
+  // PhantomJS keeps running while timers are pending. Track them so the host does
+  // not treat "top-level finished, no page open" as idle while a timer is armed.
+  var __timers = {};
+  var _st = window.setTimeout, _ct = window.clearTimeout, _si = window.setInterval, _ci = window.clearInterval;
+  window.setTimeout = function (fn, ms) {
+    var extra = Array.prototype.slice.call(arguments, 2);
+    var id;
+    var cb = typeof fn === 'function' ? fn : function () { (0, eval)(String(fn)); };
+    id = _st.call(window, function () { delete __timers[id]; return cb.apply(window, extra); }, ms);
+    __timers[id] = 1;
+    return id;
+  };
+  window.clearTimeout = function (id) { delete __timers[id]; return _ct.call(window, id); };
+  window.setInterval = function (fn, ms) {
+    var extra = Array.prototype.slice.call(arguments, 2);
+    var cb = typeof fn === 'function' ? fn : function () { (0, eval)(String(fn)); };
+    var id = _si.call(window, function () { return cb.apply(window, extra); }, ms);
+    __timers[id] = 1;
+    return id;
+  };
+  window.clearInterval = function (id) { delete __timers[id]; return _ci.call(window, id); };
+  window.__gbPendingTimers = function () { return Object.keys(__timers).length; };
+
   // ---------------- sync channel client ----------------
   function postSync(op, payload) {
     var xhr = new XMLHttpRequest();
@@ -45,10 +84,12 @@
   }
 
   // ---------------- system module ----------------
+  // PhantomJS writes system.stdout/stderr synchronously; so do we, which keeps
+  // ordering and means nothing is pending when phantom.exit runs.
   function makeStream(streamName) {
     return {
-      write: function (s) { postAsync('stream', { stream: streamName, data: String(s) }); },
-      writeLine: function (s) { postAsync('stream', { stream: streamName, data: String(s) + '\n' }); },
+      write: function (s) { postSync('stream', { stream: streamName, data: String(s) }); },
+      writeLine: function (s) { postSync('stream', { stream: streamName, data: String(s) + '\n' }); },
     };
   }
   var system = {
@@ -58,6 +99,13 @@
     os: INIT.os || { architecture: '', name: '', version: '' },
     stdout: makeStream('stdout'),
     stderr: makeStream('stderr'),
+    // system.stdin: blocking reads served by the host (gb-host.js 'stdin' op).
+    stdin: {
+      readLine: function () { return postSync('stdin', { fn: 'readLine' }); },
+      read: function () { return postSync('stdin', { fn: 'read' }); },
+      atEnd: function () { return postSync('stdin', { fn: 'atEnd' }); },
+      close: function () { return true; },
+    },
   };
 
   // ---------------- phantom global ----------------
@@ -66,12 +114,24 @@
     args: INIT.phantomArgs || [],
     scriptName: INIT.scriptName || '',
     libraryPath: INIT.libraryPath || [],
+    // PhantomJS 2.1.1 semantics (checked against the real binary): exit() does not
+    // unwind the caller. The rest of the current synchronous run still executes
+    // (fs and system.stdout calls take effect; console output is dropped, see
+    // above), then the process exits with the code. Here the host is told at
+    // once (so an idle check cannot win with code 0) and the exit itself is
+    // sent from a fresh task, after the current run has finished.
     exit: function (code) {
-      // Blocks: the host tears down Chromium on receipt and the pending
-      // sync XHR is aborted by the browser close, so this never returns.
-      postSync('exit', { code: code || 0 });
-      throw new Error('ghostbridge: phantom.exit returned without terminating');
+      if (window.__gbExiting) return;
+      window.__gbExiting = true;
+      code = code || 0;
+      postSync('exitRequested', { code: code });
+      _st.call(window, function () {
+        postSync('exit', { code: code, consoleCount: window.__gbConsoleCount || 0 });
+      }, 0);
     },
+    addCookie: function (c) { return postSync('cookies', { fn: 'add', cookie: c }); },
+    clearCookies: function () { postSync('cookies', { fn: 'clear' }); },
+    deleteCookie: function (name) { return postSync('cookies', { fn: 'delete', name: String(name) }); },
     // Loads a JS file (relative: script dir, then libraryPath) and runs it in
     // this runtime's global scope. false if the file cannot be found/read.
     // Exceptions thrown by the injected code propagate to the caller.
@@ -83,7 +143,14 @@
     },
   };
 
-  // ---------------- webpage module (minimal) ----------------
+  // phantom.cookies: the shared cookie jar (read-only array snapshot).
+  Object.defineProperty(phantom, 'cookies', {
+    enumerable: true,
+    get: function () { return postSync('cookies', { fn: 'get' }); },
+  });
+  Object.defineProperty(phantom, 'cookiesEnabled', { enumerable: true, get: function () { return true; } });
+
+  // ---------------- webpage module ----------------
   var __pages = {};
   var __nextId = (function () { var n = 1; return function () { return n++; }; })();
 
@@ -95,6 +162,7 @@
     this.onAlert = null;
     this.__id = __nextId();
     this.__openCb = null;
+    this.__handlers = {};   // host-driven event handlers (see HOST_EVENTS)
     this.__includeCbs = {};
     this.__nextCb = 1;
     this.__viewport = { width: 400, height: 300 }; // PhantomJS default
@@ -114,8 +182,24 @@
     this.zoomFactor = 1; // stored only; not applied (see SESSION-2-RESULT.md)
     __pages[this.__id] = this;
   }
+  // Events the host has to watch for (it only wires the ones a script assigned).
+  var HOST_EVENTS = ['onResourceRequested', 'onResourceReceived', 'onResourceError',
+    'onNavigationRequested', 'onUrlChanged', 'onLoadStarted', 'onCallback'];
+  HOST_EVENTS.forEach(function (name) {
+    Object.defineProperty(Webpage.prototype, name, {
+      enumerable: true,
+      get: function () { return this.__handlers[name] || null; },
+      set: function (fn) {
+        var had = typeof this.__handlers[name] === 'function';
+        this.__handlers[name] = typeof fn === 'function' ? fn : null;
+        if (had !== (typeof fn === 'function')) this.__pushConfig();
+      },
+    });
+  });
   Webpage.prototype.__config = function () {
-    return { viewportSize: this.__viewport, settings: Object.assign({}, this.__settingsTarget) };
+    var h = {};
+    for (var k in this.__handlers) if (typeof this.__handlers[k] === 'function') h[k] = true;
+    return { viewportSize: this.__viewport, settings: Object.assign({}, this.__settingsTarget), handlers: h };
   };
   Webpage.prototype.__pushConfig = function () {
     postSync('pageConfig', { pageId: this.__id, config: this.__config() });
@@ -132,7 +216,7 @@
   Object.defineProperty(Webpage.prototype, 'content', {
     enumerable: true,
     get: function () { return pageOp(this, 'content'); },
-    set: function () { throw new Error('webpage.content: setting content is not implemented'); },
+    set: function (html) { this.setContent(String(html)); },
   });
   Object.defineProperty(Webpage.prototype, 'plainText', {
     enumerable: true,
@@ -141,11 +225,39 @@
   function pageOp(page, fn, args) {
     return postSync('page', { pageId: page.__id, fn: fn, args: args || {} });
   }
-  Webpage.prototype.open = function (url, cb) {
+  // open(url[, callback]) and open(url, method[, data[, headers]], callback);
+  // openUrl(url, httpConf, settings) shares the request-building part.
+  function httpFrom(args) {
+    var http = { method: 'GET' };
+    var a = args[0];
+    if (a && typeof a === 'object') {
+      http.method = String(a.operation || a.method || 'GET').toUpperCase();
+      if (a.data != null) http.data = String(a.data);
+      if (a.headers) http.headers = a.headers;
+    } else if (typeof a === 'string') {
+      http.method = a.toUpperCase();
+      if (args[1] != null) http.data = String(args[1]);
+      if (args[2] && typeof args[2] === 'object') http.headers = args[2];
+    }
+    return http;
+  }
+  function startOpen(page, url, http) {
+    postAsync('open', { pageId: page.__id, url: url, http: http, config: page.__config() });
+  }
+  Webpage.prototype.open = function (url) {
     // Callback-shaped: fire-and-forget to the host; status comes back via
     // a dispatched openCallback event (and onLoadFinished if set).
-    this.__openCb = typeof cb === 'function' ? cb : null;
-    postAsync('open', { pageId: this.__id, url: url, config: this.__config() });
+    var rest = Array.prototype.slice.call(arguments, 1);
+    var cb = typeof rest[rest.length - 1] === 'function' ? rest.pop() : null;
+    this.__openCb = cb;
+    startOpen(this, String(url), httpFrom(rest));
+  };
+  Webpage.prototype.openUrl = function (url, httpConf, settings) {
+    if (settings && typeof settings === 'object') {
+      for (var k in settings) this.settings[k] = settings[k];
+    }
+    this.__openCb = null;
+    startOpen(this, String(url), httpFrom([httpConf]));
   };
   // render(path[, {format, quality}]): format from the extension unless given.
   Webpage.prototype.render = function (path, opts) {
@@ -178,15 +290,41 @@
     var args = Array.prototype.slice.call(arguments, 1);
     return postSync('evaluate', { pageId: this.__id, src: fn.toString(), args: args });
   };
-  Webpage.prototype.close = function () { delete __pages[this.__id]; };
+  Webpage.prototype.close = function () {
+    if (!__pages[this.__id]) return;
+    if (typeof this.onClosing === 'function') { try { this.onClosing(this); } catch (e) { /* handler errors do not stop close */ } }
+    postSync('closePage', { pageId: this.__id });
+    delete __pages[this.__id];
+  };
   Webpage.prototype.release = Webpage.prototype.close;
-  // Not in this skeleton; surface clearly instead of silently no-op'ing.
-  ['setContent', 'openUrl']
-    .forEach(function (m) {
-      Webpage.prototype[m] = function () {
-        throw new Error('webpage.' + m + ': not implemented in skeleton');
-      };
-    });
+  Webpage.prototype.evaluateJavaScript = function (src) {
+    return pageOp(this, 'evaluateJavaScript', { src: String(src) });
+  };
+  Webpage.prototype.setContent = function (html, url) {
+    pageOp(this, 'setContent', { html: String(html), url: url == null ? null : String(url) });
+  };
+  Webpage.prototype.reload = function () { pageOp(this, 'navigate', { how: 'reload' }); };
+  Webpage.prototype.goBack = function () { pageOp(this, 'navigate', { how: 'back' }); };
+  Webpage.prototype.goForward = function () { pageOp(this, 'navigate', { how: 'forward' }); };
+  Webpage.prototype.stop = function () { pageOp(this, 'stop'); };
+  Webpage.prototype.sendEvent = function (type, a, b, c, d) {
+    pageOp(this, 'sendEvent', { type: String(type), args: [a, b, c, d] });
+  };
+  Webpage.prototype.switchToFrame = function (target) { return pageOp(this, 'switchToFrame', { target: target }); };
+  Webpage.prototype.switchToMainFrame = function () { pageOp(this, 'switchToMainFrame'); };
+  Webpage.prototype.uploadFile = function (selector, file) {
+    pageOp(this, 'uploadFile', { selector: String(selector), files: [].concat(file).map(String) });
+  };
+  Webpage.prototype.setProxy = function (url) { pageOp(this, 'setProxy', { url: String(url) }); };
+  // Cookie jar (shared by all pages, like PhantomJS): served by the host over CDP.
+  Webpage.prototype.addCookie = function (c) { return postSync('cookies', { fn: 'add', cookie: c }); };
+  Webpage.prototype.clearCookies = function () { postSync('cookies', { fn: 'clear' }); };
+  Webpage.prototype.deleteCookie = function (name) { return postSync('cookies', { fn: 'delete', name: String(name) }); };
+  Object.defineProperty(Webpage.prototype, 'cookies', {
+    enumerable: true,
+    get: function () { return postSync('cookies', { fn: 'get' }); },
+    set: function () { throw new Error('webpage.cookies: assigning cookies is not implemented (use addCookie)'); },
+  });
   var webpage = { create: function () { return new Webpage(); } };
 
   // ---------------- require (PhantomJS resolution) ----------------
@@ -259,6 +397,12 @@
   // ---------------- host -> runtime event dispatch ----------------
   // gb-host calls this via runtimePage.evaluate to deliver target-page
   // events (load finished, open callback, console messages) back here.
+  // host event type -> page handler name; `arg` is the argument list.
+  var HOST_EVENT_BY_TYPE = {
+    resourceRequested: 'onResourceRequested', resourceReceived: 'onResourceReceived',
+    resourceError: 'onResourceError', navigationRequested: 'onNavigationRequested',
+    urlChanged: 'onUrlChanged', loadStarted: 'onLoadStarted', callback: 'onCallback',
+  };
   window.__gbDispatch = function (pageId, type, arg) {
     var page = __pages[pageId];
     if (!page) return;
@@ -275,15 +419,18 @@
         if (typeof page.onAlert === 'function') page.onAlert(arg);
       } else if (type === 'error') {
         if (typeof page.onError === 'function') page.onError(arg.message, arg.trace);
+      } else if (HOST_EVENT_BY_TYPE[type]) {
+        var hh = page.__handlers[HOST_EVENT_BY_TYPE[type]];
+        if (typeof hh === 'function') hh.apply(page, [].concat(arg));
       } else if (type === 'console') {
         if (typeof page.onConsoleMessage === 'function') {
           page.onConsoleMessage(arg.message, arg.line, arg.sourceId);
         } else {
-          postAsync('stream', { stream: 'stdout', data: String(arg.message) + '\n' });
+          postSync('stream', { stream: 'stdout', data: String(arg.message) + '\n' });
         }
       }
     } catch (e) {
-      postAsync('stream', { stream: 'stderr', data: 'ghostbridge: handler error: ' + (e && e.message || e) + '\n' });
+      postSync('stream', { stream: 'stderr', data: 'ghostbridge: handler error: ' + (e && e.message || e) + '\n' });
     }
   };
 
