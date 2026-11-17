@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "block-done-on-red",
+      "description": "At agent turn-end, block finishing while the GhostBridge test suite is red.",
+      "trigger": "Stop",
+      "action": { "type": "command", "command": "./.kiro/hooks/scripts/gate-on-tests.sh" },
+      "timeout": 180,
+      "enabled": true
+    }
+  ]
+}

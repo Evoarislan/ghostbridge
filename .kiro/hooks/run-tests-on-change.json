@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "run-tests-on-change",
+      "description": "When a bridge source file is saved (agent-made saves), run the GhostBridge test gate.",
+      "trigger": "PostFileSave",
+      "matcher": "(gb-host|gb-runtime|gb-chromium)\\.js$|^proofs/sync-channel\\.js$",
+      "action": { "type": "command", "command": "./.kiro/hooks/scripts/run-tests.sh" },
+      "timeout": 180,
+      "enabled": true
+    }
+  ]
+}

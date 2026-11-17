@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.gb/
+node_modules/
+*.log

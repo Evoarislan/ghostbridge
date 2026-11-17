@@ -1,0 +1,19 @@
+{
+  "name": "ghostbridge",
+  "version": "0.0.1",
+  "description": "A Phantom-compatible runtime over modern Chromium that runs PhantomJS scripts unmodified.",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "gb-host.js",
+  "scripts": {
+    "proof:sync": "node proofs/sync-channel.js",
+    "demo": "node gb-host.js test/hello.js",
+    "demo:require": "node gb-host.js test/require-test.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.9.0"
+  },
+  "devDependencies": {
+    "@puppeteer/browsers": "^2.4.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "write-receipt",
+      "description": "After a spec task finishes, run verification and append a hash-chained receipt only on pass.",
+      "trigger": "PostTaskExec",
+      "action": { "type": "command", "command": "./.kiro/hooks/scripts/write-receipt.sh" },
+      "timeout": 180,
+      "enabled": true
+    }
+  ]
+}
