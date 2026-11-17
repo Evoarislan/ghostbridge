@@ -98,6 +98,12 @@ node proofs/serve-test-page.js test-page.html 0   # prints TEST_PAGE_URL=...
 
 Override the Chromium executable with `GB_CHROMIUM_PATH=/path/to/chrome`.
 
+Path semantics (as in PhantomJS): relative paths in `fs.*` and the output file
+of `page.render` resolve against the process working directory, and
+`fs.workingDirectory` reports that same directory. `phantom.injectJs` and
+local-module `require` resolve against the script's own directory
+(`phantom.libraryPath`), then the working directory.
+
 ## Layout
 
 - `bin/phantomjs` — the `phantomjs` executable (package `bin`): runs

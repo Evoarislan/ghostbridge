@@ -101,6 +101,20 @@ else
   if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q 'system.args: \[".*require-test.js","alpha","beta"\]'; then ok "shim args passthrough"; else bad "shim args passthrough (rc=$rc)"; fi
   err=$(./bin/phantomjs "$outd/no-such-script.js" 2>&1 >/dev/null); rc=$?
   if [ "$rc" -eq 1 ] && printf '%s' "$err" | grep -q "cannot read script"; then ok "shim missing script (stderr, exit 1)"; else bad "shim missing script (rc=$rc)"; fi
+  # 9b. path semantics from a DIFFERENT working directory: fs.write and render land in cwd, injectJs/require stay script-relative
+  cwdd=$(mktemp -d "${TMPDIR:-/tmp}/gb-cwd-XXXXXX")
+  repo="$PWD"
+  out=$(cd "$cwdd" && "$repo/bin/phantomjs" "$repo/test/cwd-test.js" "$url" 2>>"$log"); rc=$?
+  echo "$out" >>"$log"
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^CWD OK $cwdd"; then ok "cwd-test (different cwd, script ok)"; else bad "cwd-test (rc=$rc)"; fi
+  if [ "$(cat "$cwdd/cwd-write.txt" 2>/dev/null)" = "written to cwd" ]; then ok "fs.write landed in cwd"; else bad "fs.write landed in cwd"; fi
+  if [ "$(head -c 4 "$cwdd/cwd-render.png" 2>/dev/null | tail -c 3)" = "PNG" ]; then ok "render landed in cwd"; else bad "render landed in cwd"; fi
+  if [ ! -e test/cwd-write.txt ] && [ ! -e test/cwd-render.png ] && [ ! -e cwd-write.txt ]; then ok "nothing written next to script or repo root"; else bad "stray output next to script/repo root"; rm -f test/cwd-write.txt test/cwd-render.png cwd-write.txt; fi
+  rm -rf "$cwdd"
+  # 9c. EPIPE: a consumer that closes stdout early must not crash the host
+  epo=$(./bin/phantomjs test/epipe-test.js 2>&1 | head -n 1; echo "pipestatus=${PIPESTATUS[0]}")
+  echo "$epo" >>"$log"
+  if printf '%s' "$epo" | grep -q "^line 1$" && printf '%s' "$epo" | grep -q "pipestatus=0$" && ! printf '%s' "$epo" | grep -q "EPIPE\|Unhandled\|node:events"; then ok "shim into closing consumer (EPIPE, exit 0)"; else bad "shim into closing consumer: $epo"; fi
   rm -rf "$outd"
 fi
 kill "$sv" 2>/dev/null

@@ -9,7 +9,7 @@ function check(label, cond) {
 }
 if (!url) { console.log('usage: render-test.js <page-url>'); phantom.exit(2); }
 
-var dir = 'render-tmp'; // relative to this script's directory
+var dir = 'render-tmp'; // relative to the process working directory
 fs.removeTree(dir);
 fs.makeDirectory(dir);
 

@@ -132,10 +132,19 @@ async function main() {
     runtimePage: null,
     targetPages: {},
     server: null,
-    fsHost: createFsHost(scriptDir),
+    fsHost: createFsHost(),
     syncInFlight: 0,
     piggyback: [],
   };
+
+  // A consumer that closes our stdout/stderr early (e.g. `| head`) is not a
+  // crash: swallow EPIPE, shut down cleanly, exit 0.
+  for (const stream of [process.stdout, process.stderr]) {
+    stream.on('error', (e) => {
+      if (e && e.code === 'EPIPE') terminate(ctx, 0);
+      else throw e;
+    });
+  }
 
   // ---- loopback server: serves the runtime page AND the sync channel ----
   ctx.server = http.createServer((req, res) => handleHttp(req, res, ctx));

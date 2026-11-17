@@ -4,10 +4,12 @@
 // has no filesystem of its own: every fs call in gb-runtime is a blocking
 // sync-channel round trip (op 'fs') that lands here.
 //
-// Relative paths resolve against `base`, which starts as the running
-// script's directory and changes only via changeWorkingDirectory.
-// workingDirectory reports the process cwd until changeWorkingDirectory is
-// called, then the new base.
+// Relative paths resolve against `base`, which starts as the process working
+// directory (real PhantomJS semantics) and changes only via
+// changeWorkingDirectory. workingDirectory always reports `base`, so it and
+// the actual resolution base agree. page.render output uses the same base.
+// phantom.injectJs is the exception: it searches the script's library path
+// first (script-relative), then `base`.
 //
 // Streams: 'r'/'rb' read, 'w'/'wb' truncate+write, 'a'/'ab' append. The
 // binary modes are aliases of the text modes (UTF-8 strings, no byte
@@ -16,9 +18,8 @@
 const fs = require('fs');
 const path = require('path');
 
-function createFsHost(scriptDir) {
-  let base = scriptDir;
-  let cwdChanged = false;
+function createFsHost() {
+  let base = process.cwd();
   const streams = new Map();
   let nextStream = 1;
 
@@ -69,12 +70,11 @@ function createFsHost(scriptDir) {
     size: (p) => fs.statSync(abs(p)).size,
     lastModified: (p) => fs.statSync(abs(p)).mtime.toISOString(),
     absolute: (p) => abs(p),
-    workingDirectory: () => (cwdChanged ? base : process.cwd()),
+    workingDirectory: () => base,
     changeWorkingDirectory: (p) => {
       const d = abs(p);
       if (!test(() => fs.statSync(d).isDirectory())) return false;
       base = d;
-      cwdChanged = true;
       return true;
     },
 
@@ -155,12 +155,12 @@ function createFsHost(scriptDir) {
       if (!Object.prototype.hasOwnProperty.call(ops, fn)) throw new Error('fs: unknown op ' + fn);
       return ops[fn](...args);
     },
-    // Used by phantom.injectJs: script-dir/base first, then libraryPath.
+    // Used by phantom.injectJs: libraryPath (script dir) first, then the working directory.
     findInjectable(p, libraryPath) {
       const name = String(p);
       const cands = path.isAbsolute(name)
         ? [name]
-        : [path.resolve(base, name)].concat((libraryPath || []).map((d) => path.resolve(d, name)));
+        : (libraryPath || []).map((d) => path.resolve(d, name)).concat([path.resolve(base, name)]);
       for (const c of cands) {
         if (test(() => fs.statSync(c).isFile())) return { filename: c, source: fs.readFileSync(c, 'utf8') };
       }

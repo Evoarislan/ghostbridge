@@ -7,7 +7,7 @@ function check(label, cond) {
   if (!cond) { failures++; console.log('CHECK FAILED: ' + label); }
 }
 
-var dir = 'fs-tmp';            // relative: resolves against this script's directory
+var dir = 'fs-tmp';            // relative: resolves against the process working directory
 fs.removeTree(dir);
 check('makeDirectory', fs.makeDirectory(dir) === true);
 check('isDirectory', fs.isDirectory(dir));
