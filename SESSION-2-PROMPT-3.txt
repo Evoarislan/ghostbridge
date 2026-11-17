@@ -1,0 +1,9 @@
+Stage 3 of Session 2: the examples proof. Stage 2 is verified — I re-ran the full gate in the DEFAULT environment myself and it exits 0, so /tmp is clear now and the workaround env is no longer needed.
+
+Do this:
+1. Fetch PhantomJS's own examples/rasterize.js UNMODIFIED from the ariya/phantomjs master branch (raw.githubusercontent.com). Record its md5 in SESSION-2-RESULT.md. Save it under examples/ alongside loadspeed.js. Never edit it.
+2. Serve the local test page (reuse the gate's helper server pattern) and run rasterize.js through gb-host against it twice: once producing a PNG, once producing a PDF (use a paperSize argument rasterize understands). Verify both outputs are real: PNG magic bytes, %PDF header, non-trivial sizes. Print and record the script's own console output and exit codes.
+3. Pick ONE more unmodified example from the official ariya/phantomjs examples that meaningfully exercises page.evaluate or open+status callbacks against a LOCAL page only (no external network). Fetch it unmodified, record its md5, run it, record its output verbatim. If no second example fits those constraints beyond loadspeed and rasterize, say so plainly in the result file instead of forcing one.
+4. Update the examples bullet in tasks.md: check it off with an annotation naming which examples are green (loadspeed, rasterize, plus the second if it ran), and update SESSION-2-RESULT.md with this stage, including both md5s and the verbatim outputs.
+5. Run the full gate in the default environment and report the result.
+Do not commit yet; close-out is the next call.

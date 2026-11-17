@@ -14,7 +14,7 @@ ok()   { note "PASS: $1"; }
 bad()  { note "FAIL: $1"; echo "FAIL: $1" >&2; fail=1; }
 
 # 1. syntax checks (no Chromium)
-for f in gb-host.js gb-runtime.js gb-chromium.js proofs/sync-channel.js proofs/serve-test-page.js; do
+for f in gb-host.js gb-runtime.js gb-chromium.js gb-fs.js gb-page.js proofs/sync-channel.js proofs/serve-test-page.js; do
   if node --check "$f" >>"$log" 2>&1; then ok "syntax $f"; else bad "syntax $f"; fi
 done
 
@@ -36,11 +36,25 @@ out=$(node gb-host.js test/exit-code.js 2>>"$log"); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 7 ] && ! printf '%s' "$out" | grep -q "THIS MUST NOT PRINT"; then ok "exit-code.js"; else bad "exit-code.js (rc=$rc)"; fi
 
+# 5b. fs round trip + injectJs (session 2)
+out=$(node gb-host.js test/fs-test.js 2>>"$log"); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^FS OK" && printf '%s' "$out" | grep -q "size: 41"; then ok "fs-test.js"; else bad "fs-test.js (rc=$rc)"; fi
+
+out=$(node gb-host.js test/inject-test.js 2>>"$log"); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "INJECTED_VALUE: injected-ok-42"; then ok "inject-test.js"; else bad "inject-test.js (rc=$rc)"; fi
+
+# 5c. webpage features beyond open/evaluate (viewport, clip, jpeg, content, onError, settings, ...)
+out=$(node gb-host.js test/page-test.js 2>>"$log"); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PAGE OK"; then ok "page-test.js"; else bad "page-test.js (rc=$rc)"; fi
+
 # 6. loadspeed.js (unmodified PhantomJS example): exit 0, title as text, no [object Promise]
-node proofs/serve-test-page.js test-page.html 0 > "/tmp/gb-svc-$$.log" 2>&1 &
+node proofs/serve-test-page.js test-page.html 0 > "${TMPDIR:-/tmp}/gb-svc-$$.log" 2>&1 &
 sv=$!
 url=""
-for i in $(seq 1 60); do url=$(grep -o 'TEST_PAGE_URL=http://127.0.0.1:[0-9]*' "/tmp/gb-svc-$$.log" | head -1); [ -n "$url" ] && break; sleep 0.05; done
+for i in $(seq 1 60); do url=$(grep -o 'TEST_PAGE_URL=http://127.0.0.1:[0-9]*' "${TMPDIR:-/tmp}/gb-svc-$$.log" | head -1); [ -n "$url" ] && break; sleep 0.05; done
 url=${url#TEST_PAGE_URL=}
 if [ -z "$url" ]; then
   bad "loadspeed: test-page server did not start"
@@ -48,9 +62,26 @@ else
   out=$(node gb-host.js examples/loadspeed.js "$url" 2>>"$log"); rc=$?
   echo "$out" >>"$log"
   if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "Page title is" && ! printf '%s' "$out" | grep -qi "object Promise"; then ok "loadspeed.js"; else bad "loadspeed.js (rc=$rc)"; fi
+
+  # 7. render smoke test against the same local test page
+  out=$(node gb-host.js test/render-test.js "$url" 2>>"$log"); rc=$?
+  echo "$out" >>"$log"
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^RENDER OK"; then ok "render-test.js"; else bad "render-test.js (rc=$rc)"; fi
+  # 8. unmodified PhantomJS examples: rasterize.js (PNG + PDF) and injectme.js
+  outd=$(mktemp -d "${TMPDIR:-/tmp}/gb-ex-XXXXXX")
+  out=$(node gb-host.js examples/rasterize.js "$url" "$outd/r.png" 2>>"$log"); rc=$?
+  echo "$out" >>"$log"
+  if [ "$rc" -eq 0 ] && [ "$(head -c 4 "$outd/r.png" | tail -c 3)" = "PNG" ] && [ "$(stat -c %s "$outd/r.png")" -gt 1000 ]; then ok "rasterize.js png"; else bad "rasterize.js png (rc=$rc)"; fi
+  out=$(node gb-host.js examples/rasterize.js "$url" "$outd/r.pdf" A4 2>>"$log"); rc=$?
+  echo "$out" >>"$log"
+  if [ "$rc" -eq 0 ] && [ "$(head -c 5 "$outd/r.pdf")" = "%PDF-" ] && [ "$(stat -c %s "$outd/r.pdf")" -gt 1000 ]; then ok "rasterize.js pdf"; else bad "rasterize.js pdf (rc=$rc)"; fi
+  rm -rf "$outd"
+  out=$(node gb-host.js examples/injectme.js 2>>"$log"); rc=$?
+  echo "$out" >>"$log"
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "Script running in the Page context" && printf '%s' "$out" | grep -q "done injecting itself"; then ok "injectme.js"; else bad "injectme.js (rc=$rc)"; fi
 fi
 kill "$sv" 2>/dev/null
-rm -f "/tmp/gb-svc-$$.log"
+rm -f "${TMPDIR:-/tmp}/gb-svc-$$.log"
 
 if [ "$fail" -eq 0 ]; then note "ALL TESTS PASS"; else note "SOME TESTS FAILED"; fi
 exit $fail

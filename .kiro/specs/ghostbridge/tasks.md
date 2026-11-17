@@ -40,15 +40,27 @@ GhostBridge only.
         round trip verified synchronous (test/hello.js: page.evaluate
         returns the target's document.title inline, not a Promise). fs
         round trip pending the fs module (Phase 1, later).
-- [ ] `webpage` core: create/open with status callback, evaluate
+- [x] `webpage` core: create/open with status callback, evaluate
       (synchronous), onLoadFinished, onConsoleMessage, onError
       - minimal subset LIVE this round (per scope): create, open(url,
         callback) driving a real target page via the host, evaluate(fn)
         returning its value SYNCHRONOUSLY, onConsoleMessage,
         onLoadFinished. Deferred: onError, render/paperSize, settings,
         event handler coverage beyond the two plumbed.
-- [ ] `fs` core: read/write/workingDirectory over the sync channel
-- [ ] Proof against PhantomJS's own examples, fetched unmodified from
+      - COMPLETED in Session 2 stage 2 (gb-page.js + gb-runtime.js):
+        render/renderBase64 (png, jpg/jpeg, webp, pdf), viewportSize,
+        clipRect, paperSize, content, plainText, evaluateAsync,
+        includeJs, injectJs, onError, settings (userAgent,
+        javascriptEnabled, loadImages). Gaps: zoomFactor not applied,
+        setContent/openUrl still stubs, other event handlers and
+        settings not plumbed (see SESSION-2-RESULT.md). Tests:
+        test/page-test.js, test/render-test.js (both in the gate).
+- [x] `fs` core: read/write/workingDirectory over the sync channel
+      - Full PhantomJS fs surface plus streams (open r/w/a; rb/wb alias
+        text modes), served by gb-fs.js on the host via sync-channel op
+        `fs`; phantom.injectJs live. Verified by test/fs-test.js and
+        test/inject-test.js (both in the gate). See SESSION-2-RESULT.md.
+- [x] Proof against PhantomJS's own examples, fetched unmodified from
       ariya/phantomjs: loadspeed.js (title prints as text, never
       "[object Promise]"; exit code 0), plus the example set the
       runtime claims (render and evaluate examples) green
@@ -59,8 +71,23 @@ GhostBridge only.
         Page" (text, NOT [object Promise]), "Loading time N msec",
         exit 0. No edits to the example. Pending: the render and
         evaluate example set (needs render + fs).
+      - GREEN (Session 2 stage 3), all fetched unmodified from
+        ariya/phantomjs master: loadspeed.js, rasterize.js (PNG and PDF
+        runs), injectme.js (page.injectJs + onAlert, local about:blank).
+        Gaps: no stock example fits "evaluate against a local page" cleanly
+        beyond these; pagecallback.js (onCallback/callPhantom) and
+        loadurlwithoutcss.js (onResourceRequested) need handlers not yet
+        plumbed. All in the gate. See SESSION-2-RESULT.md.
 - [ ] Hooks adapted to Kiro's exact schema and firing (tests on
       change, block done on red, receipt on verification)
+      - PARTIAL, stays unchecked. DONE: the three hooks are rewritten to
+        Kiro's v1 schema (Session 1) and their scripts run green when
+        invoked directly (run-tests.sh gate: 19 checks, passing in
+        Session 2). NOT VALIDATED: live firing. No hook output reached a
+        session in Sessions 1 or 2, so PostFileSave, Stop and PostTaskExec
+        triggering in a real Kiro session is unobserved. Known gap: the
+        run-tests-on-change matcher lists gb-host/gb-runtime/gb-chromium
+        and proofs/sync-channel only, not gb-fs.js or gb-page.js.
 
 ## Phase 2: phantomjs-prebuilt compat (queue #1, distribution root)
 - [ ] Drop-in `phantomjs` executable at phantomjs-prebuilt's exported

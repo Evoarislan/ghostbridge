@@ -1,0 +1,17 @@
+Stage 2 of Session 2: complete the `webpage` module (the remaining unchecked Phase 1 webpage bullet). The fs work from stage 1 is verified: gate green, FS OK, injectJs works.
+
+Environment note: /tmp is still occupied by my Flutter tarball download. Do NOT delete /tmp/flutter.tar.xz. Keep running the gate with TMPDIR=/home/hatch/gbtmp and GB_TEST_LOG=/home/hatch/gbtmp/tests.log; the default-environment gate re-run happens at close-out after I clear /tmp. Your gate edits from stage 1 (gb-fs.js + new tests in run-tests.sh, loadspeed log honoring $TMPDIR) are approved and stay.
+
+Build, in gb-runtime/gb-host over the existing CDP bridge:
+- page.render(path) and page.renderBase64(format): PNG and JPEG via Chromium capture; format from the file extension for render() (png/jpg/jpeg/gif if Chromium allows, pdf below), quality honored for JPEG if the API exposes it.
+- PDF: render to a .pdf path uses print-to-PDF honoring page.paperSize (width/height in PhantomJS units incl. format names like A4/Letter and orientation; margins if straightforward, otherwise document the gap).
+- page.viewportSize {width, height} actually applied to the target page; page.clipRect honored by render.
+- page.content (get the full HTML of the target page) and page.plainText.
+- page.evaluateAsync(fn, ...args) and page.includeJs(url, callback) / page.injectJs(path) on the target page.
+- page.onError plumbed: errors thrown in the target page reach the script's onError handler with message and trace if available.
+- page.settings: userAgent applied for real; javascriptEnabled and loadImages honored if CDP emulation allows, otherwise document as gaps in the result file rather than faking them.
+- page.zoomFactor if it is cheap via CDP; skip silently if not.
+
+Tests: add a render smoke test under test/ that loads the local test page, renders a PNG (assert the file exists, starts with the PNG magic bytes, and is non-trivially sized), checks renderBase64('png') starts with the PNG base64 prefix, renders a PDF with paperSize set (assert %PDF header), and prints plainText containing the known test-page text. Add it to the gate script. Run the full gate (workaround env) and report honestly.
+
+Check off the webpage bullet in tasks.md with a short annotation. Update SESSION-2-RESULT.md with this stage. Do not commit yet, and do not start the examples proof in this call.

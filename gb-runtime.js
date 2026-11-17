@@ -28,6 +28,9 @@
     xhr.send(JSON.stringify({ op: op, payload: payload }));
     if (xhr.status !== 200) throw new Error('ghostbridge: channel HTTP ' + xhr.status);
     var resp = JSON.parse(xhr.responseText || '{}');
+    // Page events raised while this call blocked (e.g. alerts): run them now,
+    // before the call returns.
+    if (resp.events) resp.events.forEach(function (ev) { window.__gbDispatch(ev.pageId, ev.type, ev.arg); });
     if (!resp.ok) throw new Error(resp.error || ('channel op ' + op + ' failed'));
     return resp.value;
   }
@@ -69,7 +72,15 @@
       postSync('exit', { code: code || 0 });
       throw new Error('ghostbridge: phantom.exit returned without terminating');
     },
-    injectJs: function () { throw new Error('phantom.injectJs: not implemented in skeleton'); },
+    // Loads a JS file (relative: script dir, then libraryPath) and runs it in
+    // this runtime's global scope. false if the file cannot be found/read.
+    // Exceptions thrown by the injected code propagate to the caller.
+    injectJs: function (p) {
+      var found = postSync('injectJs', { path: String(p) });
+      if (!found) return false;
+      (0, eval)(found.source + '\n//# sourceURL=' + found.filename);
+      return true;
+    },
   };
 
   // ---------------- webpage module (minimal) ----------------
@@ -77,19 +88,89 @@
   var __nextId = (function () { var n = 1; return function () { return n++; }; })();
 
   function Webpage() {
+    var self = this;
     this.onLoadFinished = null;
     this.onConsoleMessage = null;
     this.onError = null;
-    this.settings = {};
+    this.onAlert = null;
     this.__id = __nextId();
     this.__openCb = null;
+    this.__includeCbs = {};
+    this.__nextCb = 1;
+    this.__viewport = { width: 400, height: 300 }; // PhantomJS default
+    // settings: assignments (page.settings.userAgent = '...') are pushed to
+    // the host live, so they apply to the real target page.
+    var settingsTarget = {
+      javascriptEnabled: true,
+      loadImages: true,
+      userAgent: navigator.userAgent,
+    };
+    this.settings = new Proxy(settingsTarget, {
+      set: function (t, k, v) { t[k] = v; self.__pushConfig(); return true; },
+    });
+    this.__settingsTarget = settingsTarget;
+    this.clipRect = { top: 0, left: 0, width: 0, height: 0 };
+    this.paperSize = null;
+    this.zoomFactor = 1; // stored only; not applied (see SESSION-2-RESULT.md)
     __pages[this.__id] = this;
+  }
+  Webpage.prototype.__config = function () {
+    return { viewportSize: this.__viewport, settings: Object.assign({}, this.__settingsTarget) };
+  };
+  Webpage.prototype.__pushConfig = function () {
+    postSync('pageConfig', { pageId: this.__id, config: this.__config() });
+  };
+  Object.defineProperty(Webpage.prototype, 'viewportSize', {
+    enumerable: true,
+    get: function () { return this.__viewport; },
+    set: function (v) {
+      if (!v || !(v.width > 0) || !(v.height > 0)) throw new Error('viewportSize needs positive width and height');
+      this.__viewport = { width: v.width | 0, height: v.height | 0 };
+      this.__pushConfig();
+    },
+  });
+  Object.defineProperty(Webpage.prototype, 'content', {
+    enumerable: true,
+    get: function () { return pageOp(this, 'content'); },
+    set: function () { throw new Error('webpage.content: setting content is not implemented'); },
+  });
+  Object.defineProperty(Webpage.prototype, 'plainText', {
+    enumerable: true,
+    get: function () { return pageOp(this, 'plainText'); },
+  });
+  function pageOp(page, fn, args) {
+    return postSync('page', { pageId: page.__id, fn: fn, args: args || {} });
   }
   Webpage.prototype.open = function (url, cb) {
     // Callback-shaped: fire-and-forget to the host; status comes back via
     // a dispatched openCallback event (and onLoadFinished if set).
     this.__openCb = typeof cb === 'function' ? cb : null;
-    postAsync('open', { pageId: this.__id, url: url });
+    postAsync('open', { pageId: this.__id, url: url, config: this.__config() });
+  };
+  // render(path[, {format, quality}]): format from the extension unless given.
+  Webpage.prototype.render = function (path, opts) {
+    opts = opts || {};
+    pageOp(this, 'render', {
+      path: String(path), format: opts.format, quality: opts.quality,
+      clipRect: this.clipRect, paperSize: this.paperSize,
+    });
+  };
+  Webpage.prototype.renderBase64 = function (format) {
+    return pageOp(this, 'render', {
+      format: format || 'png', clipRect: this.clipRect, paperSize: this.paperSize,
+    });
+  };
+  // evaluateAsync(fn[, delayMillis, ...args]) runs fn in the target page later.
+  Webpage.prototype.evaluateAsync = function (fn, delay) {
+    pageOp(this, 'evaluateAsync', {
+      src: fn.toString(), delay: delay || 0, args: Array.prototype.slice.call(arguments, 2),
+    });
+  };
+  Webpage.prototype.injectJs = function (p) { return pageOp(this, 'injectJs', { path: String(p) }); };
+  Webpage.prototype.includeJs = function (url, cb) {
+    var cbId = this.__nextCb++;
+    if (typeof cb === 'function') this.__includeCbs[cbId] = cb;
+    postSync('includeJs', { pageId: this.__id, url: String(url), cbId: cbId });
   };
   Webpage.prototype.evaluate = function (fn) {
     // Synchronous: the function is stringified, run in the TARGET page by
@@ -100,7 +181,7 @@
   Webpage.prototype.close = function () { delete __pages[this.__id]; };
   Webpage.prototype.release = Webpage.prototype.close;
   // Not in this skeleton; surface clearly instead of silently no-op'ing.
-  ['evaluateAsync', 'render', 'renderBase64', 'includeJs', 'injectJs', 'setContent', 'openUrl']
+  ['setContent', 'openUrl']
     .forEach(function (m) {
       Webpage.prototype[m] = function () {
         throw new Error('webpage.' + m + ': not implemented in skeleton');
@@ -110,7 +191,34 @@
 
   // ---------------- require (PhantomJS resolution) ----------------
   var __cache = {};
-  var __builtins = { webpage: webpage, system: system };
+  // ---------------- fs module: every call is a sync-channel round trip ----------------
+  function fsCall(fn, args) { return postSync('fs', { fn: fn, args: args }); }
+  function FsStream(id) { this.__id = id; }
+  ['read', 'readLine', 'write', 'writeLine', 'seek', 'atEnd', 'close'].forEach(function (m) {
+    FsStream.prototype[m] = function () {
+      return fsCall('stream', [m, this.__id].concat(Array.prototype.slice.call(arguments)));
+    };
+  });
+  var fsMod = {
+    separator: '/',
+    open: function (p, mode) {
+      var m = mode;
+      if (m && typeof m === 'object') m = m.mode; // PhantomJS also accepts {mode:'r'}
+      return new FsStream(fsCall('open', [String(p), m || 'r']));
+    },
+  };
+  ['read', 'write', 'exists', 'isFile', 'isDirectory', 'isLink', 'isReadable', 'isWritable',
+   'isExecutable', 'list', 'remove', 'removeDirectory', 'removeTree', 'makeDirectory', 'makeTree',
+   'copy', 'move', 'touch', 'size', 'lastModified', 'absolute', 'changeWorkingDirectory']
+    .forEach(function (m) {
+      fsMod[m] = function () { return fsCall(m, Array.prototype.slice.call(arguments)); };
+    });
+  Object.defineProperty(fsMod, 'workingDirectory', {
+    enumerable: true,
+    get: function () { return fsCall('workingDirectory', []); },
+  });
+
+  var __builtins = { webpage: webpage, system: system, fs: fsMod };
 
   function dirOf(filename) {
     if (!filename) return '.';
@@ -126,7 +234,7 @@
     var key = fromDir + '::' + name;
     if (__cache[key]) return __cache[key].exports;
     if (Object.prototype.hasOwnProperty.call(__builtins, name)) return __builtins[name];
-    if (name === 'fs' || name === 'webserver' || name === 'child_process' || name === 'stream') {
+    if (name === 'webserver' || name === 'child_process' || name === 'stream') {
       throw new Error("GhostBridge skeleton: '" + name + "' module not implemented yet");
     }
     var r = postSync('resolveModule', { name: name, from: fromDir });
@@ -159,6 +267,14 @@
         if (typeof page.onLoadFinished === 'function') page.onLoadFinished(arg);
       } else if (type === 'openCallback') {
         if (typeof page.__openCb === 'function') { var cb = page.__openCb; page.__openCb = null; cb(arg); }
+      } else if (type === 'includeJs') {
+        var icb = page.__includeCbs[arg.cbId];
+        delete page.__includeCbs[arg.cbId];
+        if (typeof icb === 'function') icb(arg.url);
+      } else if (type === 'alert') {
+        if (typeof page.onAlert === 'function') page.onAlert(arg);
+      } else if (type === 'error') {
+        if (typeof page.onError === 'function') page.onError(arg.message, arg.trace);
       } else if (type === 'console') {
         if (typeof page.onConsoleMessage === 'function') {
           page.onConsoleMessage(arg.message, arg.line, arg.sourceId);

@@ -1,0 +1,12 @@
+Session 2. First read SESSION-1-RESULT.md and .kiro/specs/ghostbridge/tasks.md so you know exactly what exists and what is checked off.
+
+This call: build the fs core (the unchecked Phase 1 fs bullet) plus phantom.injectJs.
+
+Requirements:
+- A `fs` builtin module available to scripts via require('fs') inside gb-runtime, served over the existing sync channel, with PhantomJS semantics: read, write, exists, isFile, isDirectory, isLink, isReadable, isWritable, isExecutable, list, remove, removeDirectory, removeTree, makeDirectory, copy, move, touch, size, lastModified, absolute, separator, workingDirectory, changeWorkingDirectory, and open(path, mode) returning a stream object with read, write, readLine, writeLine, seek, atEnd, close. Modes 'r', 'w', 'a' at minimum; 'rb'/'wb' may alias the text modes if you document that in the result file.
+- Relative paths resolve against the running script's directory, as PhantomJS does; workingDirectory starts at the process cwd.
+- phantom.injectJs(path) loads and executes a JS file in the runtime context and returns true/false like PhantomJS.
+- All fs operations must round-trip through the sync channel to gb-host (the runtime page must not grow its own filesystem); reuse the channel pattern proven in Session 1.
+- Add smoke tests under test/: (1) an fs round-trip script that writes a file, reads it back, lists its directory, prints the contents and size; (2) an injectJs test where the injected file defines a value the main script then prints.
+- Run the full gate (bash .kiro/hooks/scripts/run-tests.sh) plus your new tests and report the results honestly, including any failure.
+- Check off the fs bullet in tasks.md with a short annotation. Do NOT start the webpage completion work in this call, and do not commit yet.

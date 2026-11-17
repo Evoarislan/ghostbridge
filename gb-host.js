@@ -23,6 +23,8 @@ const path = require('path');
 const crypto = require('crypto');
 const puppeteer = require('puppeteer-core');
 const { findExecutable } = require('./gb-chromium.js');
+const { createFsHost } = require('./gb-fs.js');
+const pageSupport = require('./gb-page.js');
 
 const WATCHDOG_MS = +(process.env.GB_WATCHDOG_MS || 60000);
 
@@ -130,6 +132,9 @@ async function main() {
     runtimePage: null,
     targetPages: {},
     server: null,
+    fsHost: createFsHost(scriptDir),
+    syncInFlight: 0,
+    piggyback: [],
   };
 
   // ---- loopback server: serves the runtime page AND the sync channel ----
@@ -253,10 +258,23 @@ async function handleChannel(req, res, ctx) {
   try { msg = JSON.parse(body); } catch { return sendJson(res, { ok: false, error: 'bad json' }); }
   const { op, payload } = msg || {};
 
+  // evaluate and page ops can trigger page-side alerts while the runtime is
+  // blocked on this very request. Alerts raised meanwhile ride on the reply
+  // (`events`) and run in the runtime before the sync call returns.
+  const blocking = op === 'evaluate' || op === 'page';
+  if (blocking) ctx.syncInFlight++;
+  const done = () => { if (blocking) ctx.syncInFlight--; };
+  const reply = (obj) => {
+    const ev = ctx.piggyback.splice(0);
+    if (ev.length) obj.events = ev;
+    done();
+    return sendJson(res, obj);
+  };
+
   if (op === 'evaluate') {
     const { pageId, src, args } = payload || {};
     const target = ctx.targetPages[pageId];
-    if (!target) return sendJson(res, { ok: false, error: 'no such page ' + pageId });
+    if (!target) return reply({ ok: false, error: 'no such page ' + pageId });
     try {
       // Reconstruct the user function in the TARGET page and call it with args.
       // The value comes back synchronously to the script because the runtime
@@ -265,16 +283,17 @@ async function handleChannel(req, res, ctx) {
         (s, a) => { const f = eval('(' + s + ')'); return f(...a); },
         src, args || []
       );
-      return sendJson(res, { ok: true, value });
+      return reply({ ok: true, value });
     } catch (e) {
-      return sendJson(res, { ok: false, error: e && e.message ? e.message : String(e) });
+      return reply({ ok: false, error: e && e.message ? e.message : String(e) });
     }
   }
 
   if (op === 'open') {
     // open() is callback-shaped in PhantomJS: return immediately, deliver
     // status later. So we ack now and drive the navigation asynchronously.
-    const { pageId, url } = payload || {};
+    const { pageId, url, config } = payload || {};
+    pageSupport.mergeCfg(ctx, pageId, config);
     sendJson(res, { ok: true });
     ctx.state.inFlightOpens++;
     (async () => {
@@ -282,8 +301,34 @@ async function handleChannel(req, res, ctx) {
       try {
         ctx.state.lastActivity = Date.now();
         tpage = await ctx.browser.newPage();
-        ctx.targetPages[pageId] = { page: tpage };
+        const defaultUA = await tpage.evaluate(() => navigator.userAgent);
+        ctx.targetPages[pageId] = { page: tpage, defaultUA };
         ctx.state.openPages++;
+        await pageSupport.applyConfig(ctx, pageId);
+        // JS dialogs in the target page would block the page (and any pending
+        // evaluate) forever, so settle them at once, then report alerts to
+        // page.onAlert. Dismiss happens BEFORE dispatch: the runtime may be
+        // blocked on the sync call that triggered the dialog. confirm/prompt
+        // are dismissed (false/null); no onConfirm/onPrompt yet.
+        tpage.on('dialog', async (d) => {
+          const type = d.type(), message = d.message();
+          let piggybacked = false;
+          if (type === 'alert' && ctx.syncInFlight > 0) {
+            piggybacked = true;
+            // A sync op (evaluate, page.injectJs) is blocking the runtime:
+            // piggyback the alert on that op's response so onAlert fires
+            // before the call returns, as in PhantomJS.
+            ctx.piggyback.push({ pageId, type: 'alert', arg: message });
+          }
+          try { if (type === 'alert') await d.accept(); else await d.dismiss(); } catch { /* already handled */ }
+          if (type === 'alert' && !piggybacked) {
+            try { await dispatch(ctx, pageId, 'alert', message); } catch { /* runtime gone */ }
+          }
+        });
+        // uncaught errors in the target page -> page.onError(message, trace)
+        tpage.on('pageerror', async (err) => {
+          try { await dispatch(ctx, pageId, 'error', pageSupport.errorPayload(err)); } catch { /* runtime gone */ }
+        });
         // target page console -> runtime onConsoleMessage (or stdout fallback)
         tpage.on('console', async (m) => {
           const loc = m.location();
@@ -321,6 +366,46 @@ async function handleChannel(req, res, ctx) {
     const out = stream === 'stderr' ? process.stderr : process.stdout;
     out.write(typeof data === 'string' ? data : String(data));
     return sendJson(res, { ok: true });
+  }
+
+  if (op === 'pageConfig') {
+    // viewportSize / settings changes from the script; applied live if the page exists.
+    const { pageId, config } = payload || {};
+    try {
+      pageSupport.mergeCfg(ctx, pageId, config);
+      await pageSupport.applyConfig(ctx, pageId);
+      return sendJson(res, { ok: true });
+    } catch (e) {
+      return sendJson(res, { ok: false, error: 'pageConfig: ' + (e && e.message ? e.message : String(e)) });
+    }
+  }
+
+  if (op === 'page') {
+    try {
+      return reply({ ok: true, value: await pageSupport.handlePageOp(ctx, payload) });
+    } catch (e) {
+      return reply({ ok: false, error: 'page.' + ((payload || {}).fn) + ': ' + (e && e.message ? e.message : String(e)) });
+    }
+  }
+
+  if (op === 'includeJs') {
+    const started = pageSupport.startIncludeJs(ctx, payload, dispatch);
+    return sendJson(res, started ? { ok: true } : { ok: false, error: 'includeJs: no such page (call page.open first)' });
+  }
+
+  if (op === 'fs') {
+    // All fs operations are served here; the runtime page has no fs of its own.
+    const { fn, args } = payload || {};
+    try {
+      return sendJson(res, { ok: true, value: ctx.fsHost.call(fn, args) });
+    } catch (e) {
+      return sendJson(res, { ok: false, error: 'fs.' + fn + ': ' + (e && e.message ? e.message : String(e)) });
+    }
+  }
+
+  if (op === 'injectJs') {
+    const found = ctx.fsHost.findInjectable((payload || {}).path, ctx.init.libraryPath);
+    return sendJson(res, { ok: true, value: found });
   }
 
   if (op === 'resolveModule') {
