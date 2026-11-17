@@ -82,32 +82,55 @@ GhostBridge only.
       change, block done on red, receipt on verification)
       - PARTIAL, stays unchecked. DONE: the three hooks are rewritten to
         Kiro's v1 schema (Session 1) and their scripts run green when
-        invoked directly (run-tests.sh gate: 19 checks, passing in
-        Session 2). NOT VALIDATED: live firing. No hook output reached a
-        session in Sessions 1 or 2, so PostFileSave, Stop and PostTaskExec
-        triggering in a real Kiro session is unobserved. Known gap: the
-        run-tests-on-change matcher lists gb-host/gb-runtime/gb-chromium
-        and proofs/sync-channel only, not gb-fs.js or gb-page.js.
+        invoked directly (run-tests.sh gate: 19 checks in Session 2, 39
+        in Session 5, ALL PASS). NOT VALIDATED: live firing. No hook
+        output reached a session in Sessions 1 or 2, so PostFileSave, Stop
+        and PostTaskExec triggering in a real Kiro session is unobserved
+        (not re-observed in Session 5 either).
+      - Session 5: the run-tests-on-change matcher gap is closed. It now
+        matches gb-host, gb-runtime, gb-chromium, gb-fs, gb-page (.js),
+        proofs/sync-channel.js and bin/phantomjs. The regex edit is
+        verified by reading it; it has not been seen firing.
+
+- [x] Console output drained before exit (Session 5 fix)
+      - Lines a script prints right before phantom.exit(), or before an
+        idle exit, used to be lost because terminate closed the browser
+        without draining async console events. gb-host.js, gb-page.js and
+        gb-runtime.js now drain pending console output first (bounded, no
+        indefinite hang). Gate: test/drain-test.js, 10 runs requiring all
+        302 stdout lines, the stderr line and exit 3, plus delayed-delivery
+        fault injection (GB_TEST_CONSOLE_DELAY_MS=300) for the
+        phantom.exit and idle-exit paths. Gate: 39 checks, ALL PASS.
 
 ## Phase 2: phantomjs-prebuilt compat (queue #1, distribution root)
-- [ ] Drop-in `phantomjs` executable at phantomjs-prebuilt's exported
+- [x] Drop-in `phantomjs` executable at phantomjs-prebuilt's exported
       binary path; `--version` and script execution match the binary's
       CLI contract
-      - PARTIAL, stays unchecked (Session 4). DONE: script execution
-        (Session 3) and PLACEMENT at the package's exported path:
-        phantomjs-prebuilt 2.1.16 installed with --ignore-scripts, shim
-        substituted for the `path` export in memory, package's own
-        exec() helper ran loadspeed, rasterize PNG, injectme (exit 0)
-        and the package's exit.js (exit 123). NOT DONE: `--version`
-        (the package's testBinFile expects 2.1.1; not implemented) and
-        CLI options such as --webdriver. See SESSION-4-RESULT.md.
+      - Checked in Session 5 against the bullet's wording. Script
+        execution and placement: Session 3/4 (package's exec() ran
+        loadspeed, rasterize PNG, injectme, exit.js exit 123).
+        `--version`: `bin/phantomjs --version` prints `2.1.1`, exit 0;
+        the package's testBinFile now passes. Gate: 39 checks, ALL PASS.
+        CAVEATS, not part of this bullet's wording: `--webdriver` fails
+        honestly as unsupported (exit 1), so testPhantomRun never
+        completes; and the shim exits 1 on an unknown option as the
+        Session 5 spec said (the real 2.1.1 binary prints the same
+        message but exits 0, measured in Session 5), and the package's
+        own run() only rejects
+        with the stderr text when the exit code is 0 (run('--bogus') now
+        rejects with "Exit code: 1", not the text testPhantomRunError
+        expects). Open question for John: exit code for unknown options.
 - [ ] Its smoke tests (test/tests.js, test/exit.js, test/loadspeed.js)
       run against the drop-in
-      - PARTIAL, stays unchecked (Session 4). exit.js and loadspeed.js
-        pass through the shim. test/tests.js (nodeunit, 12 tests): 4
-        pass before, 7 pass after; 3 fail (--version, external
-        google.com unreachable, installer-written lib/location), 1
-        undone (--webdriver), 1 not reached.
+      - PARTIAL, stays unchecked (Session 4, updated Session 5).
+        exit.js and loadspeed.js pass through the shim. test/tests.js
+        (nodeunit, 12 tests): 4 pass before, 7 pass after in Session 4,
+        8 pass after in Session 5 (testBinFile now passes). Remaining:
+        2 fail (external google.com unreachable; installer-written
+        lib/location), 1 undone (testPhantomRun, --webdriver), 1 not
+        reached (testPhantomRunError). Run with the shim substituted via
+        NODE_OPTIONS="-r patch.js", because testBinFile execs the
+        package's own bin/phantomjs as a child process.
 - [x] Proof of Life + receipt; node: root, alive
       - Done SCOPED (Session 4): the queue's PoL for this member is
         "the drop-in launches and the bundled example scripts run".
@@ -118,6 +141,13 @@ GhostBridge only.
         and in members/phantomjs-prebuilt/RESURRECTED.md.
 
 ## Phase 3: phantom (queue #2, Node bridge API)
+- Session 5 status: NOT VERIFIED. Jest suite with the shim substituted:
+  61 pass, 2 fail, 12 skipped of 75 (7 files, none aborted); before (no
+  binary): 4 pass, 50 fail, 8 skipped, phantom.test.js aborted. Real
+  PhantomJS 2.1.1 oracle: 63 pass, 0 fail, 12 skipped. Failing:
+  page.test.js windowProperty (Chromium's /favicon.ico becomes the last
+  onResourceReceived) and setProxy. See members/phantom/NOT-VERIFIED.md
+  and SESSION-5-RESULT.md. No receipt written.
 - [ ] phantom's spawn target pointed at the GhostBridge drop-in via
       its own configuration (PHANTOMJS env / create options), member
       code untouched; the bridge handshake phantom expects from the

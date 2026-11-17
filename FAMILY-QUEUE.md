@@ -55,6 +55,14 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   workaround silently produces nothing against modern sites.
 
 ## 2. phantom (Node bridge API)
+- STATUS: NOT VERIFIED (Session 5, 2026-11-17). Own Jest suite under
+  the GhostBridge shim: 61 pass, 2 fail, 12 skipped of 75 (7 files, none
+  aborted). Before (no binary): 4 pass, 50 fail, 8 skipped, and
+  phantom.test.js aborted. Oracle (real PhantomJS 2.1.1): 63 pass, 0
+  fail, 12 skipped. The gate for every member is its own suite passing;
+  2 tests fail that pass on the real binary (page.test.js
+  `#windowProperty()` and `#setProxy()`), so no receipt was written.
+  Details: members/phantom/NOT-VERIFIED.md.
 - Repo: github.com/amir20/phantomjs-node (archived). npm 6.3.0,
   Aug 2019; last commit Dec 2019. License: ISC. npm deprecation:
   "This package is no longer maintained."

@@ -1,0 +1,14 @@
+# phantom suite check: AFTER (path -> /home/hatch/workspace/ghostbridge/bin/phantomjs)
+file                      passed failed skipped total
+command.test.js           2      0      0       2
+index.test.js             7      0      0       7
+out_object.test.js        2      0      0       2
+page.evaluate.test.js     1      0      7       8
+page.event.test.js        10     0      0       10
+page.test.js              30     2      1       33
+phantom.test.js           9      0      4       13
+TOTAL (files that ran): passed 61, failed 2, skipped 12; files aborted 0 of 7
+
+real	2m47.859s
+user	1m28.844s
+sys	0m22.539s

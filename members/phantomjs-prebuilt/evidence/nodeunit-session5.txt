@@ -1,0 +1,38 @@
+# Session 5: shim substituted via NODE_OPTIONS="-r patch.js" (child processes inherit it; package files untouched, md5 unchanged)
+
+tests.js
+✔ testDownload
+✖ testPhantomExecutesTestScript
+
+Assertion Message: Test script should have executed and returned run time
+AssertionError: Test script should have executed and returned run time
+    at Object.ok (/home/hatch/gbtmp/prebuilt-check/node_modules/nodeunit/lib/types.js:83:39)
+    at /home/hatch/gbtmp/prebuilt-check/node_modules/phantomjs-prebuilt/test/tests.js:30:10
+    at ChildProcess.exithandler (node:child_process:410:7)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1172:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+✔ testPhantomExitCode
+✔ testBinFile
+✔ testCleanPath
+✔ testBogusReinstallLocation
+✖ testSuccessfulReinstallLocation
+
+Assertion Message: Expected link to succeed
+AssertionError: Expected link to succeed
+    at Object.ok (/home/hatch/gbtmp/prebuilt-check/node_modules/nodeunit/lib/types.js:83:39)
+    at Promise._successFn (/home/hatch/gbtmp/prebuilt-check/node_modules/phantomjs-prebuilt/test/tests.js:80:10)
+    at nextTickCallback (/home/hatch/gbtmp/prebuilt-check/node_modules/kew/kew.js:47:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+
+Checksum did not match
+✔ testBogusVerifyChecksum
+Verified checksum of previously downloaded file
+✔ testSuccessfulVerifyChecksum
+✔ testPhantomExec
+
+FAILURES: Undone tests (or their setups/teardowns): 
+- testPhantomRun
+
+To fix this, make sure all tests call test.done()

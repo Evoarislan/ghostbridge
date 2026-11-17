@@ -1,0 +1,10 @@
+# phantom suite check: BEFORE (no binary: phantomjs-prebuilt path as installed)
+file                      passed failed skipped total
+command.test.js           2      0      0       2
+index.test.js             2      5      0       7
+out_object.test.js        0      2      0       2
+page.evaluate.test.js     0      1      7       8
+page.event.test.js        0      10     0       10
+page.test.js              0      32     1       33
+phantom.test.js           ABORTED (jest process died, exit 1): process.exit called in phantom code
+TOTAL (files that ran): passed 4, failed 50, skipped 8; files aborted 1 of 7
