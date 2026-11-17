@@ -196,7 +196,9 @@ async function main() {
     ctx.browser = await puppeteer.launch({
       executablePath: exec,
       headless: true,
-      args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+      // HttpsUpgrades: Chromium rewrites http:// navigations to https:// (internal 307);
+      // PhantomJS never does, and a plain-http proxy cannot serve the upgraded URL.
+      args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable']
         .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : []),
     });
   } catch (e) {

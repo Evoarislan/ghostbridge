@@ -143,6 +143,15 @@ fi
 kill "$sv" 2>/dev/null
 rm -f "${TMPDIR:-/tmp}/gb-svc-$$.log"
 
+# 9d. browser-generated favicon fetches must not surface as resource events (any page/port), page-issued ones must
+out=$(node test/favicon-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^FAVICON OK"; then ok "favicon fetches filtered, page-issued kept"; else bad "favicon check (rc=$rc): $out"; fi
+# 9e. setProxy: trailing-slash proxy URL and plain-http public URL both reach the proxy
+out=$(node test/proxy-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PROXY OK"; then ok "setProxy routes through proxy"; else bad "proxy check (rc=$rc): $out"; fi
+
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1
 while read -r sum f; do [ "$(md5sum "examples/$f" | cut -d' ' -f1)" = "$sum" ] || md5ok=0; done <<'SUMS'

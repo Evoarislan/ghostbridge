@@ -172,6 +172,16 @@ async function ensureTarget(ctx, pageId) {
   return ctx.targetCreating[pageId];
 }
 
+// Chromium's proxyServer wants scheme://host:port with no path; PhantomJS
+// (Qt) accepts a URL such as 'http://localhost:8080/', so drop the path.
+function proxyServerArg(url) {
+  try {
+    const u = new URL(url);
+    if (u.host) return u.protocol + '//' + u.host;
+  } catch { /* not a URL: pass through (e.g. host:port) */ }
+  return url;
+}
+
 function headerList(h) {
   return Object.keys(h || {}).map((k) => ({ name: k, value: h[k] }));
 }
@@ -183,7 +193,7 @@ async function createTarget(ctx, pageId) {
   if (cfg.proxy) {
     // Chromium sets a proxy per browser context, not per page, so a page with
     // setProxy() lives in its own context (its cookie jar is separate).
-    bctx = await ctx.browser.createBrowserContext({ proxyServer: cfg.proxy, proxyBypassList: ['<-loopback>'] });
+    bctx = await ctx.browser.createBrowserContext({ proxyServer: proxyServerArg(cfg.proxy), proxyBypassList: ['<-loopback>'] });
     tpage = await bctx.newPage();
   } else {
     tpage = await ctx.browser.newPage();
@@ -238,6 +248,7 @@ async function createTarget(ctx, pageId) {
   // Resource and navigation events. Only forwarded when the script set the handler.
   const mainNav = (req) => req.isNavigationRequest() && req.frame() === tpage.mainFrame();
   tpage.on('request', (req) => {
+    if (isBrowserIconFetch(req)) return;
     const h = live();
     const time = new Date().toISOString();
     if (h.onResourceRequested) {
@@ -253,15 +264,18 @@ async function createTarget(ctx, pageId) {
     }
   });
   tpage.on('response', (res) => {
+    if (isBrowserIconFetch(res.request())) return;
     if (!live().onResourceReceived) return;
     emit('resourceReceived', [responseInfo(res, 'start')]);
   });
   tpage.on('requestfinished', (req) => {
+    if (isBrowserIconFetch(req)) return;
     if (!live().onResourceReceived) return;
     const res = req.response();
     if (res) emit('resourceReceived', [responseInfo(res, 'end')]);
   });
   tpage.on('requestfailed', (req) => {
+    if (isBrowserIconFetch(req)) return;
     if (!live().onResourceError) return;
     const f = req.failure();
     emit('resourceError', [{ id: 0, url: req.url(), errorCode: 0, errorString: f ? f.errorText : 'failed' }]);
@@ -270,6 +284,20 @@ async function createTarget(ctx, pageId) {
     if (frame === tpage.mainFrame() && live().onUrlChanged) emit('urlChanged', [frame.url()]);
   });
   return entry;
+}
+
+// Chromium itself fetches the page's icon (/favicon.ico or the <link rel=icon>
+// href) after load; PhantomJS made no such request, so scripts never saw one.
+// Such a fetch is the only request that is resource type 'other' with initiator
+// type 'other' and is not a navigation (page-issued requests carry a parser or
+// script initiator, or a type such as xhr/fetch/image). Matching on that, not on
+// the URL, covers any page, port, or icon path.
+function isBrowserIconFetch(req) {
+  try {
+    if (req.isNavigationRequest()) return false;
+    const init = req.initiator && req.initiator();
+    return req.resourceType() === 'other' && !!init && init.type === 'other';
+  } catch { return false; }
 }
 
 function responseInfo(res, stage) {
