@@ -1,0 +1,13 @@
+# before: package path export null, no binary (npm install --ignore-scripts)
+✖ testDownload
+✖ testPhantomExecutesTestScript
+✖ testPhantomExitCode
+✖ testBinFile
+✔ testCleanPath
+✔ testBogusReinstallLocation
+✖ testSuccessfulReinstallLocation
+✔ testBogusVerifyChecksum
+✔ testSuccessfulVerifyChecksum
+✖ testPhantomExec
+FAILURES: Undone tests (or their setups/teardowns): 
+- testPhantomRun

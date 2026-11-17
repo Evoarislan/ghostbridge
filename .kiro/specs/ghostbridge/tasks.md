@@ -93,16 +93,29 @@ GhostBridge only.
 - [ ] Drop-in `phantomjs` executable at phantomjs-prebuilt's exported
       binary path; `--version` and script execution match the binary's
       CLI contract
-      - PARTIAL, stays unchecked (Session 3). DONE: `bin/phantomjs`
-        (package "bin"): script execution, argument passthrough,
-        streamed output, exit code, stderr + exit 1 on missing script;
-        loadspeed, rasterize (PNG, PDF) and injectme green through it, in
-        the gate. NOT DONE: `--version` (not implemented), and placement
-        at phantomjs-prebuilt's exported binary path (needs that package
-        under test). See SESSION-3-RESULT.md.
+      - PARTIAL, stays unchecked (Session 4). DONE: script execution
+        (Session 3) and PLACEMENT at the package's exported path:
+        phantomjs-prebuilt 2.1.16 installed with --ignore-scripts, shim
+        substituted for the `path` export in memory, package's own
+        exec() helper ran loadspeed, rasterize PNG, injectme (exit 0)
+        and the package's exit.js (exit 123). NOT DONE: `--version`
+        (the package's testBinFile expects 2.1.1; not implemented) and
+        CLI options such as --webdriver. See SESSION-4-RESULT.md.
 - [ ] Its smoke tests (test/tests.js, test/exit.js, test/loadspeed.js)
       run against the drop-in
-- [ ] Proof of Life + receipt; node: root, alive
+      - PARTIAL, stays unchecked (Session 4). exit.js and loadspeed.js
+        pass through the shim. test/tests.js (nodeunit, 12 tests): 4
+        pass before, 7 pass after; 3 fail (--version, external
+        google.com unreachable, installer-written lib/location), 1
+        undone (--webdriver), 1 not reached.
+- [x] Proof of Life + receipt; node: root, alive
+      - Done SCOPED (Session 4): the queue's PoL for this member is
+        "the drop-in launches and the bundled example scripts run".
+        Clean-room clone of d1adaf3, README install, gate 33/33,
+        consumer check green, independent diff review APPROVED.
+        Receipt rcpt-0001 (receipts/bridge-core.jsonl). The package's
+        own suite is not fully green; the open items are listed above
+        and in members/phantomjs-prebuilt/RESURRECTED.md.
 
 ## Phase 3: phantom (queue #2, Node bridge API)
 - [ ] phantom's spawn target pointed at the GhostBridge drop-in via

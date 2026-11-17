@@ -1,0 +1,17 @@
+# after: shim substituted for the path export in memory (node -r patch.js); package files untouched
+# patch.js: require('.../lib/phantomjs.js').path = '<clean-room clone>/bin/phantomjs'
+✔ testDownload
+✖ testPhantomExecutesTestScript
+Assertion Message: Test script should have executed and returned run time
+✔ testPhantomExitCode
+✖ testBinFile
+Assertion Message: Version should be match
+✔ testCleanPath
+✔ testBogusReinstallLocation
+✖ testSuccessfulReinstallLocation
+Assertion Message: Expected link to succeed
+✔ testBogusVerifyChecksum
+✔ testSuccessfulVerifyChecksum
+✔ testPhantomExec
+FAILURES: Undone tests (or their setups/teardowns): 
+- testPhantomRun

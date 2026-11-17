@@ -1,0 +1,19 @@
+package path export before substitution: null
+package path export after substitution : /home/hatch/gbtmp/cleanroom/bin/phantomjs
+--- loadspeed stdout:
+Page title is GhostBridge Loadspeed Test Page
+Loading time 484 msec
+PASS loadspeed via phantomjs.exec (exit 0)
+--- rasterize png: 13679 bytes, header "PNG"
+PASS rasterize PNG via phantomjs.exec (exit 0)
+--- injectme stdout:
+* Script running in the Phantom context.
+* Script will 'inject' itself in a page...
+* Script running in the Page context.
+... done injecting itself!
+PASS injectme via phantomjs.exec (exit 0)
+PASS package test/exit.js exits 123 (exit 123)
+--- package test/loadspeed.js stdout: Loading time 377 msec
+PASS package test/loadspeed.js prints msec (exit 0)
+CONSUMER CHECK OK
+rc=0

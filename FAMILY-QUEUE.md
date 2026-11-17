@@ -26,6 +26,18 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
 | 8 | casperjs | 3,342 | 163 test files | In-runtime framework hosting |
 
 ## 1. phantomjs-prebuilt (distribution root)
+- STATUS: VERIFIED (scoped), 2026-11-17. Receipt rcpt-0001 in
+  receipts/bridge-core.jsonl; details in
+  members/phantomjs-prebuilt/RESURRECTED.md and its evidence/ folder.
+  Evidence: with the GhostBridge shim substituted for the package's
+  `path` export (installed with --ignore-scripts, package files
+  untouched), the package's exec() helper ran loadspeed, rasterize PNG
+  and injectme (all exit 0), plus the package's exit.js (exit 123) and
+  loadspeed.js. The package's own nodeunit suite: 4/12 pass before, 7/12
+  after. NOT green: --version, CLI options (--webdriver, --bogus), an
+  external-internet test, an installer-artifact test. Scope matches the
+  Proof of Life defined below ("launches and the bundled example scripts
+  run"); it is not a full-suite pass.
 - Repo: github.com/Medium/phantomjs (archived). npm 2.1.16, Nov 2017;
   last master commit Jul 2019. License: Apache-2.0 (npm metadata);
   the PhantomJS 2.1.1 binary it ships is BSD-3-Clause.
