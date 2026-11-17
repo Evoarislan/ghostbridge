@@ -5,6 +5,9 @@
   "license": "MIT",
   "type": "commonjs",
   "main": "gb-host.js",
+  "bin": {
+    "phantomjs": "bin/phantomjs"
+  },
   "scripts": {
     "proof:sync": "node proofs/sync-channel.js",
     "demo": "node gb-host.js test/hello.js",

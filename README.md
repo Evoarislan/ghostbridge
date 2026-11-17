@@ -1,12 +1,26 @@
 # GhostBridge
 
+Take a PhantomJS script written for a browser abandoned in 2018, leave every line untouched, and GhostBridge runs it on today's Chromium.
+
+**Old scripts. New Chromium. No rewrite.**
+
 GhostBridge is a Phantom-compatible runtime over modern Chromium that runs
 PhantomJS scripts **unmodified**. The dead PhantomJS ecosystem's scripts,
 tests, and examples run against a current Chromium and the current web,
 without editing the scripts. Compatibility is with the family's scripts, not
 with the 2013 WebKit engine's bugs.
 
-This repository currently holds the **bridge core** (Session 1).
+This repository currently holds the bridge core, the `fs` and `webpage`
+modules, a drop-in `phantomjs` executable (`bin/phantomjs`), and three
+unmodified PhantomJS examples that run green (see below).
+
+## The family
+
+GhostBridge targets a family of eight npm packages and projects built on
+PhantomJS (`phantomjs-prebuilt`, `phantom`, `karma-phantomjs-launcher`,
+`html-pdf`, `phantom-html-to-pdf`, `node-webshot`, `spooky`, `casperjs`).
+**Eight ghosts. One bridge.** None of the eight has been verified yet; the
+queue and what "verified" will mean for each are in `FAMILY-QUEUE.md`.
 
 ## Architecture (binding)
 
@@ -33,6 +47,27 @@ Page title is GhostBridge Loadspeed Test Page
 Loading time 320 msec
 ```
 
+## Examples: UNCHANGED
+
+**UNCHANGED:** every script in `examples/` is byte-identical to the upstream
+PhantomJS original from `github.com/ariya/phantomjs`. The test gate
+(`.kiro/hooks/scripts/run-tests.sh`) checks the md5 of the three green
+examples on every run and runs each of them, through both `gb-host.js` and
+the `bin/phantomjs` shim:
+
+| Example | md5 |
+| --- | --- |
+| `examples/loadspeed.js` | `dec3a8a0beb2f52a773c005af9cb4eb8` |
+| `examples/rasterize.js` | `e28e65e99642d8fbc8e987c4bb59248f` |
+| `examples/injectme.js` | `a73087039164958442a44716004121d4` |
+
+What the gate proves: these files match the recorded md5s and exit 0 with the
+expected output (title text for loadspeed, a PNG and a PDF header with size
+over 1000 bytes for rasterize, the injected-page lines for injectme) against a
+local test page. It does not compare against upstream at run time, and it does
+not check rendered pixels. Upstream identity was checked once, when the files
+were fetched (`SESSION-2-RESULT.md`).
+
 ## How to run
 
 Requires Node 18+ and a Chromium (a fetched one is used by default).
@@ -43,7 +78,8 @@ npm install
 npx @puppeteer/browsers install chromium@latest --path .gb/chromium
 
 # run a PhantomJS script the way `phantomjs` did
-node gb-host.js examples/loadspeed.js <url>
+./bin/phantomjs examples/loadspeed.js <url>
+node gb-host.js examples/loadspeed.js <url>   # same thing, without the shim
 
 # skeleton smoke scripts
 node gb-host.js test/hello.js
@@ -64,6 +100,9 @@ Override the Chromium executable with `GB_CHROMIUM_PATH=/path/to/chrome`.
 
 ## Layout
 
+- `bin/phantomjs` — the `phantomjs` executable (package `bin`): runs
+  `gb-host.js` with the same arguments, passes stdio through, exits with the
+  script's exit code.
 - `gb-host.js` — Node CLI + host: Chromium lifecycle (puppeteer-core/CDP),
   the loopback server (runtime page + sync channel), target-page management,
   exit codes.

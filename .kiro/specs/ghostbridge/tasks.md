@@ -93,6 +93,13 @@ GhostBridge only.
 - [ ] Drop-in `phantomjs` executable at phantomjs-prebuilt's exported
       binary path; `--version` and script execution match the binary's
       CLI contract
+      - PARTIAL, stays unchecked (Session 3). DONE: `bin/phantomjs`
+        (package "bin"): script execution, argument passthrough,
+        streamed output, exit code, stderr + exit 1 on missing script;
+        loadspeed, rasterize (PNG, PDF) and injectme green through it, in
+        the gate. NOT DONE: `--version` (not implemented), and placement
+        at phantomjs-prebuilt's exported binary path (needs that package
+        under test). See SESSION-3-RESULT.md.
 - [ ] Its smoke tests (test/tests.js, test/exit.js, test/loadspeed.js)
       run against the drop-in
 - [ ] Proof of Life + receipt; node: root, alive
