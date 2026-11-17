@@ -1,0 +1,14 @@
+Session 3, Phase 2: the drop-in phantomjs binary shim, plus the README positioning pass. Context: the full boost plan was adopted today. The repo is now public at github.com/Evoarislan/ghostbridge and Session 2 is pushed (commit ba26edc). Sessions 1 and 2 are complete and the gate is 19/19 in the default environment.
+
+Part 1, the shim:
+1. Create a `phantomjs` executable entry point (a Node script with a shebang, wired as the package "bin" in package.json) so that running `./bin/phantomjs examples/loadspeed.js <url>` behaves like the real phantomjs CLI: it runs the script through the existing gb-host machinery, passes script arguments through (system.args semantics unchanged), streams the script's console output, and exits with the script's exit code. Error cases (missing script, launch failure) go to stderr with exit 1 and no hang, same as gb-host today.
+2. Prove parity through the shim itself, not gb-host directly: run all three green examples (loadspeed, rasterize producing a PNG and a PDF, injectme) THROUGH the shim binary and confirm the outputs and exit codes match the Session 2 results.
+3. Add the shim runs to the gate script (run-tests.sh) so the shim is covered from now on, and run the full gate in the default environment.
+4. On the open fs path-resolution question (relative paths currently resolve against the script's directory; real PhantomJS resolves against the working directory): do NOT change behavior in this session. Write your recommendation, with the compatibility risk on both sides, into SESSION-3-RESULT.md.
+
+Part 2, README positioning (README.md only):
+5. Open the README with this sentence, verbatim: "Take a PhantomJS script written for a browser abandoned in 2018, leave every line untouched, and GhostBridge runs it on today's Chromium." Follow it with the tagline: "Old scripts. New Chromium. No rewrite."
+6. Where the family of eight is introduced, add the line: "Eight ghosts. One bridge."
+7. Add an "UNCHANGED" note in the examples section: every script in examples/ is byte-identical to the upstream PhantomJS original, with the md5 of each of the three green examples listed (loadspeed dec3a8a0beb2f52a773c005af9cb4eb8, rasterize e28e65e99642d8fbc8e987c4bb59248f, injectme a73087039164958442a44716004121d4). Do not overstate: only claim what the gate actually proves.
+
+Bookkeeping: check off the Phase 2 tasks.md bullets you complete (with annotations where partial), write SESSION-3-RESULT.md with the parity evidence and the fs recommendation, and commit with the message "Session 3: drop-in phantomjs binary shim + README positioning". Confirm the working tree is clean. Do not push; I handle pushes.
