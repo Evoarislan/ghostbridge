@@ -1,0 +1,17 @@
+GhostBridge Session 7 RESUME. The first Session 7 run was killed ~14 minutes in by a VM replacement (an external event, not an error in the work) and left UNCOMMITTED partial work in the tree. Your job: inventory it, keep what is sound, finish the session exactly as SESSION-7-PROMPT-1.txt specifies, and close it out. Read SESSION-7-PROMPT-1.txt first — it is the full spec (verify html-pdf, then phantom-html-to-pdf, in that order) and all its method rules and prohibitions still bind.
+
+What the killed run left (verify each item yourself, do not trust this list):
+- Modified: gb-page.js, gb-runtime.js (bridge work in progress for the PDF members)
+- New: proofs/html-pdf-substitute.js, proofs/html-pdf-suite-check.js
+- Scratch space: /home/hatch/gbtmp/s7 (package installs and suite outputs live there or under it)
+- No SESSION-7-RESULT.md, no commit. HEAD is still 4327ee7 (Session 6).
+
+Known state from the run that just died (verify it, do not trust it): the html-pdf suite has two remaining failures, `callPhantom` and first-page header. The first-page header failure may need a design decision (print page 1 separately and merge, or record it honestly as a Chromium limit). The after-hash comparison, the html-pdf verdict, and all of phantom-html-to-pdf are still undone. Suite outputs live in /home/hatch/gbtmp/s7 (hp-before.txt, hp-after1/2/3.txt, gate1.txt, hp-hash-before.txt).
+
+Resume rules:
+1. Start by running git status / git diff and reading the partial files and the scratch space. Decide per file: sound and spec-conforming (keep), incomplete (finish), or wrong (fix or rewrite). Say in the result file what you kept, finished, or redid.
+2. Run the full gate early (bash .kiro/hooks/scripts/run-tests.sh) to learn the true state of the partial bridge work before building further on it.
+3. Complete everything SESSION-7-PROMPT-1.txt requires, in order: html-pdf first (tap suite, 6 files, npm test; paperSize/borders/header-footer where exercised; output PDFs real and parseable), then phantom-html-to-pdf (legacy `phantomjs` package path covered in memory; test/test.js + injectJs fixture; worker-pool repeated spawn/convert cycles).
+4. Verdicts per member per its own suite, exactly as the original prompt says. NOT-VERIFIED.md with root causes if a member does not pass. Receipts only for verified members, sequential by append order (next: rcpt-0004, rcpt-0005), via `node proofs/receipt.js append`, then verify the chain.
+5. Close out exactly as the original prompt says: FAMILY-QUEUE.md sections 4-5, tasks.md Phase 5, RESURRECTED.md or NOT-VERIFIED.md per member with evidence/ folders, SESSION-7-RESULT.md (including an incident note about the killed first run and this resume), full gate green with the PASS count recorded, commits (code then docs if there are bridge fixes; docs only if not), NO push (Muse verifies and pushes).
+6. If the environment or the Kiro service fails again mid-session, stop, leave the tree consistent, and report exactly what is done and what is not. Do not commit unverified work.

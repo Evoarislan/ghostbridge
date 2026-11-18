@@ -1,0 +1,111 @@
+# DIAGNOSTIC ONLY, not a verdict run: two tests skipped in memory (tape test names: 'allows different header and footer for first page', 'load with cookies js') via a scratch -r preload, so the tests after them could be observed. Code state: before the Session 7 resume's flag/file-URL fixes (those do not touch html-pdf's path).
+# DIAG SKIPPED: allows different header and footer for first page
+# DIAG SKIPPED: load with cookies js
+
+  pdf.create(html[, options]) throws an error when executing without html
+
+    ✓ pdf.create(null)
+    ✓ pdf.create(undefined)
+    ✓ pdf.create("")
+
+  pdf.create(html[, options], callback) returns error as first cb argument when executing without html
+
+    ✓ pdf.create(null, cb)
+    ✓ pdf.create(undefined, cb)
+    ✓ pdf.create("", cb)
+
+  pdf.create(html[, options]).toFile([filename, ]callback)
+
+    ✓ null
+    ✓ toFile(callback) returns {filename: '/tmp/html-pdf-13702.pdf'} as second cb argument
+    ✓ null
+    ✓ toFile(filename, callback) returns {filename: '/home/hatch/gbtmp/s7/html-pdf-repo/test/simple.pdf'} as second cb argument
+    ✓ writes the file to the given destination
+
+  pdf.create(html).toBuffer(callback)
+
+    ✓ null
+    ✓ toBuffer(callback) returns a buffer instance as second cb argument
+    ✓ the PDF buffer has a PDF Header
+
+  pdf.create(html, {directory: "/tmp"}).toBuffer(callback)
+
+    ✓ null
+    ✓ uses the passed directory as tmp dir
+
+  pdf.create(html, {renderDelay: 1000}).toBuffer(callback)
+
+    ✓ null
+    ✓ still returns after renderDelay
+
+  window.callPhantom renders page
+
+    ✓ null
+    ✗ rendered in response to callPhantom
+     ---
+       operator: ok
+       expected: true
+       actual:   false
+       at: respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:144:5)
+     ...
+    ✓ writes the file to the given destination
+
+  pdf.create(html[, options]).toStream(callback)
+
+    ✓ null
+    ✓ toStream(callback) returns a fs.ReadStream as second cb argument
+    ✓ toStream returns a working readable stream
+
+  allows invalid phantomPath
+
+    ✓ Returns an error
+    ✓ Error code is ENOENT
+    ✓ PDF does not exist
+
+  allows custom page and footer options
+
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  load external css
+
+Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  load external js
+
+A parser-blocking, cross site (i.e. different eTLD+1) script, https://code.jquery.com/jquery-2.1.4.min.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.
+A parser-blocking, cross site (i.e. different eTLD+1) script, https://code.jquery.com/jquery-2.1.4.min.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.
+Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  does not allow localUrlAccess by default
+
+Not allowed to load local resource: file:///home/hatch/gbtmp/s7/html-pdf-repo/test/multiple-pages.html
+    ✓ null
+    ✓ Renders a page with 1 page as the content is missing
+
+  allows local file access with localUrlAccess=true
+
+Not allowed to load local resource: file:///home/hatch/gbtmp/s7/html-pdf-repo/test/multiple-pages.html
+    ✓ null
+    ✗ Renders a page 5 pages as the content is present
+     ---
+       operator: ok
+       expected: true
+       actual:   false
+       at: unlinkPdfFile (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:52:9)
+     ...
+
+  allows custom html and css
+
+Not allowed to load local resource: file:///home/hatch/gbtmp/s7/html-pdf-repo/examples/businesscard/image.png
+    ✓ null
+    ✓ Returns the filename
+    ✓ Saves the file to the desired destination
+   

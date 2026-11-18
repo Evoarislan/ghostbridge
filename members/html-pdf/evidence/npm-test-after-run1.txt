@@ -1,0 +1,100 @@
+# npm test, AFTER run 1: phantomjs-prebuilt path -> /home/hatch/workspace/ghostbridge/bin/phantomjs (in memory, proofs/html-pdf-substitute.js)
+
+> html-pdf@3.0.1 test
+> standard && tape test/index.js examples/*/test.js
+
+
+  pdf.create(html[, options]) throws an error when executing without html
+
+    ✓ pdf.create(null)
+    ✓ pdf.create(undefined)
+    ✓ pdf.create("")
+
+  pdf.create(html[, options], callback) returns error as first cb argument when executing without html
+
+    ✓ pdf.create(null, cb)
+    ✓ pdf.create(undefined, cb)
+    ✓ pdf.create("", cb)
+
+  pdf.create(html[, options]).toFile([filename, ]callback)
+
+    ✓ null
+    ✓ toFile(callback) returns {filename: '/tmp/html-pdf-16242.pdf'} as second cb argument
+    ✓ null
+    ✓ toFile(filename, callback) returns {filename: '/home/hatch/gbtmp/s7/html-pdf-repo/test/simple.pdf'} as second cb argument
+    ✓ writes the file to the given destination
+
+  pdf.create(html).toBuffer(callback)
+
+    ✓ null
+    ✓ toBuffer(callback) returns a buffer instance as second cb argument
+    ✓ the PDF buffer has a PDF Header
+
+  pdf.create(html, {directory: "/tmp"}).toBuffer(callback)
+
+    ✓ null
+    ✓ uses the passed directory as tmp dir
+
+  pdf.create(html, {renderDelay: 1000}).toBuffer(callback)
+
+    ✓ null
+    ✓ still returns after renderDelay
+
+  window.callPhantom renders page
+
+    ✓ null
+    ✗ rendered in response to callPhantom
+     ---
+       operator: ok
+       expected: true
+       actual:   false
+       at: respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:144:5)
+     ...
+    ✓ writes the file to the given destination
+
+  pdf.create(html[, options]).toStream(callback)
+
+    ✓ null
+    ✓ toStream(callback) returns a fs.ReadStream as second cb argument
+    ✓ toStream returns a working readable stream
+
+  allows invalid phantomPath
+
+    ✓ Returns an error
+    ✓ Error code is ENOENT
+    ✓ PDF does not exist
+
+  allows custom page and footer options
+
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  allows different header and footer for first page
+
+    ✗ Error: html-pdf: Unknown Error ghostbridge: runtime error: page.render: paperSize.header: the callback output for page 2 differs from page 1 in more than the page number and page total; Chromium print-to-PDF can only vary those two values across pages 
+     ---
+       operator: error
+       expected: undefined
+       actual:   {}
+       at: ChildProcess.respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:141:14)
+       stack:
+         Error: html-pdf: Unknown Error
+       ghostbridge: runtime error: page.render: paperSize.header: the callback output for page 2 differs from page 1 in more than the page number and page total; Chromium print-to-PDF can only vary those two values across pages
+       
+           at ChildProcess.respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:134:17)
+           at ChildProcess.emit (node:events:514:28)
+           at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+     ...
+/home/hatch/gbtmp/s7/html-pdf-repo/test/index.js:166
+    t.assert(pdf.filename === filename, 'Returns the filename from the phantom script')
+                 ^
+
+TypeError: Cannot read properties of undefined (reading 'filename')
+    at /home/hatch/gbtmp/s7/html-pdf-repo/test/index.js:166:18
+    at ChildProcess.respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:141:14)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+Node.js v24.22.1
+# exit 1

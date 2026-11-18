@@ -1,0 +1,43 @@
+# npm test, BEFORE: phantomjs-prebuilt path as installed (--ignore-scripts: null)
+
+> html-pdf@3.0.1 test
+> standard && tape test/index.js examples/*/test.js
+
+
+  pdf.create(html[, options]) throws an error when executing without html
+
+    ✓ pdf.create(null)
+    ✓ pdf.create(undefined)
+    ✓ pdf.create("")
+
+  pdf.create(html[, options], callback) returns error as first cb argument when executing without html
+
+    ✓ pdf.create(null, cb)
+    ✓ pdf.create(undefined, cb)
+    ✓ pdf.create("", cb)
+
+  pdf.create(html[, options]).toFile([filename, ]callback)
+
+node:internal/assert/utils:77
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: html-pdf: Failed to load PhantomJS module. You have to set the path to the PhantomJS binary using 'options.phantomPath'
+    at new PDF (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:40:3)
+    at Object.createPdf [as create] (/home/hatch/gbtmp/s7/html-pdf-repo/lib/index.js:6:14)
+    at Test.<anonymous> (/home/hatch/gbtmp/s7/html-pdf-repo/test/index.js:44:7)
+    at Test.bound [as _cb] (/home/hatch/gbtmp/s7/html-pdf-repo/node_modules/tape/lib/test.js:62:32)
+    at Test.run (/home/hatch/gbtmp/s7/html-pdf-repo/node_modules/tape/lib/test.js:75:10)
+    at Test.bound [as run] (/home/hatch/gbtmp/s7/html-pdf-repo/node_modules/tape/lib/test.js:62:32)
+    at Immediate.next [as _onImmediate] (/home/hatch/gbtmp/s7/html-pdf-repo/node_modules/tape/lib/results.js:66:15)
+    at process.processImmediate (node:internal/timers:574:21) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.22.1
+# exit 1

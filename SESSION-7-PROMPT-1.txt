@@ -1,0 +1,34 @@
+GhostBridge Session 7: verify the two PDF members, html-pdf (queue #4) and phantom-html-to-pdf (queue #5), in that order. Follow the exact method Sessions 4-6 established. Read first: FAMILY-QUEUE.md sections 4 and 5, .kiro/specs/ghostbridge/tasks.md Phase 5, SESSION-6-RESULT.md (for the verdict and bookkeeping pattern), members/phantom/RESURRECTED.md and members/karma-phantomjs-launcher/RESURRECTED.md (for evidence style).
+
+METHOD (binding, same as prior sessions):
+- Work in scratch space OUTSIDE the repo (use /home/hatch/gbtmp/). Install each package with --ignore-scripts. Hash the installed package files before and after; the package's own files must be byte-identical at the end.
+- Never edit a member package's files. Substitute the GhostBridge shim (bin/phantomjs) for the binary path IN MEMORY only (module mapping, env var, or the package's own configuration), the way proofs/phantom-prebuilt-substitute.js and the karma harness did.
+- Run each suite twice: BEFORE (no binary, the package's path export null or absent) and AFTER (shim). Record real counts from the suite's own output, saved into the member's evidence/ folder in the repo.
+- The verdict for each member is its own suite passing unmodified, per FAMILY-QUEUE.md. A scoped verdict is acceptable only with the scope stated as precisely as the phantomjs-prebuilt one was. If a member does not pass, write NOT-VERIFIED.md with the failing tests and root causes, exactly as Session 5 did for phantom. Never fake, skip-silently, or rebaseline a test.
+
+MEMBER 1: html-pdf (github.com/marcbachmann/node-html-pdf, npm 3.0.1, MIT).
+- Suite: tap, 6 files under test/, via npm test.
+- It spawns the binary with its own bridge script (webpage + paperSize + render to PDF). Chromium print-to-PDF must honor the page settings it passes (paperSize, borders, header/footer templates where its suite exercises them).
+- Output PDFs must be real, parseable files (check the %PDF header and page size where the suite asserts it).
+- Known bridge state going in (Session 2 disclosures): paperSize header/footer callbacks were ignored by gb-page.js; content setter / setContent throw. If the suite exercises those, fix the bridge properly (no test-specific hacks) or record the failure honestly.
+- Note for the write-up only (do not act on it): the package's npm deprecation says "migrate to puppeteer"; per FAMILY-QUEUE.md that is a pointer, not a drop-in.
+
+MEMBER 2: phantom-html-to-pdf (github.com/pofider/phantom-html-to-pdf, npm 0.8.3, MIT).
+- It depends on the LEGACY `phantomjs` package (2.1.7 binary installer, NOT phantomjs-prebuilt) and on `phantom-workers`, which also depends on `phantomjs`. The drop-in must cover the legacy package's resolved binary path too, in memory.
+- Suite: test/test.js plus an injectJs fixture (2 files), via npm test. Thin but present; the worker pool means repeated spawn/convert cycles through phantom-workers, so run stability matters, not just one conversion.
+- Conversion recipes use webpage, system, injectJs served by the runtime.
+
+BRIDGE FIXES: if a member exposes a genuine bridge gap, fix it in gb-host.js / gb-page.js / gb-runtime.js / gb-fs.js properly, add a gate check in test/ for the fix (pattern: test/favicon-check.js, test/proxy-check.js), and keep the full gate green. Never special-case a member's test.
+
+BOOKKEEPING (only for verdicts actually earned):
+- FAMILY-QUEUE.md: update sections 4 and 5 with STATUS lines (counts before/after, commit, receipt id or NOT VERIFIED).
+- tasks.md Phase 5: check the boxes that are truly done; write the status note in the Phase 3/4 style.
+- members/html-pdf/RESURRECTED.md or NOT-VERIFIED.md; members/phantom-html-to-pdf/RESURRECTED.md or NOT-VERIFIED.md, with evidence/ folders holding the before/after suite outputs.
+- Receipts: append via `node proofs/receipt.js append receipts/bridge-core.jsonl <payload.json>` ONLY for verified members (next ids: rcpt-0004 for html-pdf, rcpt-0005 for phantom-html-to-pdf, in that order; if html-pdf is not verified but phantom-html-to-pdf is, phantom-html-to-pdf still takes rcpt-0004 — receipts are sequential by append order, and say so in the result file). Mirror rcpt-0002/0003's fields. Then `node proofs/receipt.js verify` and record the head hash.
+- SESSION-7-RESULT.md at repo root: counts, fixes, disclosures, flake notes, incident notes if the environment interrupts you, and the honest not-done list.
+- Run the full gate (bash .kiro/hooks/scripts/run-tests.sh) at the end; it must exit 0. Record the PASS count.
+- Commit in two commits if there are bridge fixes (code first, then docs/bookkeeping), or one docs commit if no code changed. Do NOT push; Muse verifies and pushes.
+
+PROHIBITIONS: no network calls to external test URLs as proof (if a suite needs one and it fails, record it as Session 4/5 did); no edits inside member packages; no invented counts; no credit figures (you cannot see the balance; Muse supplies them separately).
+
+If the environment fails mid-session (writes refused, Chromium launch crashpad errors), stop, leave the tree consistent, and say exactly what is done and what is not in your final message. Do not commit unverified work.

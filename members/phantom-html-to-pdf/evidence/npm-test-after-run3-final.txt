@@ -1,0 +1,332 @@
+# npm test, AFTER run 3 (final code: flag support + encoded file URL): phantomjs + phantomjs-prebuilt path -> /home/hatch/workspace/ghostbridge/bin/phantomjs (in memory)
+
+> phantom-html-to-pdf@0.8.3 test
+> node lib/prepareScripts.js && mocha --check-leaks test/test.js --timeout 15000
+
+Preparing phantom scripts
+
+
+  phantom html to pdf
+    phantom-server
+      1) should set number of pages correctly
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      2) should create a pdf file
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      3) should work with multiple phantom paths
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      4) should wait for page js execution
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      5) should wait for page async js execution
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      6) should allow define a custom var name for page js execution
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      ✓ should throw timeout when waiting for page js execution (5861ms)
+ghostbridge: chromium launch failed: Failed to launch the browser process!
+[1118/164554.573863:ERROR:base/debug/stack_trace_posix.cc:887] Failed to parse the contents of /proc/self/maps
+[52563:52575:1118/164554.608529:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[52563:52575:1118/164554.608588:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[52563:52575:1118/164554.614637:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[52563:52575:1118/164554.614733:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[52563:52575:1118/164554.614822:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[52563:52575:1118/164554.614872:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[52563:52575:1118/164554.615710:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[52563:52583:1118/164554.620601:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[52563:52583:1118/164554.620680:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[52563:52583:1118/164554.620720:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1118/164554.724841:ERROR:base/debug/stack_trace_posix.cc:887] Failed to parse the contents of /proc/self/maps
+[1118/164554.736183:ERROR:base/debug/stack_trace_posix.cc:887] Failed to parse the contents of /proc/self/maps
+
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      7) should return output with logged phantomjs messages
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      8) should return output with logged console messages
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      9) should trim logs for long base64 encoded images
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      10) should allow to inject js files to the page
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      11) should include user defined cookies in http requests
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      12) should reject local files
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      13) should allow local files when allowLocalFilesAccess
+    dedicated-process
+ghostbridge: chromium disconnected unexpectedly
+      14) should set number of pages correctly
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+      ✓ should create a pdf file (6302ms)
+      15) should work with multiple phantom paths
+      16) should wait for page js execution
+      17) should wait for page async js execution
+      18) should allow define a custom var name for page js execution
+      ✓ should throw timeout when waiting for page js execution (511ms)
+      19) should return output with logged phantomjs messages
+      20) should return output with logged console messages
+      21) should trim logs for long base64 encoded images
+      22) should allow to inject js files to the page
+      23) should include user defined cookies in http requests
+      24) should reject local files
+      25) should allow local files when allowLocalFilesAccess
+    extra options
+      26) should be able to configure maxLogEntrySize in dedicated-process
+
+
+  3 passing (2m)
+  26 failing
+
+  1) phantom html to pdf phantom-server should set number of pages correctly:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:105:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  2) phantom html to pdf phantom-server should create a pdf file:
+     Error: Unable to reach phantomjs web server.
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:23
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  3) phantom html to pdf phantom-server should work with multiple phantom paths:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:105:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  4) phantom html to pdf phantom-server should wait for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  5) phantom html to pdf phantom-server should wait for page async js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  6) phantom html to pdf phantom-server should allow define a custom var name for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  7) phantom html to pdf phantom-server should return output with logged phantomjs messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  8) phantom html to pdf phantom-server should return output with logged console messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  9) phantom html to pdf phantom-server should trim logs for long base64 encoded images:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  10) phantom html to pdf phantom-server should allow to inject js files to the page:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  11) phantom html to pdf phantom-server should include user defined cookies in http requests:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  12) phantom html to pdf phantom-server should reject local files:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  13) phantom html to pdf phantom-server should allow local files when allowLocalFilesAccess:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+ghostbridge: runtime error: GhostBridge skeleton: 'webserver' module not implemented yet
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  14) phantom html to pdf dedicated-process should set number of pages correctly:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  15) phantom html to pdf dedicated-process should work with multiple phantom paths:
+     Uncaught Error: ENOENT: no such file or directory, open '/home/hatch/gbtmp/s7/phtp/package/test/temp/372c0ca2-5e18-48b5-bf33-ed687bcaeeb1.pdf'
+  
+
+  16) phantom html to pdf dedicated-process should wait for page js execution:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  17) phantom html to pdf dedicated-process should wait for page async js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/0dbf7cd7-0589-4f9d-abe4-8e4115b433d4settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  18) phantom html to pdf dedicated-process should allow define a custom var name for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/f015bd0e-5230-4578-bb72-01510dcf08e7settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  19) phantom html to pdf dedicated-process should return output with logged phantomjs messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7569082e-d7f6-41da-ac66-bdb83f2f8d7dsettings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  20) phantom html to pdf dedicated-process should return output with logged console messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/553ef537-dce9-46bb-b8e6-fcde9874fe71settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  21) phantom html to pdf dedicated-process should trim logs for long base64 encoded images:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/34bfa1cd-bfd5-456b-9132-74983704be82settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  22) phantom html to pdf dedicated-process should allow to inject js files to the page:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/330724eb-4a1c-4813-a90a-f2c9d823f03asettings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  23) phantom html to pdf dedicated-process should include user defined cookies in http requests:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/fdb20e5b-4f93-4d27-8bf5-eddfff3ff63esettings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  24) phantom html to pdf dedicated-process should reject local files:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/77402b31-aee6-4000-a681-5f79940fbe0bsettings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  25) phantom html to pdf dedicated-process should allow local files when allowLocalFilesAccess:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7890bf88-0041-48f5-892d-5838a9758f27settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  26) phantom html to pdf extra options should be able to configure maxLogEntrySize in dedicated-process:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+
+
+# exit 26

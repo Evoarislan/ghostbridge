@@ -1,0 +1,482 @@
+# npm test, AFTER run 1: phantomjs + phantomjs-prebuilt path -> /home/hatch/workspace/ghostbridge/bin/phantomjs (in memory, proofs/phantom-html-to-pdf-substitute.js)
+
+> phantom-html-to-pdf@0.8.3 test
+> node lib/prepareScripts.js && mocha --check-leaks test/test.js --timeout 15000
+
+Preparing phantom scripts
+
+
+  phantom html to pdf
+    phantom-server
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      1) should set number of pages correctly
+Error: Option --web-security is not supported by GhostBridge
+      2) should create a pdf file
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      3) should work with multiple phantom paths
+Error: Option --web-security is not supported by GhostBridge
+      4) should wait for page js execution
+Error: Option --web-security is not supported by GhostBridge
+      5) should wait for page async js execution
+Error: Option --web-security is not supported by GhostBridge
+      6) should allow define a custom var name for page js execution
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      ✓ should throw timeout when waiting for page js execution (5559ms)
+Error: Option --web-security is not supported by GhostBridge
+      7) should return output with logged phantomjs messages
+Error: Option --web-security is not supported by GhostBridge
+      8) should return output with logged console messages
+Error: Option --web-security is not supported by GhostBridge
+      9) should trim logs for long base64 encoded images
+Error: Option --web-security is not supported by GhostBridge
+      10) should allow to inject js files to the page
+Error: Option --web-security is not supported by GhostBridge
+      11) should include user defined cookies in http requests
+Error: Option --web-security is not supported by GhostBridge
+      12) should reject local files
+Error: Option --web-security is not supported by GhostBridge
+      13) should allow local files when allowLocalFilesAccess
+    dedicated-process
+Error: Option --web-security is not supported by GhostBridge
+      14) should set number of pages correctly
+      15) should create a pdf file
+      16) should work with multiple phantom paths
+      17) should wait for page js execution
+      18) should wait for page async js execution
+      19) should allow define a custom var name for page js execution
+      20) should throw timeout when waiting for page js execution
+      21) should return output with logged phantomjs messages
+      22) should return output with logged console messages
+      23) should trim logs for long base64 encoded images
+      24) should allow to inject js files to the page
+      25) should include user defined cookies in http requests
+      26) should reject local files
+      27) should allow local files when allowLocalFilesAccess
+    extra options
+      28) should be able to configure maxLogEntrySize in dedicated-process
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      29) should be able to configure maxLogEntrySize in phantom-server
+      30) should be able to route requests through https proxy with dedicated-process
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      31) should be able to route requests through https proxy with with phantom-server
+      32) should be able to route requests through https proxy and handle errors with dedicated-process
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      33) should be able to route requests through https proxy and handle errors with phantom-server
+      34) should be able to route requests through https proxy with parallel call and dedicated-process
+      35) should be able to route requests through https proxy with parallel call and dedicated-process
+Error: Option --web-security is not supported by GhostBridge
+Error: Option --web-security is not supported by GhostBridge
+      36) should be able to route requests through https proxy with parallel call and  phantom-server
+      37) should be able to route requests through https proxy with parallel call and  phantom-server
+
+
+  1 passing (2m)
+  37 failing
+
+  1) phantom html to pdf phantom-server should set number of pages correctly:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  2) phantom html to pdf phantom-server should create a pdf file:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  3) phantom html to pdf phantom-server should work with multiple phantom paths:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  4) phantom html to pdf phantom-server should wait for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  5) phantom html to pdf phantom-server should wait for page async js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  6) phantom html to pdf phantom-server should allow define a custom var name for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  7) phantom html to pdf phantom-server should return output with logged phantomjs messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  8) phantom html to pdf phantom-server should return output with logged console messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  9) phantom html to pdf phantom-server should trim logs for long base64 encoded images:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  10) phantom html to pdf phantom-server should allow to inject js files to the page:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  11) phantom html to pdf phantom-server should include user defined cookies in http requests:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  12) phantom html to pdf phantom-server should reject local files:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  13) phantom html to pdf phantom-server should allow local files when allowLocalFilesAccess:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/serverScript.js
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  14) phantom html to pdf dedicated-process should set number of pages correctly:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/8d4abd90-d7d7-40f8-a3ea-d78d4d12e534settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  15) phantom html to pdf dedicated-process should create a pdf file:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/ff287b76-bfa8-4be2-91ec-439c5353e1f4settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  16) phantom html to pdf dedicated-process should work with multiple phantom paths:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/5dee1541-e8a2-4ec4-bfe3-a1327d007cb4settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  17) phantom html to pdf dedicated-process should wait for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/e0c94887-f773-41b9-819e-e5a20081407bsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  18) phantom html to pdf dedicated-process should wait for page async js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/6ce6ad4e-39cf-46a2-a1a0-ba6f53219f1csettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  19) phantom html to pdf dedicated-process should allow define a custom var name for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/b596a20f-7405-488d-b34d-bf713a311684settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  20) phantom html to pdf dedicated-process should throw timeout when waiting for page js execution:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/8f7bc102-9c32-49b2-bd6d-4a56a712a206settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  21) phantom html to pdf dedicated-process should return output with logged phantomjs messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7fe9dda4-39dd-46fc-9b4a-e701ff505da6settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  22) phantom html to pdf dedicated-process should return output with logged console messages:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/b5b1454f-2028-46bb-b59d-0b938f0cfdffsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  23) phantom html to pdf dedicated-process should trim logs for long base64 encoded images:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/24484121-df40-4bb8-830d-09071090da6bsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  24) phantom html to pdf dedicated-process should allow to inject js files to the page:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/d6348bc5-d225-449d-b5f8-b6bb179d4385settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  25) phantom html to pdf dedicated-process should include user defined cookies in http requests:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/475c663f-6732-4829-b3eb-3a54fbe824e1settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  26) phantom html to pdf dedicated-process should reject local files:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/8a5a538d-b7be-4ec3-9e3e-2108336e667esettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  27) phantom html to pdf dedicated-process should allow local files when allowLocalFilesAccess:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/c0a5e7f7-6fb6-4b3e-a7f6-141b85891cf0settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  28) phantom html to pdf extra options should be able to configure maxLogEntrySize in dedicated-process:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/866998fa-b739-4800-b497-88ff695037d5settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  29) phantom html to pdf extra options should be able to configure maxLogEntrySize in phantom-server:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  30) phantom html to pdf extra options should be able to route requests through https proxy with dedicated-process:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/9eb2e1e2-9fa7-4aba-8fa7-c97fe2ac956bsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  31) phantom html to pdf extra options should be able to route requests through https proxy with with phantom-server:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  32) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with dedicated-process:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/91ecb7e9-c9ee-45c0-ac40-797028257ca7settings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  33) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with phantom-server:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  34) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and dedicated-process:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7520665c-fe59-491a-9eda-f61d0108068fsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at Socket.<anonymous> (node:internal/child_process:527:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12)
+
+  35) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and dedicated-process:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7520665c-fe59-491a-9eda-f61d0108068fsettings.html
+Error: Option --web-security is not supported by GhostBridge
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at Socket.<anonymous> (node:internal/child_process:527:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12)
+
+  36) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and  phantom-server:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  37) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and  phantom-server:
+     Error: phantom manager could not start all workers..
+      at node_modules/phantom-workers/lib/phantomManager.js:65:47
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:128:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+
+
+# exit 37

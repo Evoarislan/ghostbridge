@@ -101,6 +101,17 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   (webpage, system.args, phantom globals).
 
 ## 4. html-pdf (HTML to PDF)
+- STATUS: NOT VERIFIED (Session 7, 2026-11-18). Own `npm test` (tape,
+  49 planned assertions in 17 tests): before (no binary) 6 pass, 0 fail,
+  crash in test 3; after (shim) 29 pass, 2 fail, crash in test 11
+  (identical in 2 runs), so 18 assertions never ran. Failing:
+  callPhantom timing (conversion 4.2-5.9 s against a 1-2 s window; shim
+  startup about 3 s) and the per-page first/3rd/last header (Chromium
+  prints one header template for all pages). A diagnostic run that
+  skipped those tests found two more: a cookie dropped by Chromium's
+  default SameSite=Lax, and a file:// iframe blocked in a setContent
+  page. No receipt. Details: members/html-pdf/NOT-VERIFIED.md. Bridge
+  commit: see SESSION-7-RESULT.md.
 - Repo: github.com/marcbachmann/node-html-pdf (archived). npm 3.0.1
   and last default-branch commit both May 2021 (the repo's 2024
   pushed_at is side-branch/renovate pushes only). License: MIT.
@@ -118,6 +129,17 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   ever pointed anywhere."
 
 ## 5. phantom-html-to-pdf (youngest corpse)
+- STATUS: NOT VERIFIED (Session 7, 2026-11-18). Own `npm test` (mocha,
+  36 tests): before (no binary) 0 passing, 36 failing; final after
+  (shim) 3 passing, 26 failing, and mocha ended after 29 tests (earlier
+  after runs: 1/37 and 4/28). Blockers: the `webserver` module (all
+  phantom-server tests), `page.onInitialized` (injectJs, waitForJS),
+  `networkRequest.abort/changeUrl` in onResourceRequested, 6 tests
+  needing external https hosts, and conversion speed against the 10 s
+  timeout. Legacy path coverage works: the resolved package is
+  `phantomjs` 1.9.20 (not 2.1.7 as written below), substituted in
+  memory along with phantomjs-prebuilt. No receipt. Details:
+  members/phantom-html-to-pdf/NOT-VERIFIED.md.
 - Repo: github.com/pofider/phantom-html-to-pdf (archived). npm 0.8.3
   and last commit both Jul 2023: 3.3 years dead, the least margin
   over the 2+ year gate of any member. If a rules reading ever

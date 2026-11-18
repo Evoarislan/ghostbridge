@@ -1,0 +1,84 @@
+# DIAGNOSTIC ONLY, not a verdict run: mocha --grep 'dedicated-process should' (final code). Same suite file, filtered to one describe block.
+
+
+  phantom html to pdf
+    dedicated-process
+      ✓ should set number of pages correctly (5590ms)
+      ✓ should create a pdf file (4663ms)
+      ✓ should work with multiple phantom paths (11911ms)
+      1) should wait for page js execution
+      2) should wait for page async js execution
+      3) should allow define a custom var name for page js execution
+      ✓ should throw timeout when waiting for page js execution (511ms)
+      ✓ should return output with logged phantomjs messages (8600ms)
+      4) should return output with logged console messages
+      ✓ should trim logs for long base64 encoded images
+      5) should allow to inject js files to the page
+      6) should include user defined cookies in http requests
+      7) should reject local files
+      8) should allow local files when allowLocalFilesAccess
+
+
+  6 passing (1m)
+  8 failing
+
+  1) phantom html to pdf dedicated-process should wait for page js execution:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  2) phantom html to pdf dedicated-process should wait for page async js execution:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  3) phantom html to pdf dedicated-process should allow define a custom var name for page js execution:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  4) phantom html to pdf dedicated-process should return output with logged console messages:
+     Uncaught Error: ENOENT: no such file or directory, open '/home/hatch/gbtmp/s7/phtp/package/test/temp/b67b78ca-b4b7-431d-8b9d-9016b5ec2ff5.pdf'
+  
+
+  5) phantom html to pdf dedicated-process should allow to inject js files to the page:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  6) phantom html to pdf dedicated-process should include user defined cookies in http requests:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/6a9e64fc-b257-494d-8d9a-146059f707e5settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  7) phantom html to pdf dedicated-process should reject local files:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/4c86e068-1e3e-4636-8a62-11945a62e517settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  8) phantom html to pdf dedicated-process should allow local files when allowLocalFilesAccess:
+     Error: Command failed: /home/hatch/workspace/ghostbridge/bin/phantomjs --ignore-ssl-errors=yes --web-security=false --ssl-protocol=any /home/hatch/gbtmp/s7/phtp/package/lib/scripts/standaloneScript.js /home/hatch/gbtmp/s7/phtp/package/test/temp/7ed4435d-f6fe-49c3-8f68-83b615445f07settings.html
+{}
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+
+

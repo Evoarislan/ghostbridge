@@ -1,0 +1,325 @@
+# npm test, BEFORE: phantomjs / phantomjs-prebuilt path as installed (--ignore-scripts: null)
+
+> phantom-html-to-pdf@0.8.3 test
+> node lib/prepareScripts.js && mocha --check-leaks test/test.js --timeout 15000
+
+Preparing phantom scripts
+
+
+  phantom html to pdf
+    phantom-server
+      1) should set number of pages correctly
+      2) should create a pdf file
+      3) should work with multiple phantom paths
+      4) should wait for page js execution
+      5) should wait for page async js execution
+      6) should allow define a custom var name for page js execution
+      7) should throw timeout when waiting for page js execution
+      8) should return output with logged phantomjs messages
+      9) should return output with logged console messages
+      10) should trim logs for long base64 encoded images
+      11) should allow to inject js files to the page
+      12) should include user defined cookies in http requests
+      13) should reject local files
+      14) should allow local files when allowLocalFilesAccess
+    dedicated-process
+      15) should set number of pages correctly
+      16) should create a pdf file
+      17) should work with multiple phantom paths
+      18) should wait for page js execution
+      19) should wait for page async js execution
+      20) should allow define a custom var name for page js execution
+      21) should throw timeout when waiting for page js execution
+      22) should return output with logged phantomjs messages
+      23) should return output with logged console messages
+      24) should trim logs for long base64 encoded images
+      25) should allow to inject js files to the page
+      26) should include user defined cookies in http requests
+      27) should reject local files
+      28) should allow local files when allowLocalFilesAccess
+    extra options
+      29) should be able to configure maxLogEntrySize in dedicated-process
+      30) should be able to configure maxLogEntrySize in phantom-server
+      31) should be able to route requests through https proxy with dedicated-process
+      32) should be able to route requests through https proxy with with phantom-server
+      33) should be able to route requests through https proxy and handle errors with dedicated-process
+      34) should be able to route requests through https proxy and handle errors with phantom-server
+      35) should be able to route requests through https proxy with parallel call and dedicated-process
+      36) should be able to route requests through https proxy with parallel call and  phantom-server
+
+
+  0 passing (3m)
+  36 failing
+
+  1) phantom html to pdf phantom-server should set number of pages correctly:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at node_modules/phantom-workers/lib/phantomWorker.js:82:43
+      at Server.<anonymous> (node_modules/phantom-workers/lib/getRandomPort.js:37:40)
+      at Server.wrapper (node:events:639:12)
+      at Server.emit (node:events:514:28)
+      at emitCloseNT (node:net:2941:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+  2) phantom html to pdf phantom-server should create a pdf file:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  3) phantom html to pdf phantom-server should work with multiple phantom paths:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  4) phantom html to pdf phantom-server should wait for page js execution:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  5) phantom html to pdf phantom-server should wait for page async js execution:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  6) phantom html to pdf phantom-server should allow define a custom var name for page js execution:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  7) phantom html to pdf phantom-server should throw timeout when waiting for page js execution:
+     Error: timeout of 20000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  8) phantom html to pdf phantom-server should return output with logged phantomjs messages:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  9) phantom html to pdf phantom-server should return output with logged console messages:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  10) phantom html to pdf phantom-server should trim logs for long base64 encoded images:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  11) phantom html to pdf phantom-server should allow to inject js files to the page:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  12) phantom html to pdf phantom-server should include user defined cookies in http requests:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  13) phantom html to pdf phantom-server should reject local files:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  14) phantom html to pdf phantom-server should allow local files when allowLocalFilesAccess:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  15) phantom html to pdf dedicated-process should set number of pages correctly:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  16) phantom html to pdf dedicated-process should create a pdf file:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  17) phantom html to pdf dedicated-process should work with multiple phantom paths:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  18) phantom html to pdf dedicated-process should wait for page js execution:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  19) phantom html to pdf dedicated-process should wait for page async js execution:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  20) phantom html to pdf dedicated-process should allow define a custom var name for page js execution:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  21) phantom html to pdf dedicated-process should throw timeout when waiting for page js execution:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  22) phantom html to pdf dedicated-process should return output with logged phantomjs messages:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  23) phantom html to pdf dedicated-process should return output with logged console messages:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  24) phantom html to pdf dedicated-process should trim logs for long base64 encoded images:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  25) phantom html to pdf dedicated-process should allow to inject js files to the page:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  26) phantom html to pdf dedicated-process should include user defined cookies in http requests:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  27) phantom html to pdf dedicated-process should reject local files:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  28) phantom html to pdf dedicated-process should allow local files when allowLocalFilesAccess:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  29) phantom html to pdf extra options should be able to configure maxLogEntrySize in dedicated-process:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  30) phantom html to pdf extra options should be able to configure maxLogEntrySize in phantom-server:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at node_modules/phantom-workers/lib/phantomWorker.js:82:43
+      at Server.<anonymous> (node_modules/phantom-workers/lib/getRandomPort.js:37:40)
+      at Server.wrapper (node:events:639:12)
+      at Server.emit (node:events:514:28)
+      at emitCloseNT (node:net:2941:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+  31) phantom html to pdf extra options should be able to route requests through https proxy with dedicated-process:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  32) phantom html to pdf extra options should be able to route requests through https proxy with with phantom-server:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at node_modules/phantom-workers/lib/phantomWorker.js:82:43
+      at Server.<anonymous> (node_modules/phantom-workers/lib/getRandomPort.js:37:40)
+      at Server.wrapper (node:events:639:12)
+      at Server.emit (node:events:514:28)
+      at emitCloseNT (node:net:2941:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+  33) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with dedicated-process:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  34) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with phantom-server:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at node_modules/phantom-workers/lib/phantomWorker.js:82:43
+      at Server.<anonymous> (node_modules/phantom-workers/lib/getRandomPort.js:37:40)
+      at Server.wrapper (node:events:639:12)
+      at Server.emit (node:events:514:28)
+      at emitCloseNT (node:net:2941:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+  35) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and dedicated-process:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at lib/dedicatedProcessStrategy.js:49:34
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  36) phantom html to pdf extra options should be able to route requests through https proxy with parallel call and  phantom-server:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at spawn (node:child_process:806:13)
+      at Object.execFile (node:child_process:349:17)
+      at node_modules/phantom-workers/lib/phantomWorker.js:82:43
+      at Server.<anonymous> (node_modules/phantom-workers/lib/getRandomPort.js:37:40)
+      at Server.wrapper (node:events:639:12)
+      at Server.emit (node:events:514:28)
+      at emitCloseNT (node:net:2941:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+
+
+# exit 36

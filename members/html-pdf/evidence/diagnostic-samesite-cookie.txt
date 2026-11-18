@@ -1,0 +1,7 @@
+# DIAGNOSTIC: Network.setCookie variants for domain=localhost, then a page whose about:blank top frame (setContent, no URL) loads an iframe from http://localhost:PORT/x. Each REQ line is the cookie header that iframe request carried. Chromium linux-1746423, puppeteer-core 23.11.1.
+{} true
+ REQ /x cookie= undefined
+{"sameSite":"None","secure":true} true
+ REQ /x cookie= anm8=1
+{"url":"http://localhost:41575/"} true
+ REQ /x cookie= anm8=1

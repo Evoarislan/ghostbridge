@@ -175,6 +175,18 @@ GhostBridge only.
 - [x] Proof of Life + receipt
 
 ## Phase 5: PDF members (queue #4 and #5)
+- Session 7 status: NOT VERIFIED, both members, 2026-11-18. No
+  receipts. html-pdf: tape 29 pass, 2 fail, crash in test 11 of 17
+  (18 of 49 assertions never run); before 6/0. phantom-html-to-pdf:
+  mocha 3 passing, 26 failing, run ended after 29 of 36; before 0/36.
+  Bridge fixes landed and gated: paperSize size/border/header/footer
+  callbacks (test/pdf-paper-check.js), page.cookies setter,
+  --web-security, --ssl-protocol=any, %2F file URLs
+  (test/open-flags-check.js). Module promotion demanded but not built:
+  `webserver` (phantom-html-to-pdf's phantom-server strategy). Open
+  design questions are listed in SESSION-7-RESULT.md. See
+  members/html-pdf/NOT-VERIFIED.md and
+  members/phantom-html-to-pdf/NOT-VERIFIED.md.
 - [ ] html-pdf: its Phantom bridge script runs unmodified; webpage
       render and paperSize served by Chromium print-to-PDF; tap suite
       (test/, 6 files) green; output PDFs are real, parseable files
