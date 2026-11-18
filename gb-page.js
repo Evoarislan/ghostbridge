@@ -115,7 +115,68 @@ function formatFromPath(p) {
   return m ? m[1].toLowerCase() : 'png'; // PhantomJS defaults to PNG
 }
 
-function pdfOptions(paper) {
+// PhantomJS dimension -> inches: "46mm", "1cm", "0.5in", "20px" or a bare
+// number / numeric string (pixels). Anything else is an error, not a guess.
+function toInches(v) {
+  if (typeof v === 'number' && isFinite(v)) return v / 96;
+  const m = /^\s*(-?\d*\.?\d+)\s*(mm|cm|in|px)?\s*$/i.exec(String(v));
+  if (!m) throw new Error("paperSize: unsupported dimension '" + v + "' (use mm, cm, in, px or a number of pixels)");
+  const n = parseFloat(m[1]);
+  switch ((m[2] || 'px').toLowerCase()) {
+    case 'mm': return n / 25.4;
+    case 'cm': return n / 2.54;
+    case 'in': return n;
+    default: return n / 96;
+  }
+}
+
+// paperSize.margin / paperSize.border (PhantomJS accepts both): a single value
+// or {top,right,bottom,left}. Returns the four sides, undefined where unset.
+function paperMargins(paper) {
+  const mg = paper && paper.margin != null ? paper.margin : (paper ? paper.border : null);
+  if (mg == null) return null;
+  if (typeof mg === 'object') return { top: mg.top, right: mg.right, bottom: mg.bottom, left: mg.left };
+  return { top: mg, right: mg, bottom: mg, left: mg };
+}
+
+function hasSection(paper, name) {
+  return !!(paper && paper[name] && typeof paper[name] === 'object');
+}
+
+// Template for a header/footer section. `pages` is the section's HTML for
+// pages 1..N (what the PhantomJS callback returned for each page), `html` a
+// static string. Chromium renders one template on every page and can only vary
+// the page number and the page total (<span class="pageNumber|totalPages">),
+// so the per-page output must be expressible that way. It is derived from page
+// 1 (digit runs in TEXT equal to 1 become the page number, equal to N the
+// total) and then checked against every page's real output; any mismatch is an
+// error, never a silently wrong header.
+function sectionTemplate(sec, n, name) {
+  if (typeof sec.html === 'string') return sec.html;
+  const pages = sec.pages;
+  if (!Array.isArray(pages) || pages.length !== n) throw new Error('paperSize.' + name + ': internal error (expected ' + n + ' page entries)');
+  if (pages.every((h) => h === pages[0])) return pages[0];
+  const PN = '<span class="pageNumber"></span>';
+  const TP = '<span class="totalPages"></span>';
+  const parts = String(pages[0]).split(/(<style[\s\S]*?<\/style>|<script[\s\S]*?<\/script>|<[^>]*>)/i);
+  const tpl = (pn, tp) => parts.map((seg, k) => {
+    if (k % 2 === 1) return seg;
+    return seg.replace(/\d+/g, (d) => (d === '1' ? pn : (d === String(n) ? tp : d)));
+  }).join('');
+  const t = tpl(PN, TP);
+  const inst = (i) => t.split(PN).join(String(i)).split(TP).join(String(n));
+  for (let i = 1; i <= n; i++) {
+    if (inst(i) !== String(pages[i - 1])) {
+      throw new Error('paperSize.' + name + ': the callback output for page ' + i + ' differs from page 1 in more than the page number and page total; Chromium print-to-PDF can only vary those two values across pages');
+    }
+  }
+  return t;
+}
+
+// Chromium print parameters for a PhantomJS paperSize. With a header/footer
+// the reserved heights are added to the top/bottom margins (PhantomJS puts the
+// header and footer in that extra space) and `n` (the page count) is needed.
+function pdfOptions(paper, n) {
   const o = { printBackground: true, preferCSSPageSize: false };
   if (!paper) return o;
   const hasSize = paper.width != null && paper.height != null;
@@ -126,22 +187,126 @@ function pdfOptions(paper) {
     o.format = String(paper.format);
     if (String(paper.orientation || '').toLowerCase() === 'landscape') o.landscape = true;
   }
-  const mg = paper.margin;
-  if (mg != null) {
-    if (typeof mg === 'object') {
-      o.margin = { top: mg.top, right: mg.right, bottom: mg.bottom, left: mg.left };
-    } else {
-      o.margin = { top: mg, right: mg, bottom: mg, left: mg };
-    }
+  const mg = paperMargins(paper);
+  const hdr = hasSection(paper, 'header'), ftr = hasSection(paper, 'footer');
+  if (!hdr && !ftr) {
+    if (mg) o.margin = mg;
+    return o;
   }
-  // paperSize.header / footer (PhantomJS callbacks) are not supported.
+  const side = (k) => (mg && mg[k] != null ? toInches(mg[k]) : 0);
+  const hh = hdr ? toInches(paper.header.height != null ? paper.header.height : 0) : 0;
+  const fh = ftr ? toInches(paper.footer.height != null ? paper.footer.height : 0) : 0;
+  o.margin = {
+    top: (side('top') + hh) + 'in', bottom: (side('bottom') + fh) + 'in',
+    left: side('left') + 'in', right: side('right') + 'in',
+  };
+  if (n != null) {
+    const wrap = (inner) => '<div style="width:100%;box-sizing:border-box;margin:0;padding:0 ' + side('right') + 'in 0 ' + side('left') + 'in;font-size:16px">' + inner + '</div>';
+    o.displayHeaderFooter = true;
+    // Both templates must be given: an unset one makes Chromium print its own default (date/title, url/page).
+    o.headerTemplate = hdr ? wrap(sectionTemplate(paper.header, n, 'header')) : '<span></span>';
+    o.footerTemplate = ftr ? wrap(sectionTemplate(paper.footer, n, 'footer')) : '<span></span>';
+  }
   return o;
+}
+
+// Chromium renders header/footer templates without loading subresources: a
+// <link rel=stylesheet>, an @import or an @font-face with a network src in a
+// template makes Page.printToPDF fail ("Printing failed") or hang. PhantomJS
+// styles its header/footer with such sheets (html-pdf appends the page's own
+// <link>/<style> tags to every section). So each <link rel=stylesheet> becomes
+// a <style> with the text of the sheet the page itself loaded from that URL
+// (read over CDP, cross-origin included); a sheet the page did not load is
+// dropped, as a failed stylesheet load is in a browser. Every <style> is then
+// re-serialized by Chromium's CSS parser (CSSStyleSheet.replaceSync drops
+// @import), skipping @font-face rules whose src loads a non-data: URL.
+const LINK_RE = /<link\b[^>]*>/gi;
+const STYLE_RE = /(<style\b[^>]*>)([\s\S]*?)(<\/style>)/gi;
+function attr(tag, name) {
+  const m = new RegExp('\\s' + name + '\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))', 'i').exec(tag);
+  return m ? (m[1] != null ? m[1] : m[2] != null ? m[2] : m[3]).replace(/&amp;/g, '&') : null;
+}
+
+async function loadedSheetText(page, urls) {
+  const out = {};
+  if (!urls.length) return out;
+  const cdp = await page.createCDPSession();
+  try {
+    const sheets = [];
+    cdp.on('CSS.styleSheetAdded', (e) => sheets.push(e.header));
+    await cdp.send('DOM.enable');
+    await cdp.send('CSS.enable'); // reports every existing sheet before it returns
+    for (const u of urls) {
+      const h = sheets.find((s) => s.sourceURL === u && !s.isInline);
+      if (h) {
+        try { out[u] = (await cdp.send('CSS.getStyleSheetText', { styleSheetId: h.styleSheetId })).text; } catch { /* sheet gone */ }
+      }
+    }
+  } finally {
+    await cdp.detach().catch(() => {});
+  }
+  return out;
+}
+
+async function printableTemplate(page, html) {
+  if (!/<(link|style)\b/i.test(html)) return html;
+  const base = page.url();
+  const resolve = (href) => { try { return new URL(href, base).href; } catch { return null; } };
+  const links = (html.match(LINK_RE) || []).filter((t) => /(^|\s)stylesheet(\s|$)/i.test(attr(t, 'rel') || ''));
+  const texts = await loadedSheetText(page, links.map((t) => resolve(attr(t, 'href') || '')).filter(Boolean));
+  let out = html.replace(LINK_RE, (t) => {
+    if (links.indexOf(t) < 0) return t;
+    const u = resolve(attr(t, 'href') || '');
+    return u && texts[u] != null ? '<style>' + texts[u] + '</style>' : '';
+  });
+  const raw = [];
+  out.replace(STYLE_RE, (m, a, css) => { raw.push(css); return m; });
+  const clean = await page.evaluate((list) => list.map((css) => {
+    const s = new CSSStyleSheet();
+    try { s.replaceSync(css); } catch (e) { return ''; }
+    return Array.prototype.filter.call(s.cssRules, (r) => !(r instanceof CSSFontFaceRule &&
+      /url\(\s*(?!['"]?data:)/i.test(r.style.getPropertyValue('src')))).map((r) => r.cssText).join('\n');
+  }), raw);
+  let i = 0;
+  out = out.replace(STYLE_RE, (m, a, css, z) => a + clean[i++] + z);
+  return out;
+}
+
+// `paper` sections carry either static `html` or per-page `pages` (see sectionTemplate).
+async function renderPdf(page, paper) {
+  let n = 0;
+  ['header', 'footer'].forEach((k) => { if (hasSection(paper, k) && Array.isArray(paper[k].pages)) n = Math.max(n, paper[k].pages.length); });
+  const o = pdfOptions(paper, n);
+  if (o.displayHeaderFooter) {
+    o.headerTemplate = await printableTemplate(page, o.headerTemplate);
+    o.footerTemplate = await printableTemplate(page, o.footerTemplate);
+  }
+  return Buffer.from(await page.pdf(o));
+}
+
+function pdfPageCount(buf) {
+  const m = buf.toString('latin1').match(/\/Type\s*\/Page(?![A-Za-z])/g);
+  return m ? m.length : 0;
+}
+
+// file:///%2Ftmp%2Fx.html: QtWebKit (QUrl::toLocalFile) decodes the path and
+// opens /tmp/x.html; Chromium refuses an encoded slash in a file URL path
+// (net::ERR_INVALID_URL). phantom-html-to-pdf builds exactly this URL
+// ("file:///" + encodeURIComponent(path)). Only file: URLs whose path holds
+// %2F are rewritten (decoded, normalized, re-encoded); anything else is as given.
+function openableUrl(url) {
+  if (!/^file:/i.test(url) || !/%2f/i.test(url)) return url;
+  try {
+    const u = new URL(url);
+    const p = require('path').resolve(decodeURIComponent(u.pathname));
+    return require('url').pathToFileURL(p).href + u.search + u.hash;
+  } catch { return url; }
 }
 
 // Returns a Buffer.
 async function renderBuffer(page, req) {
   const fmt = String(req.format || 'png').toLowerCase();
-  if (fmt === 'pdf') return Buffer.from(await page.pdf(pdfOptions(req.paperSize)));
+  if (fmt === 'pdf') return renderPdf(page, req.paperSize);
   if (fmt === 'gif') throw new Error('gif is not supported by Chromium capture (use png, jpg/jpeg, webp or pdf)');
   const type = IMAGE_FORMATS[fmt];
   if (!type) throw new Error("unsupported render format '" + fmt + "' (use png, jpg/jpeg, webp or pdf)");
@@ -368,6 +533,26 @@ async function cookieOp(ctx, p) {
       }
       return n > 0;
     }
+    case 'setForUrl': {
+      // page.cookies = [...] (PhantomJS WebPage::setCookies): drop the jar's
+      // cookies for the page's current URL, then add each one; a cookie without
+      // a domain gets the URL's host. true only if every cookie was added.
+      let host = null;
+      try { const u = new URL(p.url); if (/^https?:$/.test(u.protocol)) host = u.hostname; } catch { /* about:blank etc. */ }
+      if (host) {
+        for (const c of await all()) {
+          const d = String(c.domain).replace(/^\./, '');
+          if (host === d || host.endsWith('.' + d)) await cdp.send('Network.deleteCookies', { name: c.name, domain: c.domain, path: c.path });
+        }
+      }
+      let ok = true;
+      for (const c of [].concat(p.cookies || [])) {
+        const cc = Object.assign({}, c);
+        if (!cc.domain && host) cc.domain = host;
+        ok = (await cookieOp(ctx, { fn: 'add', cookie: cc })) && ok;
+      }
+      return ok;
+    }
     default:
       throw new Error('unknown cookie op ' + p.fn);
   }
@@ -486,6 +671,11 @@ async function handlePageOp(ctx, payload) {
       await h.uploadFile(...a.files.map((f) => ctx.fsHost.call('absolute', [f])));
       return null;
     }
+    case 'setCookies':
+      return cookieOp(ctx, { fn: 'setForUrl', url: page.url(), cookies: a.cookies });
+    case 'pdfPageCount':
+      // Page count of the document as it would print under paperSize (no header/footer), for per-page callbacks.
+      return pdfPageCount(Buffer.from(await page.pdf(pdfOptions(a.paperSize))));
     case 'render': {
       const fmt = a.format || formatFromPath(a.path);
       const buf = await renderBuffer(page, Object.assign({}, a, { format: fmt }));
@@ -520,4 +710,4 @@ function startIncludeJs(ctx, payload, dispatch) {
   return true;
 }
 
-module.exports = { mergeCfg, applyConfig, ensureIntercept, ensureTarget, closeTarget, frameOf, cookieOp, errorPayload, handlePageOp, startIncludeJs };
+module.exports = { mergeCfg, applyConfig, ensureIntercept, ensureTarget, closeTarget, frameOf, cookieOp, errorPayload, handlePageOp, startIncludeJs, printableTemplate, openableUrl };

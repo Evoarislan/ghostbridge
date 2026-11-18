@@ -19,7 +19,11 @@ const PHANTOM_VERSION = '2.1.1';
 // Session 5), so phantomjs-prebuilt's testPhantomRunError, which expects the
 // message from stderr after a clean exit, cannot pass while this is 1.
 const UNKNOWN_OPTION_EXIT = 1;
-const SUPPORTED_BOOL = new Set(['local-url-access', 'ignore-ssl-errors']);
+const SUPPORTED_BOOL = new Set(['local-url-access', 'ignore-ssl-errors', 'web-security']);
+// --ssl-protocol: only `any` is accepted. Chromium negotiates TLS 1.2/1.3 and
+// cannot speak SSLv2/SSLv3/TLS 1.0/1.1 at all, so `any` maps to Chromium's own
+// range; a request for one specific protocol fails loudly instead.
+const SSL_PROTOCOL_OK = /^any$/i;
 const KNOWN_OPTIONS = new Set([
   'config', 'cookies-file', 'debug', 'disk-cache', 'disk-cache-path', 'ignore-ssl-errors',
   'load-images', 'local-storage-path', 'local-storage-quota', 'local-url-access',
@@ -53,6 +57,14 @@ for (let i = 0; i < argv.length; i++) {
       process.exit(1);
     }
     continue; // forwarded to the host with the rest of argv
+  }
+  if (name === 'ssl-protocol') {
+    const v = a.includes('=') ? a.slice(a.indexOf('=') + 1) : '';
+    if (!SSL_PROTOCOL_OK.test(v)) {
+      process.stderr.write('Error: --ssl-protocol=' + (v || '(missing)') + ' is not supported by GhostBridge (Chromium negotiates TLS 1.2/1.3 only; use --ssl-protocol=any)\n');
+      process.exit(1);
+    }
+    continue;
   }
   process.stderr.write('Error: Option --' + name + ' is not supported by GhostBridge\n');
   process.exit(1);

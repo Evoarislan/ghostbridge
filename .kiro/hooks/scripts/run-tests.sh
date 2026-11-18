@@ -151,6 +151,14 @@ if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^FAVICON OK"; then ok "favic
 out=$(node test/proxy-check.js 2>&1); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PROXY OK"; then ok "setProxy routes through proxy"; else bad "proxy check (rc=$rc): $out"; fi
+# 9f. PDF paperSize: size/border, header phantom.callback per page, template stylesheets made printable, per-page variation fails loudly
+out=$(node test/pdf-paper-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PDF PAPER OK"; then ok "pdf paperSize header/footer"; else bad "pdf paper check (rc=$rc): $out"; fi
+# 9g. --web-security=false, --ssl-protocol=any (other values rejected), open() of a file URL with %2F in its path
+out=$(node test/open-flags-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^OPEN FLAGS OK"; then ok "web-security/ssl-protocol flags + encoded file URL"; else bad "open flags check (rc=$rc): $out"; fi
 
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1

@@ -132,6 +132,12 @@
     addCookie: function (c) { return postSync('cookies', { fn: 'add', cookie: c }); },
     clearCookies: function () { postSync('cookies', { fn: 'clear' }); },
     deleteCookie: function (name) { return postSync('cookies', { fn: 'delete', name: String(name) }); },
+    // phantom.callback(fn): wraps fn for paperSize.header/footer `contents`;
+    // fn(pageNum, numPages) returns that page's HTML (see resolvePaperSize).
+    callback: function (fn) {
+      if (typeof fn !== 'function') throw new TypeError('phantom.callback: argument must be a function');
+      return { __gbCallback: fn };
+    },
     // Loads a JS file (relative: script dir, then libraryPath) and runs it in
     // this runtime's global scope. false if the file cannot be found/read.
     // Exceptions thrown by the injected code propagate to the caller.
@@ -259,17 +265,49 @@
     this.__openCb = null;
     startOpen(this, String(url), httpFrom([httpConf]));
   };
+  // paperSize.header/footer.contents made with phantom.callback(fn): fn runs
+  // here, in the script's runtime, for each page 1..N (N asked from the host:
+  // the page count of the document under this paperSize) and the HTML it
+  // returns goes to the host as `pages`. A plain string `contents` is sent as
+  // static `html`. The script's own paperSize object is not modified.
+  function resolvePaperSize(page) {
+    var ps = page.paperSize;
+    if (!ps || typeof ps !== 'object') return ps;
+    var out = {};
+    for (var k in ps) out[k] = ps[k];
+    var n = null;
+    ['header', 'footer'].forEach(function (name) {
+      var sec = ps[name];
+      if (!sec || typeof sec !== 'object') return;
+      var c = sec.contents;
+      var res = { height: sec.height };
+      if (c && typeof c === 'object' && typeof c.__gbCallback === 'function') {
+        if (n === null) n = pageOp(page, 'pdfPageCount', { paperSize: ps });
+        res.pages = [];
+        for (var i = 1; i <= n; i++) {
+          var h = c.__gbCallback(i, n);
+          res.pages.push(h == null ? '' : String(h));
+        }
+      } else {
+        res.html = c == null ? '' : String(c);
+      }
+      out[name] = res;
+    });
+    return out;
+  }
   // render(path[, {format, quality}]): format from the extension unless given.
   Webpage.prototype.render = function (path, opts) {
     opts = opts || {};
+    var fmt = opts.format || (/\.pdf$/i.test(String(path)) ? 'pdf' : null);
     pageOp(this, 'render', {
       path: String(path), format: opts.format, quality: opts.quality,
-      clipRect: this.clipRect, paperSize: this.paperSize,
+      clipRect: this.clipRect, paperSize: fmt === 'pdf' ? resolvePaperSize(this) : this.paperSize,
     });
   };
   Webpage.prototype.renderBase64 = function (format) {
     return pageOp(this, 'render', {
-      format: format || 'png', clipRect: this.clipRect, paperSize: this.paperSize,
+      format: format || 'png', clipRect: this.clipRect,
+      paperSize: String(format).toLowerCase() === 'pdf' ? resolvePaperSize(this) : this.paperSize,
     });
   };
   // evaluateAsync(fn[, delayMillis, ...args]) runs fn in the target page later.
@@ -323,7 +361,10 @@
   Object.defineProperty(Webpage.prototype, 'cookies', {
     enumerable: true,
     get: function () { return postSync('cookies', { fn: 'get' }); },
-    set: function () { throw new Error('webpage.cookies: assigning cookies is not implemented (use addCookie)'); },
+    set: function (list) {
+      if (!Array.isArray(list)) throw new TypeError('webpage.cookies: value must be an array of cookie objects');
+      pageOp(this, 'setCookies', { cookies: list });
+    },
   });
   var webpage = { create: function () { return new Webpage(); } };
 

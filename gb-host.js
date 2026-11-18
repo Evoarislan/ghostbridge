@@ -87,16 +87,19 @@ async function main() {
     process.exit(1);
   }
   // Leading options (the shim forwards the PhantomJS options GhostBridge supports).
-  const options = { localUrlAccess: true, ignoreSslErrors: false };
+  const options = { localUrlAccess: true, ignoreSslErrors: false, webSecurity: true };
   while (argv.length && /^--[a-z-]+=/.test(argv[0])) {
     const [k, v] = [argv[0].slice(2, argv[0].indexOf('=')), argv[0].slice(argv[0].indexOf('=') + 1)];
     const bool = /^(true|yes)$/i.test(v) ? true : /^(false|no)$/i.test(v) ? false : null;
-    if ((k === 'local-url-access' || k === 'ignore-ssl-errors') && bool === null) {
+    if ((k === 'local-url-access' || k === 'ignore-ssl-errors' || k === 'web-security') && bool === null) {
       console.error('Error: Invalid value for --' + k + ': ' + v);
       process.exit(1);
     }
     if (k === 'local-url-access') options.localUrlAccess = bool;
     else if (k === 'ignore-ssl-errors') options.ignoreSslErrors = bool;
+    else if (k === 'web-security') options.webSecurity = bool;
+    // --ssl-protocol=any: Chromium's own TLS range (the shim rejects any other value).
+    else if (k === 'ssl-protocol' && /^any$/i.test(v)) { /* nothing to set */ }
     else { console.error('Error: Option --' + k + ' is not supported by GhostBridge'); process.exit(1); }
     argv.shift();
   }
@@ -199,7 +202,9 @@ async function main() {
       // HttpsUpgrades: Chromium rewrites http:// navigations to https:// (internal 307);
       // PhantomJS never does, and a plain-http proxy cannot serve the upgraded URL.
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable']
-        .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : []),
+        .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : [])
+        // --web-security=false (PhantomJS: no same-origin policy). Puppeteer always passes --user-data-dir, which this flag needs.
+        .concat(options.webSecurity === false ? ['--disable-web-security'] : []),
     });
   } catch (e) {
     console.error('ghostbridge: chromium launch failed: ' + e.message);
@@ -346,7 +351,8 @@ async function handleChannel(req, res, ctx) {
   if (op === 'open') {
     // open() is callback-shaped in PhantomJS: return immediately, deliver
     // status later. So we ack now and drive the navigation asynchronously.
-    const { pageId, url, config, http } = payload || {};
+    const { pageId, config, http } = payload || {};
+    const url = payload && typeof payload.url === 'string' ? pageSupport.openableUrl(payload.url) : (payload || {}).url;
     pageSupport.mergeCfg(ctx, pageId, config);
     sendJson(res, { ok: true });
     ctx.state.inFlightOpens++;
