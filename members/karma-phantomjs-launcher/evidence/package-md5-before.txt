@@ -1,0 +1,13 @@
+9ca5671179c26e194647634f4159429c  karma-phantomjs-launcher/.eslintrc
+d66a5bb67cbf7eb7c2a03e41c806dedc  karma-phantomjs-launcher/.npmignore
+39676d212a6506a68cfbe1a547c14661  karma-phantomjs-launcher/.travis.yml
+438f840be9505a8b0ae732f2d4bf1206  karma-phantomjs-launcher/CHANGELOG.md
+5a1ad621624e3ede0efee360715084f3  karma-phantomjs-launcher/LICENSE
+22ecc21b6e8b16caa8f5c452a064a896  karma-phantomjs-launcher/README.md
+f962f88947d7e600dd71f41e33b4685d  karma-phantomjs-launcher/capture.template.js
+ef6428a102f6d3176b6096434e285984  karma-phantomjs-launcher/gruntfile.js
+4c42f8a9e73fc04fec08221b9c3c759b  karma-phantomjs-launcher/index.js
+0df2208477b3487dc31001d5e018db4b  karma-phantomjs-launcher/karma.conf.js
+c48b3087be01b8bb338a5a09425caf49  karma-phantomjs-launcher/package.json
+4786c9ba99070cc94f48cab68a8c88d1  karma-phantomjs-launcher/test/add.spec.js
+e1fbf8aa51059d54667ad22165b96bca  karma-phantomjs-launcher/yarn.lock

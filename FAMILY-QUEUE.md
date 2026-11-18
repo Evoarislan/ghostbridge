@@ -55,14 +55,17 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   workaround silently produces nothing against modern sites.
 
 ## 2. phantom (Node bridge API)
-- STATUS: NOT VERIFIED (Session 5, 2026-11-17). Own Jest suite under
-  the GhostBridge shim: 61 pass, 2 fail, 12 skipped of 75 (7 files, none
+- STATUS: VERIFIED (Session 6, 2026-11-17). Own Jest suite under
+  the GhostBridge shim: 63 pass, 0 fail, 12 skipped of 75 (7 files, none
   aborted). Before (no binary): 4 pass, 50 fail, 8 skipped, and
   phantom.test.js aborted. Oracle (real PhantomJS 2.1.1): 63 pass, 0
-  fail, 12 skipped. The gate for every member is its own suite passing;
-  2 tests fail that pass on the real binary (page.test.js
-  `#windowProperty()` and `#setProxy()`), so no receipt was written.
-  Details: members/phantom/NOT-VERIFIED.md.
+  fail, 12 skipped. The two Session 5 failures were fixed in
+  d8c209a: browser-generated favicon fetches are filtered from
+  resource events, and setProxy works (proxy-URL path fix plus the
+  HttpsUpgrades launch flag). Muse re-ran the AFTER suite
+  independently and reproduced 63/0/12 exactly. Receipt rcpt-0002.
+  Details: members/phantom/RESURRECTED.md (supersedes
+  NOT-VERIFIED.md, kept in git history).
 - Repo: github.com/amir20/phantomjs-node (archived). npm 6.3.0,
   Aug 2019; last commit Dec 2019. License: ISC. npm deprecation:
   "This package is no longer maintained."
@@ -75,6 +78,14 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   spawn at GhostBridge via phantom's own configuration only.
 
 ## 3. karma-phantomjs-launcher (capture contract)
+- STATUS: VERIFIED (Session 6, 2026-11-17). Real Karma v6.4.4
+  integration run: the launcher captured the GhostBridge shim as its
+  PhantomJS browser and 4 of 4 specs executed SUCCESS, exit 0.
+  Before (no binary): the launcher crashed (TypeError, path null).
+  The captured browser self-reports as "Chrome Headless" (the shim
+  is Chromium underneath); the oracle is the Karma run, not the
+  browser label. Receipt rcpt-0003. Details:
+  members/karma-phantomjs-launcher/RESURRECTED.md.
 - Repo: github.com/karma-runner/karma-phantomjs-launcher (archived).
   npm 1.0.4, Mar 2017; last commit Jun 2017. License: MIT.
 - Relationship: direct npm dependency on phantomjs-prebuilt, peer

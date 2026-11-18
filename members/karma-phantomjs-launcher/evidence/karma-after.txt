@@ -1,0 +1,13 @@
+# karma launcher check: AFTER (shim)
+phantomjs-prebuilt path export as installed: null
+phantomjs-prebuilt path export substituted : /home/hatch/workspace/ghostbridge/bin/phantomjs
+17 11 2026 23:10:14.781:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+17 11 2026 23:10:14.783:INFO [launcher]: Launching browsers PhantomJS with concurrency unlimited
+17 11 2026 23:10:14.790:INFO [launcher]: Starting browser PhantomJS
+17 11 2026 23:10:16.641:INFO [Chrome Headless 160.0.0.0 (Linux 0.0.0)]: Connected on socket tSZcBy2q1KPdLiHCAAAA with id 3637664
+....
+Chrome Headless 160.0.0.0 (Linux 0.0.0): Executed 4 of 4 SUCCESS (0.034 secs / 0.053 secs)
+17 11 2026 23:10:16.973:ERROR [phantomjs.launcher]: ghostbridge: chromium disconnected unexpectedly
+
+KARMA RESULT {"success":4,"failed":0,"skipped":0,"error":false,"exitCode":0,"browsers":["Chrome Headless 160.0.0.0 (Linux 0.0.0)"]}
+KARMA RUN GREEN

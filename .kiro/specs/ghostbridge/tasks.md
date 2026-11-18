@@ -141,27 +141,38 @@ GhostBridge only.
         and in members/phantomjs-prebuilt/RESURRECTED.md.
 
 ## Phase 3: phantom (queue #2, Node bridge API)
-- Session 5 status: NOT VERIFIED. Jest suite with the shim substituted:
-  61 pass, 2 fail, 12 skipped of 75 (7 files, none aborted); before (no
-  binary): 4 pass, 50 fail, 8 skipped, phantom.test.js aborted. Real
-  PhantomJS 2.1.1 oracle: 63 pass, 0 fail, 12 skipped. Failing:
-  page.test.js windowProperty (Chromium's /favicon.ico becomes the last
-  onResourceReceived) and setProxy. See members/phantom/NOT-VERIFIED.md
-  and SESSION-5-RESULT.md. No receipt written.
-- [ ] phantom's spawn target pointed at the GhostBridge drop-in via
+- Session 6 status: VERIFIED 2026-11-17. Jest suite with the shim
+  substituted: 63 pass, 0 fail, 12 skipped of 75 (7 files, none
+  aborted); before (no binary): 4 pass, 50 fail, 8 skipped,
+  phantom.test.js aborted. Real PhantomJS 2.1.1 oracle: 63 pass, 0
+  fail, 12 skipped. Fixes in d8c209a: browser-generated favicon
+  fetches filtered from resource events; setProxy fixed (proxy-URL
+  path + HttpsUpgrades launch flag). Muse re-ran the AFTER suite
+  independently and reproduced 63/0/12 exactly. Receipt rcpt-0002.
+  See members/phantom/RESURRECTED.md (supersedes NOT-VERIFIED.md)
+  and SESSION-6-RESULT.md.
+- [x] phantom's spawn target pointed at the GhostBridge drop-in via
       its own configuration (PHANTOMJS env / create options), member
       code untouched; the bridge handshake phantom expects from the
       spawned process answered by gb-host
-- [ ] Jest suite (src/__tests__, 9 files) green under GhostBridge
-- [ ] Proof of Life + receipt
+- [x] Jest suite (src/__tests__, 9 files) green under GhostBridge
+- [x] Proof of Life + receipt
 
 ## Phase 4: karma-phantomjs-launcher (queue #3, capture contract)
-- [ ] Launcher resolves the drop-in binary (prebuilt path and
+- Session 6 status: VERIFIED 2026-11-17. Real Karma v6.4.4
+  integration run: launcher captured the shim, 4 of 4 specs SUCCESS,
+  exit 0 (the package's own add.spec.js plus 3 capture-surface specs
+  in dom.spec.js). Before (no binary): launcher crashed, TypeError
+  path null. Captured browser self-reports "Chrome Headless"; the
+  oracle is the Karma run, not the label. Receipt rcpt-0003.
+  See members/karma-phantomjs-launcher/RESURRECTED.md and
+  SESSION-6-RESULT.md.
+- [x] Launcher resolves the drop-in binary (prebuilt path and
       PHANTOMJS_BIN); its capture script runs hosted in gb-runtime
-- [ ] Oracle: a real Karma integration run (Karma boots, launcher
+- [x] Oracle: a real Karma integration run (Karma boots, launcher
       captures GhostBridge's Chromium, a spec executes and reports),
       plus the launcher's own spec file (test/add.spec.js)
-- [ ] Proof of Life + receipt
+- [x] Proof of Life + receipt
 
 ## Phase 5: PDF members (queue #4 and #5)
 - [ ] html-pdf: its Phantom bridge script runs unmodified; webpage

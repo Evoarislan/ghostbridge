@@ -1,0 +1,17 @@
+GhostBridge Session 6: close out phantom, then verify karma-phantomjs-launcher. Repo: ~/workspace/ghostbridge. Baseline to confirm first: full gate green (39 checks, exit 0, default environment), tree clean at 09974e5. Read SESSION-5-RESULT.md and members/phantom/NOT-VERIFIED.md before starting; they define exactly where phantom stops.
+
+PART 1 — Fix phantom's two failing tests in the bridge (never in the package or its tests):
+1. Favicon pollution: Chromium fetches /favicon.ico after page load and GhostBridge reports it to onResourceReceived, so the last resource URL is the favicon instead of the page. PhantomJS makes no favicon request. Fix generally: browser-generated favicon fetches must not surface as page resource events for ANY page (suppress or filter them at the bridge level; do not special-case the test's URL or port).
+2. setProxy: implemented via a per-page browser context with proxyServer, but the proxied page's text came back empty in phantom's test (local proxy, expects "hi, http://phantomjs.org/"). Reproduce it standalone, diagnose the root cause, and fix it in the bridge if it is a bridge bug. Write the diagnosis down either way.
+Add deterministic gate checks for BOTH fixes to .kiro/hooks/scripts/run-tests.sh so they cannot silently regress. Then re-run the full phantom suite with node proofs/phantom-suite-check.js:
+- If all 63 runnable tests pass: mark phantom VERIFIED in FAMILY-QUEUE.md, append the next receipt with node proofs/receipt.js add, write members/phantom/RESURRECTED.md (suite counts, the two fixes, evidence paths; note it supersedes NOT-VERIFIED.md, which stays in git history).
+- If anything still fails: update members/phantom/NOT-VERIFIED.md with the new counts and diagnosis, leave phantom unverified, no receipt. No inflation.
+
+PART 2 — karma-phantomjs-launcher (family member 3, ~111k downloads/week):
+Its FAMILY-QUEUE verification definition is the Karma integration run. Install the real package in scratch (npm, --ignore-scripts; package files hashed before/after, unchanged). Document its contract from the package itself: how it locates the PhantomJS binary, what it spawns, what the page-side bridge expects. Run a real Karma server with the launcher configured to use the GhostBridge shim (in-memory substitution of the binary path only; no edits to the package), executing a small real Karma test suite in the PhantomJS browser to completion. Record before (no binary) and after (shim) outcomes. Implement genuinely missing bridge APIs ONLY if they are real PhantomJS APIs; no launcher-specific hacks. If the integration run completes green: mark VERIFIED in FAMILY-QUEUE.md, append the next receipt, create members/karma-phantomjs-launcher/RESURRECTED.md. If not: document exactly where it stops in members/karma-phantomjs-launcher/NOT-VERIFIED.md and leave it unverified.
+
+CLOSE-OUT:
+- SESSION-6-RESULT.md: both parts with counts and evidence paths, the favicon and setProxy root causes, gate count before/after, honest gaps.
+- Update .kiro/specs/ghostbridge/tasks.md truthfully.
+- Full gate green on the final tree. Commits: code first, then docs with the message "Session 6: phantom fixes + karma-phantomjs-launcher" adjusted to the actual outcomes. Clean tree. Do NOT push; Muse pushes.
+- Print a summary at the end: phantom verdict with counts, karma verdict with the integration outcome, gate result, commit hashes.

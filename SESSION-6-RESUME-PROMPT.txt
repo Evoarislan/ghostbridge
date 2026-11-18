@@ -1,0 +1,8 @@
+GhostBridge Session 6 RESUME. Your Session 6 run was interrupted by the same machine-wide environment failure as Session 5: writes to /tmp were refused and Chromium launches died in crashpad. You were right not to edit the bridge against a broken environment. Your uncommitted work is still in the tree: modified gb-host.js and gb-page.js, new test/favicon-check.js and test/proxy-check.js. Muse has verified from outside that the environment is working again (writes succeed and the full gate ran green on the committed HEAD tree).
+
+RESUME STEPS:
+1. Re-run the full gate on the working tree with your changes. If it is red, your own named suspect is first: the --disable-features=HttpsUpgrades launch flag in your gb-host.js/gb-page.js changes. Fix in the bridge, keep the favicon and proxy gate checks meaningful (a check that cannot fail is not a check).
+2. With the gate green, re-run the phantom suite (node proofs/phantom-suite-check.js) and apply the Session 6 Part 1 verdict rules exactly as written in SESSION-6-PROMPT-1.txt (VERIFIED + receipt + RESURRECTED.md only at 63/63 runnable; otherwise update NOT-VERIFIED.md honestly).
+3. Then do Part 2 from SESSION-6-PROMPT-1.txt unchanged: karma-phantomjs-launcher verification via a real Karma integration run, with its own verified/not-verified bookkeeping.
+4. Close out per the original prompt: SESSION-6-RESULT.md (include an incident note about this interruption and resume), tasks.md, final gate green, code commit then docs commit, clean tree, no push.
+5. Print the summary: phantom verdict with counts, karma verdict, gate result, commit hashes.
