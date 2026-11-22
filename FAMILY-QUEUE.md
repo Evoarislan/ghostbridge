@@ -101,7 +101,13 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   (webpage, system.args, phantom globals).
 
 ## 4. html-pdf (HTML to PDF)
-- STATUS: NOT VERIFIED (Session 7, 2026-11-18). Own `npm test` (tape,
+- STATUS: NOT VERIFIED (Session 8, 2026-11-21; Session 7 record below). Session 8
+  `npm test`, 2 identical runs: 39 pass, 1 fail, 9 not run, crash in test 11
+  (`load with cookies js`: SameSite cookie dropped on the iframe request).
+  Remaining: callPhantom timing (still outside 1-2 s on the cold first
+  conversion), the cookie crash, and the localUrlAccess file:// iframe test
+  never reached. The per-page header test now passes. No receipt.
+  Session 7: own `npm test` (tape,
   49 planned assertions in 17 tests): before (no binary) 6 pass, 0 fail,
   crash in test 3; after (shim) 29 pass, 2 fail, crash in test 11
   (identical in 2 runs), so 18 assertions never ran. Failing:
@@ -129,7 +135,12 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   ever pointed anywhere."
 
 ## 5. phantom-html-to-pdf (youngest corpse)
-- STATUS: NOT VERIFIED (Session 7, 2026-11-18). Own `npm test` (mocha,
+- STATUS: NOT VERIFIED (Session 8, 2026-11-21; Session 7 record below). Session 8
+  `npm test`, 2 runs: 12 pass / 7 fail (19 of 36 reported), then 28 pass /
+  6 fail (34 of 36 reported). Unstable, with repeated "chromium disconnected
+  unexpectedly". The 6 external-https tests are reported separately (run 2:
+  4 pass, 2 fail). `webserver` and `onInitialized` now exist. No receipt.
+  Session 7: own `npm test` (mocha,
   36 tests): before (no binary) 0 passing, 36 failing; final after
   (shim) 3 passing, 26 failing, and mocha ended after 29 tests (earlier
   after runs: 1/37 and 4/28). Blockers: the `webserver` module (all

@@ -1,0 +1,105 @@
+
+> phantom-html-to-pdf@0.8.3 test
+> node lib/prepareScripts.js && mocha --check-leaks test/test.js --timeout 15000
+
+Preparing phantom scripts
+
+
+  phantom html to pdf
+    phantom-server
+      ✓ should set number of pages correctly (4302ms)
+      ✓ should create a pdf file (193ms)
+      ✓ should work with multiple phantom paths (2744ms)
+      ✓ should wait for page js execution (348ms)
+      ✓ should wait for page async js execution (443ms)
+      ✓ should allow define a custom var name for page js execution (325ms)
+ghostbridge: chromium disconnected unexpectedly
+      ✓ should throw timeout when waiting for page js execution (1579ms)
+      ✓ should return output with logged phantomjs messages (295ms)
+      ✓ should return output with logged console messages (277ms)
+      1) should trim logs for long base64 encoded images
+      ✓ should allow to inject js files to the page (462ms)
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: handler error: Protocol error (Runtime.callFunctionOn): Target closed
+      2) should include user defined cookies in http requests
+      ✓ should reject local files (524ms)
+      ✓ should allow local files when allowLocalFilesAccess (456ms)
+    dedicated-process
+      ✓ should set number of pages correctly (1775ms)
+      3) should create a pdf file
+      extra options
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+        ✓ should be able to configure maxLogEntrySize in dedicated-process
+        ✓ should work with multiple phantom paths (3929ms)
+        ✓ should wait for page js execution
+        ✓ should be able to configure maxLogEntrySize in phantom-server (3250ms)
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+        ✓ should be able to route requests through https proxy with dedicated-process
+        ✓ should wait for page async js execution (1938ms)
+        ✓ should allow define a custom var name for page js execution (1774ms)
+        ✓ should throw timeout when waiting for page js execution (511ms)
+        4) should return output with logged phantomjs messages
+        ✓ should be able to route requests through https proxy with with phantom-server
+        ✓ should return output with logged console messages (2868ms)
+        ✓ should trim logs for long base64 encoded images (512ms)
+        ✓ should allow to inject js files to the page
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+        5) should be able to route requests through https proxy and handle errors with dedicated-process
+        ✓ should include user defined cookies in http requests
+        6) should be able to route requests through https proxy and handle errors with phantom-server
+        ✓ should be able to route requests through https proxy with parallel call and dedicated-process
+        ✓ should be able to route requests through https proxy with parallel call and  phantom-server (6085ms)
+
+
+  28 passing (1m)
+  6 failing
+
+  1) phantom html to pdf phantom-server should trim logs for long base64 encoded images:
+     Uncaught Error: ENOENT: no such file or directory, open '/home/hatch/gbtmp/s7/phtp/package/test/temp/0da88d22-cdf6-4909-b411-55e56c8fb142.pdf'
+  
+
+  2) phantom html to pdf phantom-server should include user defined cookies in http requests:
+     Error: Timeout
+      at node_modules/phantom-workers/lib/phantomManager.js:116:29
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:124:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  3) phantom html to pdf dedicated-process should create a pdf file:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  4) phantom html to pdf dedicated-process should return output with logged phantomjs messages:
+     Error: Timeout when executing in phantom
+      at Timeout._onTimeout (lib/dedicatedProcessStrategy.js:91:26)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  5) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with dedicated-process:
+     Error: socket hang up
+      at Socket.socketOnEnd (node:_http_client:798:25)
+      at Socket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1783:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+  6) phantom html to pdf extra options should be able to route requests through https proxy and handle errors with phantom-server:
+     Uncaught AssertionError: expected '[{"timestamp":"2026-11-22T01:16:59.087Z","message":"Converting in dedicated phantomjs 2.1.1","level":"debug"},{"timestamp":"2026-11-22T01:16:59.568Z","message":"Request file:///%2Fhome%2Fhatch%2Fgbtmp%2Fs7%2Fphtp%2Fpackage%2Ftest%2Ftemp%2F0abd83be-1287-4bf7-aae5-045959702f55html.html","level":"debug"},{"timestamp":"2026-11-22T01:17:00.385Z","message":" 0 file:///home/hatch/gbtmp/s7/phtp/package/test/temp/0abd83be-1287-4bf7-aae5-045959702f55html.html","level":"debug"}]' to contain 'test-cookie1=test-value1; test-cookie2=test-value2'
+      at Assertion.fail (node_modules/should/cjs/should.js:326:17)
+      at Assertion.value [as containEql] (node_modules/should/cjs/should.js:398:19)
+      at test/test.js:317:49
+      at lib/dedicatedProcessStrategy.js:71:13
+      at ChildProcess.exithandler (node:child_process:410:7)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+
+

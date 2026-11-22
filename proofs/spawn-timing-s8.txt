@@ -1,0 +1,8 @@
+round 1: cold 2266 ms (exit 0), warm 2252 ms (exit 0)  <- warm instance starts here
+round 2: cold 2157 ms (exit 0), warm 630 ms (exit 0)
+round 3: cold 2143 ms (exit 0), warm 674 ms (exit 0)
+round 4: cold 2342 ms (exit 0), warm 624 ms (exit 0)
+round 5: cold 2163 ms (exit 0), warm 574 ms (exit 0)
+cold: median 2163 ms, min 2143, max 2342
+warm first spawn: 2252 ms
+warm repeat spawns: median 627 ms, min 574, max 674

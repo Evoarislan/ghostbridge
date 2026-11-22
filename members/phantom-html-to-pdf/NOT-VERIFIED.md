@@ -1,5 +1,44 @@
 # phantom-html-to-pdf: NOT VERIFIED (Session 7)
 
+## Session 8 update (2026-11-21): still NOT VERIFIED, large improvement
+
+Same method as Session 7: `npm test` in the extracted package with the
+`proofs/phantom-html-to-pdf-substitute.js` preload, suite unmodified. Two
+runs. Outputs: `evidence/s8-npm-test-run1.txt`, `s8-npm-test-run2.txt`.
+
+| Run | Passing | Failing | Notes |
+| --- | --- | --- | --- |
+| Session 7 record, final after | 3 | 26 | mocha ended after 29 of 36 tests |
+| Session 8 run 1 | 12 | 7 | mocha reported 19 of 36 tests, exit 7 |
+| Session 8 run 2 | 28 | 6 | mocha reported 34 of 36 tests, exit 6 |
+
+The two runs differ a lot, so the result is unstable. Mocha's summary does
+not cover all 36 tests in either run, and the log shows repeated
+"chromium disconnected unexpectedly" lines.
+
+External-host tests, reported separately (the 6 `https proxy` tests; they
+load `https://jsreport.net/...`): in run 2, 4 passed and 2 failed ("handle
+errors" with dedicated-process and with phantom-server). Run 1 reached only
+some of them. They are not counted as bridge failures.
+
+Non-external failures in run 2 (4): phantom-server `trim logs for long base64
+encoded images` (ENOENT on the output pdf), phantom-server `include user
+defined cookies in http requests` (worker pool Timeout), dedicated-process
+`create a pdf file` (15 s timeout) and dedicated-process `return output with
+logged phantomjs messages` (Timeout when executing in phantom). Run 1's
+failures are listed in its evidence file and differ.
+
+What improved: the `webserver` module and the worker pool now start (phantom-
+server tests run and many pass), `page.onInitialized` is available, and the
+injectJs, local-files and waitForJS tests pass in run 2.
+
+Remaining blockers: intermittent Chromium disconnects under the pool's
+parallel spawns, and per-test timeouts. Cause not traced this session. The
+verdict is NOT VERIFIED because the suite does not complete and the result
+changes from run to run.
+
+Session 7 text follows, left as written.
+
 This is not a RESURRECTED.md. phantom-html-to-pdf did not pass its gate, and
 no receipt was written.
 

@@ -1,0 +1,58 @@
+GhostBridge Session 8 RESUME: inventory the killed run's work, then finish the brief
+
+Repo: ~/workspace/ghostbridge (branch main). Read .kiro/steering/ first.
+The governing brief is SESSION-8-PROMPT-1.txt in this repo root. Read it
+in full; everything in it still applies. This resume only adds the
+recovery procedure.
+
+WHAT HAPPENED
+Session 8's first run started 11:08:59 EST on Nov 21, 2026 and was cut
+mid-work at about 11:41 by an environment write failure (EPERM errors
+across the workspace and /tmp; the same flap class as Nov 17-18). It
+made NO commits and wrote NO result file. HEAD is still 86e99ae.
+Work in the tree, uncommitted:
+- Modified: .kiro/hooks/scripts/run-tests.sh, bin/phantomjs,
+  gb-chromium.js, gb-host.js, gb-page.js
+- New: gb-warm.js, gb-host.trace.js, proofs/spawn-timing.js,
+  test/warm-check.js
+The visible shape suggests Part 1 (warm Chromium) was underway or
+landed; nothing else is known. Trust nothing about its state until you
+have inventoried it yourself.
+
+RECOVERY PROCEDURE (before any new building)
+1. If file writes fail with EPERM while you work, the environment is
+   still down: stop, leave the tree exactly as you found it, and say
+   in your final output that the environment blocked the resume. Do
+   not build on a flapping filesystem.
+2. Inventory: git status and git diff, file by file. Run the full gate
+   (bash .kiro/hooks/scripts/run-tests.sh) and record its real count.
+   For each changed or new file decide KEEP, FIX, or REVERT, and put
+   the table with reasons in SESSION-8-RESULT.md (the Session 7 resume
+   did exactly this; follow its shape). gb-host.trace.js has the smell
+   of a debug artifact: if it is scratch, delete it rather than commit
+   it, and say so in the table.
+3. Confirm the starting invariants still hold before building:
+   receipt chain 3 records, head
+   d99041f3fbee18af765e8ab60726b83cbf08bf8c9cb10982e934064a4cc2268f
+   (node proofs/receipt.js verify), examples UNMODIFIED (md5s in the
+   brief), gate green on the kept WIP. If the kept WIP is not
+   gate-green, fix it to green before starting new parts; if a kept
+   change cannot be made green, revert it and record why.
+
+THEN THE BRIEF, IN ORDER
+Complete every unfinished part of SESSION-8-PROMPT-1.txt: Part 1 warm
+Chromium (verify what landed: real before/after timings, CLI contract
+checks unchanged and green, isolation proven or scoped as the brief
+requires), Part 2 per-page header/footer merge, Part 3 the webserver
+module, Part 4 (page.onInitialized, blocking onResourceRequested) only
+after 1-3 are landed and gated. Then the two verdict runs with the
+brief's counting discipline (the 6 egress-blocked phantom-html-to-pdf
+tests reported separately, always), receipts only on full verification
+(next id rcpt-0004), updated NOT-VERIFIED.md files for anything that
+does not verify, FAMILY-QUEUE.md entries 4 and 5 updated, and
+SESSION-8-RESULT.md with the incident note, the inventory table,
+per-part outcomes, timings, full verdict counts, and a plain list of
+what is still not done and why.
+
+Commits: one code commit and one docs commit, "Session 8: ..." style.
+DO NOT PUSH. Muse verifies independently and pushes.

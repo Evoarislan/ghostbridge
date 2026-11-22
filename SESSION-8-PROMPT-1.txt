@@ -1,0 +1,123 @@
+GhostBridge Session 8: the three approved design calls, then re-verify the PDF pair
+
+Repo: ~/workspace/ghostbridge (branch main). Read .kiro/steering/ first and
+follow it. Read SESSION-7-RESULT.md and FAMILY-QUEUE.md entries 4 and 5
+before touching anything; they carry the exact failure evidence this
+session exists to close.
+
+STARTING STATE (verify, do not assume)
+- HEAD is 86e99ae (Session 7 docs). Tree clean.
+- Gate: bash .kiro/hooks/scripts/run-tests.sh exits 0, 43 PASS, 0 FAIL.
+  Run it first; if it is not green, stop and report before building.
+- Receipt chain: 3 records, head
+  d99041f3fbee18af765e8ab60726b83cbf08bf8c9cb10982e934064a4cc2268f,
+  next id rcpt-0004. Verify with node proofs/receipt.js verify.
+- Family: 3 of 8 verified. html-pdf and phantom-html-to-pdf are NOT
+  VERIFIED (Session 7). Examples stay UNMODIFIED: loadspeed.js md5
+  dec3a8a0beb2f52a773c005af9cb4eb8, rasterize.js md5
+  e28e65e99642d8fbc8e987c4bb59248f, injectme.js md5
+  a73087039164958442a44716004121d4.
+
+THE WORK, IN THIS ORDER. Land and gate each part before starting the next.
+
+Part 1: warm Chromium across spawns (design question 1, approved).
+Shim startup is about 3 s per spawn (empty script 2.8-3.2 s); it is the
+root cause of html-pdf's callPhantom timing failure (suite asserts a
+1-2 s conversion; ours takes 4.2-5.9 s) and a contributor to
+phantom-html-to-pdf's timeout failures. Keep a Chromium instance warm
+across shim spawns so repeat spawns skip the cold launch.
+Hard constraints:
+- The CLI contract from Sessions 3 and 5 does not move: --version prints
+  exactly 2.1.1 exit 0, unknown options fail honestly, exit codes pass
+  through, signals forward (128+n), and the console-drain guarantee
+  (pending console output delivered before exit) still holds. The gate's
+  existing checks prove these; they must stay green unchanged.
+- Isolation: a warm instance must never leak page state, cookies, or
+  console output between unrelated script runs. If full isolation cannot
+  be proven for a shared instance, scope the warm instance to one parent
+  process tree and say so in the result file.
+- A cold first spawn must behave exactly as today.
+- Measure honestly: empty-script wall time and a loadspeed.js run,
+  before and after, real numbers in the result file. If callPhantom
+  still misses the 1-2 s window after this, report the new numbers and
+  the remaining gap; do not tune the suite, the shim's reported timings,
+  or anything else to fake the window.
+
+Part 2: per-page header/footer content (design question 2, approved).
+html-pdf's suite wants different header content on the first, third, and
+last pages. Chromium's printToPDF applies one header template to all
+pages. Implement the approved route: when paperSize header/footer
+callbacks resolve to different content per page, print each page
+separately with its own template and merge the single-page PDFs into
+one document.
+- The merge dependency is a GhostBridge dependency (a maintained PDF
+  library, e.g. pdf-lib), never a member dependency. Record the choice
+  and version in the result file.
+- Merging must preserve each page's size and MediaBox (the Session 7
+  custom.pdf evidence was exactly [0 0 216 504]; that class of check
+  must still pass).
+- When callbacks resolve to the same content for every page, keep the
+  current single-print path.
+- Anything still impossible keeps the current behavior: fail loudly
+  rather than print wrong output.
+
+Part 3: the webserver module (design question 5, first surface).
+Implement PhantomJS's webserver module in gb-runtime's module system:
+require('webserver').create(), server.listen(port, handler),
+request/response objects with the surface the PhantomJS API documents
+and the suites exercise (method, url, headers, post bodies; response
+statusCode, headers, write, close, closeGracefully). phantom-workers
+starts every worker through require('webserver'), so this unlocks
+phantom-html-to-pdf's phantom-server strategy (14 tests).
+
+Part 4: the remaining two surfaces (design question 5), only after
+Parts 1-3 are landed and gated.
+- page.onInitialized: fire at the PhantomJS-correct point so injectJs
+  and waitForJS patterns in phantom-html-to-pdf work.
+- Blocking onResourceRequested: requests must be interceptable BEFORE
+  they are sent, with networkRequest.abort() and changeUrl(url)
+  honored. The current after-the-fact reporting does not satisfy this;
+  if the blocking channel cannot be built honestly on the current
+  architecture, stop, document exactly where it breaks, and leave the
+  surface unimplemented rather than simulate it.
+
+VERDICT RUNS (after the parts land; before/after discipline as always)
+- html-pdf: npm test (standard, then tape; 17 tests, 49 planned
+  assertions) from the v3.0.1 checkout, using the Session 7 preload
+  pattern (proofs/html-pdf-substitute.js). Session 7 after-numbers to
+  beat: 29 pass, 2 fail, 18 not run (crash in test 11). Run the final
+  configuration twice; identical results required for a verdict.
+- phantom-html-to-pdf: npm test (mocha, 36 tests) from the 0.8.3
+  tarball with proofs/phantom-html-to-pdf-substitute.js. Session 7
+  final after-numbers: 3 passing, 26 failing, mocha ended after 29
+  tests. The legacy resolved package is phantomjs 1.9.20.
+- The 6 phantom-html-to-pdf tests that need external https hosts stay
+  environment-blocked (no egress in this sandbox). Report them
+  separately, always: never as bridge failures, never as passes, and a
+  member verdict must state the count with and without them.
+- Diagnostic runs (tests skipped or filtered) are labelled diagnostic
+  and never used for counts, exactly as in Session 7.
+
+RULES (binding, same as every session)
+- Member code is never modified. Package files byte-identical before
+  and after (Session 7 counts: html-pdf checkout 24 files, npm package
+  13, phantom-html-to-pdf tarball 18). Installs use --ignore-scripts.
+  Scratch goes in /home/hatch/gbtmp/s8.
+- The gate gains a check for each new surface (warm-spawn behavior,
+  per-page header output, webserver round trip, and Parts 4 surfaces if
+  they land) and must exit 0 with every prior check still passing.
+- Receipts are written ONLY on a member's full verification by its own
+  suite, appended in verification order starting at rcpt-0004, using
+  .kiro/hooks/scripts/write-receipt.sh. A member that does not fully
+  verify gets an updated NOT-VERIFIED.md with the new counts and the
+  remaining blockers named; no partial credit language anywhere.
+- Update FAMILY-QUEUE.md entries 4 and 5 to the new truth, and each
+  member's folder (RESURRECTED.md on verification, NOT-VERIFIED.md
+  otherwise) with evidence copied in.
+- Write SESSION-8-RESULT.md: per-part what landed and its gate checks,
+  before/after timings for Part 1, both verdict runs with full counts,
+  the egress-blocked count stated separately, and a plain list of what
+  is still not done and why.
+- Commits: one code commit and one docs commit, message style
+  "Session 8: ...". DO NOT PUSH. Muse verifies independently and
+  pushes.

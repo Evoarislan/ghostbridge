@@ -1,0 +1,112 @@
+
+> html-pdf@3.0.1 test
+> standard && tape test/index.js examples/*/test.js
+
+
+  pdf.create(html[, options]) throws an error when executing without html
+
+    ✓ pdf.create(null)
+    ✓ pdf.create(undefined)
+    ✓ pdf.create("")
+
+  pdf.create(html[, options], callback) returns error as first cb argument when executing without html
+
+    ✓ pdf.create(null, cb)
+    ✓ pdf.create(undefined, cb)
+    ✓ pdf.create("", cb)
+
+  pdf.create(html[, options]).toFile([filename, ]callback)
+
+    ✓ null
+    ✓ toFile(callback) returns {filename: '/tmp/html-pdf-28822.pdf'} as second cb argument
+    ✓ null
+    ✓ toFile(filename, callback) returns {filename: '/home/hatch/gbtmp/s7/html-pdf-repo/test/simple.pdf'} as second cb argument
+    ✓ writes the file to the given destination
+
+  pdf.create(html).toBuffer(callback)
+
+    ✓ null
+    ✓ toBuffer(callback) returns a buffer instance as second cb argument
+    ✓ the PDF buffer has a PDF Header
+
+  pdf.create(html, {directory: "/tmp"}).toBuffer(callback)
+
+    ✓ null
+    ✓ uses the passed directory as tmp dir
+
+  pdf.create(html, {renderDelay: 1000}).toBuffer(callback)
+
+    ✓ null
+    ✓ still returns after renderDelay
+
+  window.callPhantom renders page
+
+    ✓ null
+    ✗ rendered in response to callPhantom
+     ---
+       operator: ok
+       expected: true
+       actual:   false
+       at: respond (/home/hatch/gbtmp/s7/html-pdf-repo/lib/pdf.js:144:5)
+     ...
+    ✓ writes the file to the given destination
+
+  pdf.create(html[, options]).toStream(callback)
+
+    ✓ null
+    ✓ toStream(callback) returns a fs.ReadStream as second cb argument
+    ✓ toStream returns a working readable stream
+
+  allows invalid phantomPath
+
+    ✓ Returns an error
+    ✓ Error code is ENOENT
+    ✓ PDF does not exist
+
+  allows custom page and footer options
+
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  allows different header and footer for first page
+
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  load external css
+
+Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  load external js
+
+A parser-blocking, cross site (i.e. different eTLD+1) script, https://code.jquery.com/jquery-2.1.4.min.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.
+A parser-blocking, cross site (i.e. different eTLD+1) script, https://code.jquery.com/jquery-2.1.4.min.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.
+Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED
+    ✓ null
+    ✓ Returns the filename from the phantom script
+    ✓ Saves the pdf with a custom page size and footer
+
+  load with cookies js
+
+    ✓ http server for iframe started
+node:_http_outgoing:966
+    throw new ERR_INVALID_ARG_TYPE(
+    ^
+
+TypeError [ERR_INVALID_ARG_TYPE]: The "chunk" argument must be of type string or an instance of Buffer or Uint8Array. Received undefined
+    at write_ (node:_http_outgoing:966:11)
+    at ServerResponse.write (node:_http_outgoing:921:15)
+    at Server.<anonymous> (/home/hatch/gbtmp/s7/html-pdf-repo/test/index.js:203:9)
+    at Server.emit (node:events:514:28)
+    at parserOnIncoming (node:_http_server:1293:12)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:125:17) {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+
+Node.js v24.22.1
+exit=1

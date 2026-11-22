@@ -1,0 +1,4 @@
+conv 1 2322 ms 6300
+conv 2 1452 ms 6300
+conv 3 1292 ms 6300
+conv 4 1298 ms 6300

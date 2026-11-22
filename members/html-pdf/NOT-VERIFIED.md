@@ -1,5 +1,43 @@
 # html-pdf: NOT VERIFIED (Session 7)
 
+## Session 8 update (2026-11-21): still NOT VERIFIED, much closer
+
+Same method as Session 7: `npm test` from the v3.0.1 checkout with the
+`proofs/html-pdf-substitute.js` preload, member suite unmodified. Two runs,
+identical. Outputs: `evidence/s8-npm-test-run1.txt`, `s8-npm-test-run2.txt`.
+
+| Run | Pass | Fail | Not run | How it ended |
+| --- | --- | --- | --- | --- |
+| Session 7 record, after | 29 | 2 | 18 | crash in test 11 |
+| Session 8 run 1 | 39 | 1 | 9 | crash in test 11 (`load with cookies js`), exit 1 |
+| Session 8 run 2 | 39 | 1 | 9 | same |
+
+(Not run = 49 planned minus pass minus fail. `standard` passed.)
+
+Improved since Session 7: the per-page header test
+(`allows different header and footer for first page`) now passes, and so do
+the `load external css` and `load external js` tests, which were behind the
+old crash.
+
+Remaining blockers:
+
+1. `window.callPhantom renders page`: "rendered in response to callPhantom"
+   still fails (1000 ms < elapsed < 2000 ms). Warm conversions of
+   test/callback.html measured now in a separate script: 2322, 1452, 1292,
+   1298 ms (`evidence/s8-conversion-timing.txt`). The first, cold one is over
+   the window; the suite hits it first. This is an inference from those
+   timings, not a traced cause.
+2. `load with cookies js` crashes the run: the iframe request arrives
+   without a cookie (`req.headers.cookie` undefined, test/index.js:203). This
+   is the SameSite=Lax cookie problem from root cause 3 above, unchanged.
+   The rest of that test and every test after it (the two localUrlAccess
+   tests and the businesscard example) never run. The localUrlAccess file:// iframe issue
+   (root cause 4) is therefore still unverified.
+3. Neither SameSite mapping nor file: iframe origin is a bug fix this
+   session was allowed to make. Both need a design call.
+
+Session 7 text follows, left as written.
+
 This is not a RESURRECTED.md. html-pdf did not pass its gate, and no receipt
 was written.
 

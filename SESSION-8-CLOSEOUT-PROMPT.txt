@@ -1,0 +1,64 @@
+GhostBridge Session 8 CLOSE-OUT ONLY: verdicts, result file, commits
+
+Repo: ~/workspace/ghostbridge (branch main). Read .kiro/steering/ first.
+Governing brief: SESSION-8-PROMPT-1.txt. Recovery context:
+SESSION-8-RESUME-PROMPT.txt. This close-out narrows both: the building
+is done, this session only judges it and writes it up.
+
+WHERE THINGS STAND (Nov 21, 2026, evening)
+Session 8's build work landed across several runs that were each cut
+short (environment write flaps, then Kiro service drops). The tree now
+holds all four parts: gb-warm.js + test/warm-check.js (Part 1),
+test/pdf-paper-check.js updated (Part 2), gb-server.js +
+test/webserver-check.js (Part 3), gb-runtime.js changes +
+test/surfaces-check.js (Part 4), plus gate updates. The gate probe
+reads 48 PASS, ALL TESTS PASS. gb-host.trace.js was correctly deleted
+as scratch by an earlier run. NOTHING is committed; HEAD is 86e99ae;
+no result file exists.
+
+HARD SCOPE RULES
+- NO new bridge features. NO bug fixes. If a verdict suite fails on a
+  bridge bug, record it honestly and move on; fixes are a later
+  session. This session exists because full-brief runs kept dying
+  before they could finish; keep this one short and finish it.
+- If file writes fail with EPERM at any point, stop, leave the tree
+  as found, and say in your final output that the environment blocked
+  the close-out.
+
+STEPS, IN ORDER
+1. Invariants: receipt chain verify (node proofs/receipt.js verify;
+   expect 3 records, head
+   d99041f3fbee18af765e8ab60726b83cbf08bf8c9cb10982e934064a4cc2268f),
+   examples md5 unchanged (brief has the three md5s), full gate run
+   with the count recorded.
+2. Verdict run, html-pdf, using the Session 7 harnesses in proofs/
+   (html-pdf-suite-check.js and the substitute check) against the
+   member's own suite, unmodified. Record pass / fail / not-run
+   exactly as reported. If the suite is fully green: write
+   members/html-pdf/RESURRECTED.md (Session 6's member files are the
+   shape) and append the receipt (next id from the chain). If not:
+   update members/html-pdf/NOT-VERIFIED.md with the new counts, what
+   improved since Session 7 (29 pass / 2 fail / 18 not run), and the
+   remaining blockers by name.
+3. Verdict run, phantom-html-to-pdf, same method
+   (phantom-html-to-pdf-substitute.js). The 6 tests needing external
+   https hosts are reported separately, always, never counted as
+   bridge failures. Session 7 baseline: 3 passing / 26 failing of 29
+   run. Receipt or NOT-VERIFIED update, same rule as step 2.
+4. Timings: run proofs/spawn-timing.js and record its output. Report
+   the warm-start numbers against the Session 7 baselines (shim
+   startup ~3 s; html-pdf conversions 4.2-5.9 s; phantom-html-to-pdf
+   conversions 4.3-9.7 s). Label honestly what was measured now vs
+   what is a Session 7 record.
+5. FAMILY-QUEUE.md: update entries 4 and 5 to the new verdicts.
+6. SESSION-8-RESULT.md: the incident note (first run cut by the
+   write flap Nov 21 ~11:41 EST; build accumulated across repeated
+   service-cut resume runs; close-out finished it), an inventory
+   table of the tree changes with a keep decision and one-line reason
+   each, per-part outcomes, timings, full verdict counts, and a
+   plain list of what is still not done and why.
+7. Commits: one code commit, one docs commit, "Session 8: ..." style.
+   DO NOT PUSH. Muse verifies independently and pushes.
+
+Priority if time runs short: steps 2 and 3, then 6, then 7. Docs in
+steps 4 and 5 can be completed afterward if the run is cut.

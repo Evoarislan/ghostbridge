@@ -1,0 +1,85 @@
+
+> phantom-html-to-pdf@0.8.3 test
+> node lib/prepareScripts.js && mocha --check-leaks test/test.js --timeout 15000
+
+Preparing phantom scripts
+
+
+  phantom html to pdf
+    phantom-server
+      ✓ should set number of pages correctly (4355ms)
+      ✓ should create a pdf file (266ms)
+      ✓ should work with multiple phantom paths (2953ms)
+      1) should wait for page js execution
+ghostbridge: handler error: Execution context was destroyed, most likely because of a navigation.
+      ✓ should wait for page async js execution (821ms)
+      ✓ should allow define a custom var name for page js execution (312ms)
+ghostbridge: chromium disconnected unexpectedly
+      ✓ should throw timeout when waiting for page js execution (2174ms)
+      ✓ should return output with logged phantomjs messages (293ms)
+      ✓ should return output with logged console messages (205ms)
+      ✓ should trim logs for long base64 encoded images (370ms)
+      2) should allow to inject js files to the page
+ghostbridge: chromium disconnected unexpectedly
+      3) should include user defined cookies in http requests
+ghostbridge: chromium disconnected unexpectedly
+      4) should reject local files
+      5) should allow local files when allowLocalFilesAccess
+    dedicated-process
+      ✓ should set number of pages correctly (1520ms)
+      ✓ should create a pdf file (4562ms)
+ghostbridge: chromium disconnected unexpectedly
+      6) should work with multiple phantom paths
+      extra options
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: chromium disconnected unexpectedly
+        ✓ should be able to configure maxLogEntrySize in dedicated-process (3264ms)
+        7) should be able to configure maxLogEntrySize in phantom-server
+
+  12 passing (38s)
+  7 failing
+
+  1) phantom html to pdf phantom-server should wait for page js execution:
+     Uncaught Error: ENOENT: no such file or directory, open '/home/hatch/gbtmp/s7/phtp/package/test/temp/0ba2bc03-dd75-433e-b82d-2792c1cb1133.pdf'
+  
+
+  2) phantom html to pdf phantom-server should allow to inject js files to the page:
+     Uncaught Error: ENOENT: no such file or directory, open '/home/hatch/gbtmp/s7/phtp/package/test/temp/1f009034-66c9-4f0d-80a9-ce48432c7c7d.pdf'
+  
+
+  3) phantom html to pdf phantom-server should include user defined cookies in http requests:
+     Error: Timeout
+      at node_modules/phantom-workers/lib/phantomManager.js:116:29
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:124:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  4) phantom html to pdf phantom-server should reject local files:
+     Error: Timeout
+      at node_modules/phantom-workers/lib/phantomManager.js:116:29
+      at node_modules/phantom-workers/lib/phantomWorker.js:103:24
+      at node_modules/phantom-workers/lib/phantomWorker.js:124:20
+      at Socket.<anonymous> (node_modules/phantom-workers/lib/checkPortStatus.js:45:9)
+      at Socket.emit (node:events:514:28)
+      at TCP.<anonymous> (node:net:362:12)
+
+  5) phantom html to pdf phantom-server should allow local files when allowLocalFilesAccess:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  6) phantom html to pdf dedicated-process should work with multiple phantom paths:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+  7) phantom html to pdf extra options should be able to configure maxLogEntrySize in phantom-server:
+     Error: timeout of 15000ms exceeded. Ensure the done() callback is being called in this test.
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+
+
