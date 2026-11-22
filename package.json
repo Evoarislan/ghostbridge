@@ -14,6 +14,7 @@
     "demo:require": "node gb-host.js test/require-test.js"
   },
   "dependencies": {
+    "pdf-lib": "1.17.1",
     "puppeteer-core": "^23.9.0"
   },
   "devDependencies": {

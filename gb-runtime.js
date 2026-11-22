@@ -190,7 +190,7 @@
   }
   // Events the host has to watch for (it only wires the ones a script assigned).
   var HOST_EVENTS = ['onResourceRequested', 'onResourceReceived', 'onResourceError',
-    'onNavigationRequested', 'onUrlChanged', 'onLoadStarted', 'onCallback'];
+    'onNavigationRequested', 'onUrlChanged', 'onLoadStarted', 'onCallback', 'onInitialized'];
   HOST_EVENTS.forEach(function (name) {
     Object.defineProperty(Webpage.prototype, name, {
       enumerable: true,
@@ -397,7 +397,92 @@
     get: function () { return fsCall('workingDirectory', []); },
   });
 
-  var __builtins = { webpage: webpage, system: system, fs: fsMod };
+  // ---------------- webserver module: the socket lives in the host (gb-server.js) ----------------
+  var __servers = {};
+  var __serverSeq = 0;
+  function Server() {
+    this.__id = ++__serverSeq;
+    this.port = '';
+    this.objectName = 'WebServer';
+  }
+  // listen(port | 'host:port', [opts], handler) -> true when the socket is bound
+  Server.prototype.listen = function (where, a, b) {
+    var handler = typeof a === 'function' ? a : b;
+    var host = '', port = where;
+    if (typeof where === 'string' && where.indexOf(':') >= 0) { host = where.slice(0, where.lastIndexOf(':')); port = where.slice(where.lastIndexOf(':') + 1); }
+    port = parseInt(port, 10);
+    if (!(port >= 0 && port <= 65535)) return false;
+    if (typeof handler !== 'function') return false;
+    var ok = postSync('server', { fn: 'listen', id: this.__id, host: host, port: port });
+    if (!ok) return false;
+    this.port = String(port);
+    __servers[this.__id] = { server: this, handler: handler };
+    return true;
+  };
+  Server.prototype.close = function () {
+    delete __servers[this.__id];
+    postSync('server', { fn: 'close', id: this.__id });
+    this.port = '';
+  };
+  Object.defineProperty(Server.prototype, 'listenOnPort', { enumerable: false, get: function () { return this.port; } });
+
+  function parseForm(s) {
+    var out = {};
+    String(s).split('&').forEach(function (kv) {
+      if (!kv) return;
+      var i = kv.indexOf('=');
+      var k = i < 0 ? kv : kv.slice(0, i), v = i < 0 ? '' : kv.slice(i + 1);
+      try { out[decodeURIComponent(k.replace(/\+/g, ' '))] = decodeURIComponent(v.replace(/\+/g, ' ')); } catch (e) { out[k] = v; }
+    });
+    return out;
+  }
+
+  function Response(reqId) {
+    this.__reqId = reqId;
+    this.__body = '';
+    this.__done = false;
+    this.__encoding = 'utf8';
+    this.headers = {};
+    this.statusCode = 200;
+  }
+  Response.prototype.setHeader = function (name, value) { this.headers[name] = String(value); };
+  Response.prototype.header = function (name) { return this.headers[name]; };
+  Response.prototype.setHeaders = function (h) { for (var k in h) this.headers[k] = String(h[k]); };
+  Response.prototype.setEncoding = function (enc) { this.__encoding = String(enc || 'utf8').toLowerCase() === 'binary' ? 'binary' : 'utf8'; };
+  Response.prototype.writeHead = function (status, headers) {
+    this.statusCode = status;
+    if (headers) this.setHeaders(headers);
+  };
+  Response.prototype.write = function (data) {
+    if (this.__done) return;
+    this.__body += String(data);
+  };
+  Response.prototype.close = function () {
+    if (this.__done) return;
+    this.__done = true;
+    postSync('server', { fn: 'send', reqId: this.__reqId, statusCode: this.statusCode, headers: this.headers, body: this.__body, encoding: this.__encoding });
+  };
+  Response.prototype.closeGracefully = function () { this.close(); };
+
+  window.__gbServe = function (r) {
+    var entry = __servers[r.serverId];
+    if (!entry) return;
+    var req = { method: r.method, url: r.url, httpVersion: r.httpVersion, headers: r.headers };
+    if (r.postRaw != null) {
+      req.postRaw = r.postRaw;
+      req.post = /^application\/x-www-form-urlencoded/i.test(r.headers['content-type'] || '') ? parseForm(r.postRaw) : r.postRaw;
+    }
+    var res = new Response(r.reqId);
+    try {
+      entry.handler(req, res);
+    } catch (e) {
+      postSync('stream', { stream: 'stderr', data: 'ghostbridge: webserver handler error: ' + (e && e.message || e) + '\n' });
+    }
+  };
+
+  var webserver = { create: function () { return new Server(); } };
+
+  var __builtins = { webpage: webpage, system: system, fs: fsMod, webserver: webserver };
 
   function dirOf(filename) {
     if (!filename) return '.';
@@ -413,7 +498,7 @@
     var key = fromDir + '::' + name;
     if (__cache[key]) return __cache[key].exports;
     if (Object.prototype.hasOwnProperty.call(__builtins, name)) return __builtins[name];
-    if (name === 'webserver' || name === 'child_process' || name === 'stream') {
+    if (name === 'child_process' || name === 'stream') {
       throw new Error("GhostBridge skeleton: '" + name + "' module not implemented yet");
     }
     var r = postSync('resolveModule', { name: name, from: fromDir });
@@ -443,8 +528,27 @@
     resourceRequested: 'onResourceRequested', resourceReceived: 'onResourceReceived',
     resourceError: 'onResourceError', navigationRequested: 'onNavigationRequested',
     urlChanged: 'onUrlChanged', loadStarted: 'onLoadStarted', callback: 'onCallback',
+    initialized: 'onInitialized',
   };
+  // onResourceRequested(requestData, networkRequest): the handler runs while the host
+  // holds the request (gb-page.js ensureIntercept). abort(), changeUrl(url) and
+  // setHeader(name, value) are recorded here and returned to the host, which applies
+  // them before the request is sent. `late` is set when the host could not hold the
+  // request (the runtime was inside a blocking call): the calls cannot be honored.
+  function makeNetworkRequest(late) {
+    var act = { abort: false, url: null, headers: null };
+    var warn = function (what) {
+      if (late) postSync('stream', { stream: 'stderr', data: 'ghostbridge: networkRequest.' + what + ' ignored: the request was already sent (it was issued during a blocking call)\n' });
+    };
+    return {
+      action: act,
+      abort: function () { act.abort = true; warn('abort()'); },
+      changeUrl: function (u) { act.url = String(u); warn('changeUrl()'); },
+      setHeader: function (k, v) { (act.headers = act.headers || {})[String(k)] = String(v); warn('setHeader()'); },
+    };
+  }
   window.__gbDispatch = function (pageId, type, arg) {
+    if (pageId === 'server' && type === 'request') return window.__gbServe(arg);
     var page = __pages[pageId];
     if (!page) return;
     try {
@@ -460,6 +564,11 @@
         if (typeof page.onAlert === 'function') page.onAlert(arg);
       } else if (type === 'error') {
         if (typeof page.onError === 'function') page.onError(arg.message, arg.trace);
+      } else if (type === 'resourceRequested') {
+        var rh = page.__handlers.onResourceRequested;
+        var nr = makeNetworkRequest(!!(arg && arg.late));
+        if (typeof rh === 'function') rh.call(page, arg.request, nr);
+        return nr.action;
       } else if (HOST_EVENT_BY_TYPE[type]) {
         var hh = page.__handlers[HOST_EVENT_BY_TYPE[type]];
         if (typeof hh === 'function') hh.apply(page, [].concat(arg));

@@ -71,7 +71,9 @@ for (let i = 0; i < argv.length; i++) {
 }
 
 const host = path.join(__dirname, '..', 'gb-host.js');
-const child = spawn(process.execPath, [host, ...argv], { stdio: 'inherit' });
+// Runs of one parent share a warm Chromium (gb-warm.js); GB_WARM=0 turns that off.
+const warmArgs = process.env.GB_WARM === '0' ? [] : ['--gb-warm-scope=' + process.ppid];
+const child = spawn(process.execPath, [host, ...warmArgs, ...argv], { stdio: 'inherit' });
 
 for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   process.on(sig, () => { try { child.kill(sig); } catch (e) { /* already gone */ } });

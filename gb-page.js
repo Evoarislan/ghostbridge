@@ -49,6 +49,61 @@ async function applyConfig(ctx, pageId) {
   // loadImages / local-url-access / setContent and POST overrides all need request
   // interception; one handler (below) serves them, installed on first need.
   if (s.loadImages === false) await ensureIntercept(ctx, pageId, entry);
+  const hd = cfg.handlers || {};
+  // onResourceRequested is blocking: the request is held until the script's handler ran.
+  if (hd.onResourceRequested) await ensureIntercept(ctx, pageId, entry);
+  if (hd.onInitialized) await ensureInitHook(ctx, pageId, entry);
+}
+
+// page.onInitialized (Session 8): PhantomJS fires it when a new document's window exists
+// and before any of the page's own scripts run, with the page still usable
+// (page.injectJs / page.evaluate from the handler land in that window). Chromium:
+// a script registered with evaluateOnNewDocument runs first in every new document;
+// it executes `debugger`, the host (Debugger domain) catches the pause, runs the
+// script's handler (its evaluate/injectJs calls work while paused), then resumes.
+// Main frame only. A `debugger` statement of the page's own is resumed untouched.
+const INIT_SOURCE_URL = 'gb-initialized.js';
+
+// While the page is paused for onInitialized, puppeteer's frame.evaluate cannot be used: it
+// asks for awaitPromise, and a paused page never settles promises. Runtime.evaluate on the
+// debugger's own session does run while paused, so the handler's page.evaluate / injectJs /
+// evaluateJavaScript go through it (same semantics: the function runs in the new window,
+// the result comes back by value). Other page operations fail loudly instead of hanging.
+const PAUSED_OPS = ['evaluateJavaScript', 'injectJs', 'evaluateAsync'];
+async function evalPaused(entry, fnSource, args) {
+  const expr = '(function (s, a) { var f = (0, eval)("(" + s + ")"); return f.apply(null, a); })(' +
+    JSON.stringify(String(fnSource)) + ', ' + JSON.stringify(args || []) + ')';
+  const r = await entry.initPaused.send('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: false });
+  if (r.exceptionDetails) {
+    const d = r.exceptionDetails;
+    throw new Error((d.exception && d.exception.description) || d.text || 'evaluate failed');
+  }
+  return r.result ? r.result.value : undefined;
+}
+async function ensureInitHook(ctx, pageId, entry) {
+  if (entry.initHook) return;
+  entry.initHook = true;
+  const page = entry.page;
+  // The page's own session: a paused page only serves the session that holds the debugger.
+  const cdp = page._client();
+  const scripts = {};
+  cdp.on('Debugger.scriptParsed', (e) => { if (e.url === INIT_SOURCE_URL) scripts[e.scriptId] = true; });
+  await cdp.send('Debugger.enable');
+  cdp.on('Debugger.paused', async (ev) => {
+    const top = ev.callFrames && ev.callFrames[0];
+    const ours = top && scripts[top.location.scriptId];
+    try {
+      if (ours && (getCfg(ctx, pageId).handlers || {}).onInitialized) {
+        entry.initPaused = cdp;
+        entry.frame = null;
+        await ctx.dispatchWait(ctx, pageId, 'initialized', [], 30000);
+      }
+    } finally {
+      entry.initPaused = null;
+      try { await cdp.send('Debugger.resume'); } catch { /* page already navigated away */ }
+    }
+  });
+  await page.evaluateOnNewDocument('if (window === window.top) { debugger; }\n//# sourceURL=' + INIT_SOURCE_URL);
 }
 
 // One 'request' handler per target page. It re-reads live state on every request,
@@ -58,12 +113,34 @@ async function ensureIntercept(ctx, pageId, entry) {
   entry.intercepting = true;
   const page = entry.page;
   await page.setRequestInterception(true);
-  page.on('request', (req) => {
+  page.on('request', async (req) => {
     const live = getCfg(ctx, pageId).settings || {};
     const url = req.url();
+    // Blocking onResourceRequested (Session 8): hold the request, run the script's handler in
+    // the runtime, then apply abort() / changeUrl() / setHeader() before anything is sent.
+    // The handler can only run while the runtime is free. If a sync call is in flight (the
+    // runtime is blocked on it, possibly waiting on this very request) the request is not
+    // held: it is reported as before and the networkRequest calls are flagged as too late.
+    const rh = (getCfg(ctx, pageId).handlers || {}).onResourceRequested;
+    let held = null;
+    if (rh && !isBrowserIconFetch(req)) {
+      const shown = (req.isNavigationRequest() && entry.urlAliases && entry.urlAliases[url]) || url;
+      const data = {
+        id: ctx.nextResId = (ctx.nextResId || 0) + 1, method: req.method(), url: shown,
+        headers: headerList(req.headers()), time: new Date().toISOString(),
+      };
+      if (req.postData()) data.postData = req.postData();
+      if (ctx.syncInFlight > 0) {
+        ctx.emit(pageId, 'resourceRequested', { request: data, late: true });
+      } else {
+        held = await ctx.dispatchWait(ctx, pageId, 'resourceRequested', { request: data }, 15000);
+      }
+    }
     const isMainNav = req.isNavigationRequest() && req.frame() === page.mainFrame();
     let action;
-    if (ctx.options.localUrlAccess === false && /^file:/i.test(url)) {
+    if (held && held.abort) {
+      action = () => req.abort('failed');
+    } else if (ctx.options.localUrlAccess === false && /^file:/i.test(url)) {
       action = () => req.abort('accessdenied');
     } else if (live.loadImages === false && req.resourceType() === 'image') {
       action = () => req.abort();
@@ -75,6 +152,11 @@ async function ensureIntercept(ctx, pageId, entry) {
       const o = { method: h.method };
       if (h.data != null) o.postData = h.data;
       if (h.headers) o.headers = Object.assign({}, req.headers(), h.headers);
+      action = () => req.continue(o);
+    } else if (held && (held.url || held.headers)) {
+      const o = {};
+      if (held.url) o.url = held.url;
+      if (held.headers) o.headers = Object.assign({}, req.headers(), held.headers);
       action = () => req.continue(o);
     } else {
       action = () => req.continue();
@@ -167,7 +249,9 @@ function sectionTemplate(sec, n, name) {
   const inst = (i) => t.split(PN).join(String(i)).split(TP).join(String(n));
   for (let i = 1; i <= n; i++) {
     if (inst(i) !== String(pages[i - 1])) {
-      throw new Error('paperSize.' + name + ': the callback output for page ' + i + ' differs from page 1 in more than the page number and page total; Chromium print-to-PDF can only vary those two values across pages');
+      const err = new Error('paperSize.' + name + ': the callback output for page ' + i + ' differs from page 1 in more than the page number and page total; Chromium print-to-PDF can only vary those two values across pages');
+      err.perPage = true; // renderPdf prints each page with its own template and merges (Session 8)
+      throw err;
     }
   }
   return t;
@@ -276,12 +360,45 @@ async function printableTemplate(page, html) {
 async function renderPdf(page, paper) {
   let n = 0;
   ['header', 'footer'].forEach((k) => { if (hasSection(paper, k) && Array.isArray(paper[k].pages)) n = Math.max(n, paper[k].pages.length); });
-  const o = pdfOptions(paper, n);
+  let o;
+  try {
+    o = pdfOptions(paper, n);
+  } catch (e) {
+    if (!e.perPage) throw e;
+    return renderPdfPerPage(page, paper, n);
+  }
   if (o.displayHeaderFooter) {
     o.headerTemplate = await printableTemplate(page, o.headerTemplate);
     o.footerTemplate = await printableTemplate(page, o.footerTemplate);
   }
   return Buffer.from(await page.pdf(o));
+}
+
+// Per-page header/footer content (Session 8): when the callbacks differ in more
+// than the page number and total, each page is printed alone (pageRanges) with its
+// own static header/footer, then the single-page PDFs are merged with pdf-lib
+// (a GhostBridge dependency). Each copied page keeps its own size and MediaBox.
+async function renderPdfPerPage(page, paper, n) {
+  const { PDFDocument } = require('pdf-lib');
+  const merged = await PDFDocument.create();
+  for (let i = 1; i <= n; i++) {
+    const p = Object.assign({}, paper);
+    ['header', 'footer'].forEach((k) => {
+      if (!hasSection(paper, k)) return;
+      const sec = paper[k];
+      p[k] = { height: sec.height, html: Array.isArray(sec.pages) ? sec.pages[i - 1] : sec.html };
+    });
+    const o = pdfOptions(p, n);
+    o.headerTemplate = await printableTemplate(page, o.headerTemplate);
+    o.footerTemplate = await printableTemplate(page, o.footerTemplate);
+    o.pageRanges = String(i);
+    const buf = Buffer.from(await page.pdf(o));
+    if (pdfPageCount(buf) !== 1) throw new Error('paperSize: per-page print of page ' + i + ' of ' + n + ' did not produce exactly one page');
+    const src = await PDFDocument.load(buf);
+    const [cp] = await merged.copyPages(src, [0]);
+    merged.addPage(cp);
+  }
+  return Buffer.from(await merged.save({ useObjectStreams: false }));
 }
 
 function pdfPageCount(buf) {
@@ -359,9 +476,10 @@ async function createTarget(ctx, pageId) {
     // Chromium sets a proxy per browser context, not per page, so a page with
     // setProxy() lives in its own context (its cookie jar is separate).
     bctx = await ctx.browser.createBrowserContext({ proxyServer: proxyServerArg(cfg.proxy), proxyBypassList: ['<-loopback>'] });
+    if (ctx.allowContext) ctx.allowContext(bctx); // warm run: attach to it, and have the daemon dispose it if this run dies
     tpage = await bctx.newPage();
   } else {
-    tpage = await ctx.browser.newPage();
+    tpage = (ctx.sparePages && ctx.sparePages.shift()) || await (ctx.context || ctx.browser).newPage();
   }
   const defaultUA = await tpage.evaluate(() => navigator.userAgent);
   const entry = { page: tpage, defaultUA, context: bctx, frame: null, navigating: false, nextNav: 'Other' };
@@ -416,11 +534,11 @@ async function createTarget(ctx, pageId) {
     if (isBrowserIconFetch(req)) return;
     const h = live();
     const time = new Date().toISOString();
-    if (h.onResourceRequested) {
-      emit('resourceRequested', [{
+    if (h.onResourceRequested && !entry.intercepting) {
+      emit('resourceRequested', { request: {
         id: ctx.nextResId = (ctx.nextResId || 0) + 1, method: req.method(), url: req.url(),
         headers: headerList(req.headers()), time,
-      }]);
+      } });
     }
     if (mainNav(req) && !entry.navigating) {
       if (h.onLoadStarted) emit('loadStarted', []);
@@ -593,6 +711,17 @@ async function handlePageOp(ctx, payload) {
   }
   const entry = await ensureTarget(ctx, pageId);
   const page = entry.page;
+  if (entry.initPaused) {
+    if (PAUSED_OPS.indexOf(fn) < 0) throw new Error('not available inside page.onInitialized (the page is paused before its scripts run)');
+    if (fn === 'evaluateJavaScript') return evalPaused(entry, '(function(){ var f = (0, eval)("(" + ' + JSON.stringify(a.src) + ' + ")"); return typeof f === "function" ? f() : f; })', []);
+    if (fn === 'evaluateAsync') {
+      return evalPaused(entry, '(function (s, d, argv) { setTimeout(function () { (eval("(" + s + ")")).apply(null, argv); }, d); })', [a.src, a.delay | 0, a.args || []]).then(() => null);
+    }
+    const found = ctx.fsHost.findInjectable(a.path, ctx.init.libraryPath);
+    if (!found) return false;
+    await evalPaused(entry, '(function (src) { try { (0, eval)(src); } catch (e) { setTimeout(function () { throw e; }, 0); } })', [found.source + '\n//# sourceURL=' + found.filename]);
+    return true;
+  }
 
   switch (fn) {
     case 'content':
@@ -710,4 +839,4 @@ function startIncludeJs(ctx, payload, dispatch) {
   return true;
 }
 
-module.exports = { mergeCfg, applyConfig, ensureIntercept, ensureTarget, closeTarget, frameOf, cookieOp, errorPayload, handlePageOp, startIncludeJs, printableTemplate, openableUrl };
+module.exports = { evalPaused, mergeCfg, applyConfig, ensureIntercept, ensureTarget, closeTarget, frameOf, cookieOp, errorPayload, handlePageOp, startIncludeJs, printableTemplate, openableUrl };

@@ -14,7 +14,7 @@ ok()   { note "PASS: $1"; }
 bad()  { note "FAIL: $1"; echo "FAIL: $1" >&2; fail=1; }
 
 # 1. syntax checks (no Chromium)
-for f in gb-host.js gb-runtime.js gb-chromium.js gb-fs.js gb-page.js proofs/sync-channel.js proofs/serve-test-page.js bin/phantomjs; do
+for f in gb-host.js gb-runtime.js gb-chromium.js gb-fs.js gb-page.js gb-warm.js gb-server.js proofs/sync-channel.js proofs/serve-test-page.js bin/phantomjs; do
   if node --check "$f" >>"$log" 2>&1; then ok "syntax $f"; else bad "syntax $f"; fi
 done
 
@@ -159,6 +159,21 @@ if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PDF PAPER OK"; then ok "pdf
 out=$(node test/open-flags-check.js 2>&1); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^OPEN FLAGS OK"; then ok "web-security/ssl-protocol flags + encoded file URL"; else bad "open flags check (rc=$rc): $out"; fi
+
+# 9h. warm Chromium across shim spawns (gb-warm.js): reuse, per-run isolation (sequential and concurrent), cleanup after SIGKILL, per-parent scope, GB_WARM=0 cold path
+out=$(node test/warm-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^WARM OK"; then ok "warm Chromium reuse + isolation"; else bad "warm check (rc=$rc): $out"; fi
+
+# 9i. webserver module (gb-server.js): listen/handler round trip, form and json posts, headers, writeHead, binary, page.open of own server, phantom.exit from a handler
+out=$(node test/webserver-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^WEBSERVER OK"; then ok "webserver module round trip"; else bad "webserver check (rc=$rc): $out"; fi
+
+# 9j. page.onInitialized (before page scripts, evaluate/injectJs from the handler, waitForJS setter) and blocking onResourceRequested (abort, changeUrl honored before the request is sent)
+out=$(node test/surfaces-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^SURFACES OK"; then ok "onInitialized + blocking onResourceRequested"; else bad "surfaces check (rc=$rc): $out"; fi
 
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1

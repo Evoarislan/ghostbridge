@@ -22,9 +22,11 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const puppeteer = require('puppeteer-core');
-const { findExecutable } = require('./gb-chromium.js');
+const { findExecutable, launchArgs } = require('./gb-chromium.js');
 const { createFsHost } = require('./gb-fs.js');
 const pageSupport = require('./gb-page.js');
+const warm = require('./gb-warm.js');
+const { createServerHost } = require('./gb-server.js');
 
 const CONSOLE_DRAIN_MS = +(process.env.GB_CONSOLE_DRAIN_MS || 3000); // upper bound on waiting for console output at exit
 const WATCHDOG_MS = +(process.env.GB_WATCHDOG_MS || 60000);
@@ -95,6 +97,9 @@ async function main() {
       console.error('Error: Invalid value for --' + k + ': ' + v);
       process.exit(1);
     }
+    // Set by bin/phantomjs: the pid of the process that spawned the shim. Runs with the
+    // same scope share one warm Chromium (gb-warm.js). Absent (direct host runs): cold launch.
+    if (k === 'gb-warm-scope') { if (/^\d+$/.test(v)) options.warmScope = +v; argv.shift(); continue; }
     if (k === 'local-url-access') options.localUrlAccess = bool;
     else if (k === 'ignore-ssl-errors') options.ignoreSslErrors = bool;
     else if (k === 'web-security') options.webSecurity = bool;
@@ -162,6 +167,8 @@ async function main() {
     stdin: { buf: '', eof: false, started: false, waiter: null },
   };
   ctx.dispatch = dispatch;
+  ctx.dispatchWait = dispatchWait;
+  ctx.serverHost = createServerHost(ctx, (id, type, arg) => dispatch(ctx, id, type, arg));
   // Page events: ride on the reply of a blocking sync op when one is in flight
   // (so they run before that call returns, as PhantomJS would), else dispatch.
   ctx.emit = (pageId, type, arg) => {
@@ -196,16 +203,32 @@ async function main() {
     process.exit(1);
   }
   try {
-    ctx.browser = await puppeteer.launch({
-      executablePath: exec,
-      headless: true,
-      // HttpsUpgrades: Chromium rewrites http:// navigations to https:// (internal 307);
-      // PhantomJS never does, and a plain-http proxy cannot serve the upgraded URL.
-      args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable']
-        .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : [])
-        // --web-security=false (PhantomJS: no same-origin policy). Puppeteer always passes --user-data-dir, which this flag needs.
-        .concat(options.webSecurity === false ? ['--disable-web-security'] : []),
-    });
+    if (options.warmScope && process.env.GB_WARM !== '0') {
+      // Warm path (only via the shim): a Chromium shared by this parent's spawns, one
+      // browser context per run. Cold first spawn = the warm instance starting up.
+      const info = await warm.acquire(options.warmScope, exec, options);
+      ctx.lease = await warm.lease(info);
+      const mine = new Set([ctx.lease.contextId]);
+      ctx.browser = await puppeteer.connect({
+        browserWSEndpoint: info.ws,
+        // Only this run's contexts are attached: other runs' pages are never touched.
+        targetFilter: (t) => {
+          const i = t._getTargetInfo();
+          return i.type === 'browser' || (!!i.browserContextId && mine.has(i.browserContextId));
+        },
+      });
+      ctx.allowContext = (c) => { mine.add(c.id); ctx.lease.add(c.id); };
+      ctx.context = ctx.browser.browserContexts().find((c) => c.id === ctx.lease.contextId);
+      if (!ctx.context) throw new Error('warm Chromium: handed-out context ' + ctx.lease.contextId + ' not found');
+      // The context's pre-made about:blank pages: the runtime page, then target pages (gb-page.js createTarget).
+      ctx.sparePages = await ctx.context.pages();
+    } else {
+      ctx.browser = await puppeteer.launch({
+        executablePath: exec,
+        headless: true,
+        args: launchArgs(options),
+      });
+    }
   } catch (e) {
     console.error('ghostbridge: chromium launch failed: ' + e.message);
     try { ctx.server.close(); } catch {}
@@ -217,9 +240,24 @@ async function main() {
       terminate(ctx, 1);
     }
   });
+  if (ctx.context) {
+    // puppeteer.launch kills Chromium on these signals (SIGINT: exit 130; SIGTERM and
+    // SIGHUP: Chromium goes away, which the 'disconnected' handler above turns into
+    // exit 1). A connected run keeps the shared Chromium, so it releases its own
+    // contexts and exits with the same codes and the same message.
+    process.on('SIGINT', () => { releaseContexts(ctx).finally(() => process.exit(130)); });
+    for (const sig of ['SIGTERM', 'SIGHUP']) {
+      process.on(sig, () => {
+        if (state.terminating) return;
+        state.terminating = true; __terminating = true;
+        console.error('ghostbridge: chromium disconnected unexpectedly');
+        releaseContexts(ctx).finally(() => process.exit(1));
+      });
+    }
+  }
 
   // ---- the dedicated runtime page (NOT the page under test) ----
-  ctx.runtimePage = await ctx.browser.newPage();
+  ctx.runtimePage = (ctx.sparePages && ctx.sparePages.shift()) || await (ctx.context || ctx.browser).newPage();
   // The user script's own console.log writes to the host's real stdout.
   // Console events reach the host asynchronously over CDP, so exit has to wait
   // for them (see drainConsole). `consoleSeen` counts lines actually written.
@@ -338,6 +376,11 @@ async function handleChannel(req, res, ctx) {
       // Reconstruct the user function in the TARGET page (current frame) and call
       // it with args. The value comes back synchronously to the script because the
       // runtime is blocked on the sync XHR until we respond here.
+      if (target.initPaused) {
+        // inside page.onInitialized: the page is paused, see gb-page.js evalPaused
+        const v = await pageSupport.evalPaused(target, src, args || []);
+        return reply({ ok: true, value: v });
+      }
       const value = await pageSupport.frameOf(target).evaluate(
         (s, a) => { const f = eval('(' + s + ')'); return f(...a); },
         src, args || []
@@ -361,6 +404,11 @@ async function handleChannel(req, res, ctx) {
         ctx.state.lastActivity = Date.now();
         const entry = await pageSupport.ensureTarget(ctx, pageId);
         entry.frame = null;
+        // A rewritten file URL (%2F form) is reported to onResourceRequested as the script gave it,
+        // as PhantomJS does (QUrl keeps the encoded form); scripts compare against their own URL.
+        if (url !== (payload || {}).url) {
+          try { entry.urlAliases = { [new URL(url).href]: payload.url }; } catch { entry.urlAliases = null; }
+        } else entry.urlAliases = null;
         await pageSupport.applyConfig(ctx, pageId);
         if (http && (http.method !== 'GET' || http.headers)) {
           await pageSupport.ensureIntercept(ctx, pageId, entry);
@@ -385,6 +433,7 @@ async function handleChannel(req, res, ctx) {
   if (op === 'exitRequested') {
     // phantom.exit() was called; the exit itself follows from a later task.
     ctx.state.pendingExit = payload && payload.code != null ? payload.code : 0;
+    ctx.state.pendingExitAt = Date.now();
     return sendJson(res, { ok: true });
   }
 
@@ -448,6 +497,12 @@ async function handleChannel(req, res, ctx) {
     } catch (e) {
       return sendJson(res, { ok: false, error: 'fs.' + fn + ': ' + (e && e.message ? e.message : String(e)) });
     }
+  }
+
+  if (op === 'server') {
+    // webserver module (gb-server.js)
+    try { return sendJson(res, { ok: true, value: await ctx.serverHost.call(payload) }); }
+    catch (e) { return sendJson(res, { ok: false, error: 'webserver: ' + (e && e.message ? e.message : String(e)) }); }
   }
 
   if (op === 'injectJs') {
@@ -515,9 +570,25 @@ async function dispatch(ctx, pageId, type, arg) {
   } catch { /* runtime page gone */ }
 }
 
+// Like dispatch, but returns the handler's result and gives up after `ms`
+// (undefined then): used where the host holds something until the script's handler
+// has run (onInitialized, onResourceRequested).
+async function dispatchWait(ctx, pageId, type, arg, ms) {
+  if (!ctx.runtimePage || ctx.state.terminating) return undefined;
+  ctx.state.lastActivity = Date.now();
+  let timer;
+  try {
+    return await Promise.race([
+      ctx.runtimePage.evaluate((pid, t, a) => window.__gbDispatch && window.__gbDispatch(pid, t, a), pageId, type, arg),
+      new Promise((r) => { timer = setTimeout(() => r(undefined), ms || 10000); }),
+    ]);
+  } catch { return undefined; } finally { clearTimeout(timer); ctx.state.lastActivity = Date.now(); }
+}
+
 async function drain(ctx) {
   while (!ctx.state.terminating) {
-    if (Date.now() - ctx.state.lastActivity > WATCHDOG_MS) {
+    // A listening webserver keeps the script alive indefinitely, as in PhantomJS.
+    if (!ctx.serverHost.listening() && Date.now() - ctx.state.lastActivity > WATCHDOG_MS) {
       console.error('ghostbridge: watchdog timeout (' + WATCHDOG_MS + ' ms) - forcing exit');
       terminate(ctx, 124);
       return;
@@ -526,7 +597,14 @@ async function drain(ctx) {
     // (matches PhantomJS: a script that ends with no pending work exits 0, or
     // with the code of a phantom.exit() already requested). A pending timer
     // keeps the script alive, as it does in PhantomJS.
-    if (ctx.state.topDone && ctx.state.openPages === 0 && ctx.state.inFlightOpens === 0) {
+    if (ctx.state.topDone && ctx.state.openPages === 0 && ctx.state.inFlightOpens === 0 && (!ctx.serverHost.listening() || ctx.state.pendingExit != null)) {
+      // phantom.exit() already requested: its 'exit' op follows within a task and carries the
+      // console count. Probing now would race it (the runtime is blocked in that op, so the probe
+      // waits out CONSOLE_DRAIN_MS); only fall back to the idle exit if 'exit' never arrives.
+      if (ctx.state.pendingExit != null && Date.now() - ctx.state.pendingExitAt < 1000) {
+        await new Promise((r) => setTimeout(r, 25));
+        continue;
+      }
       let timers = 1;
       try {
         timers = await Promise.race([
@@ -563,6 +641,30 @@ async function drainConsole(ctx, expected, probe) {
   }
 }
 
+// A warm run closes only what it created (its contexts) and detaches; a cold run
+// owns its Chromium and closes it.
+async function releaseContexts(ctx) {
+  if (!ctx.browser || !ctx.context) return;
+  const ids = new Set([ctx.context.id]);
+  for (const e of Object.values(ctx.targetPages || {})) if (e.context) ids.add(e.context.id);
+  const all = ctx.browser.browserContexts().filter((c) => ids.has(c.id));
+  await Promise.race([
+    Promise.all(all.map((c) => c.close().catch(() => {}))),
+    new Promise((r) => setTimeout(r, 2000)),
+  ]);
+  try { ctx.lease && ctx.lease.close(); } catch {}
+}
+
+async function closeBrowser(ctx) {
+  if (!ctx.browser) return;
+  if (ctx.context) {
+    await releaseContexts(ctx);
+    await ctx.browser.disconnect();
+  } else {
+    await ctx.browser.close();
+  }
+}
+
 function terminate(ctx, code, opts) {
   if (ctx.state.terminating) return;
   ctx.state.terminating = true;
@@ -572,7 +674,8 @@ function terminate(ctx, code, opts) {
     if (opts && (opts.expectedConsole != null || opts.probeConsole)) {
       try { await drainConsole(ctx, opts.expectedConsole, opts.probeConsole); } catch {}
     }
-    try { if (ctx.browser) await ctx.browser.close(); } catch {}
+    try { await closeBrowser(ctx); } catch {}
+    try { ctx.serverHost.closeAll(); } catch {}
     try { if (ctx.server) ctx.server.close(); } catch {}
     process.exit(code);
   })();

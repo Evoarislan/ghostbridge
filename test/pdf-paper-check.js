@@ -2,8 +2,9 @@
 // 1. width/height/border + header phantom.callback + footer with a <link> to a
 //    sheet the page loaded (that sheet has @import and @font-face): exit 0, the
 //    callback runs once per page with (i, N), every page is 3in x 7in, N pages.
-// 2. a callback whose output differs per page beyond the page number/total
-//    fails loudly instead of printing a wrong header.
+// 2. a callback whose output differs per page beyond the page number/total is
+//    printed page by page and merged (Session 8): every page keeps the A4
+//    MediaBox, page 1 carries "Front", every other page "Other" (pdftotext).
 // 3. printableTemplate inlines a loaded sheet, drops an unloaded one, strips
 //    @import / network @font-face (Chromium cannot load subresources in a template).
 // Prints "PDF PAPER OK" and exits 0, else prints why and exits 1.
@@ -11,7 +12,7 @@ const http = require('http');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const puppeteer = require('puppeteer-core');
 const { findExecutable } = require('../gb-chromium');
 const { printableTemplate } = require('../gb-page');
@@ -84,7 +85,25 @@ page.open(${JSON.stringify(base + '/page')}, function () {
  }, 0);
 });`);
   const r2 = await runShim([s2]);
-  if (r2.code !== 1 || /RENDERED/.test(r2.stdout) || !/differs from page 1/.test(r2.stderr)) bad += 'case2 expected a loud per-page error, got exit ' + r2.code + ' ' + r2.stderr + '; ';
+  if (r2.code !== 0 || !/RENDERED/.test(r2.stdout)) bad += 'case2 per-page render failed: exit ' + r2.code + ' ' + r2.stderr + '; ';
+  else {
+    const buf2 = fs.readFileSync(path.join(dir, 'b.pdf'));
+    const t2 = buf2.toString('latin1');
+    const np = (t2.match(/\/Type\s*\/Page(?![A-Za-z])/g) || []).length;
+    const mb = t2.match(/\/MediaBox\s*\[\s*0 0 595\.\d+ 841\.\d+\s*\]/g) || [];
+    if (np < 2) bad += 'case2 expected >=2 pages, got ' + np + '; ';
+    if (mb.length !== np) bad += 'case2 A4 MediaBox on ' + mb.length + ' of ' + np + ' pages; ';
+    const tx = spawnSync('pdftotext', ['-layout', path.join(dir, 'b.pdf'), '-'], { encoding: 'utf8' });
+    if (tx.error) bad += 'case2 pdftotext unavailable: ' + tx.error.message + '; ';
+    else {
+      const pgs = tx.stdout.split('\f').filter((x, i, a) => i < a.length - 1 || x.trim());
+      pgs.forEach((t, i) => {
+        const want = i === 0 ? 'Front' : 'Other', other = i === 0 ? 'Other' : 'Front';
+        if (t.indexOf(want) < 0 || t.indexOf(other) >= 0) bad += 'case2 page ' + (i + 1) + ' header wrong (want ' + want + '); ';
+      });
+      if (pgs.length !== np) bad += 'case2 text pages ' + pgs.length + ' vs ' + np + '; ';
+    }
+  }
 
   // 3
   const browser = await puppeteer.launch({ executablePath: findExecutable(), headless: true, args: ['--no-sandbox', '--disable-gpu'] });

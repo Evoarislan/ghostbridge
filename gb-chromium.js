@@ -35,4 +35,16 @@ function findExecutable() {
   return null;
 }
 
-module.exports = { findExecutable };
+// Chromium command-line flags for a run's PhantomJS options. Shared by the
+// direct launch in gb-host.js and the warm instance in gb-warm.js, so a warm
+// Chromium is started exactly as a cold one would be.
+function launchArgs(options) {
+  // HttpsUpgrades: Chromium rewrites http:// navigations to https:// (internal 307);
+  // PhantomJS never does, and a plain-http proxy cannot serve the upgraded URL.
+  return ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable']
+    .concat(options.ignoreSslErrors ? ['--ignore-certificate-errors'] : [])
+    // --web-security=false (PhantomJS: no same-origin policy). Puppeteer always passes --user-data-dir, which this flag needs.
+    .concat(options.webSecurity === false ? ['--disable-web-security'] : []);
+}
+
+module.exports = { findExecutable, launchArgs };
