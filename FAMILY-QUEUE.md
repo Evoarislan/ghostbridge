@@ -167,6 +167,22 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   (webpage, system, injectJs) served by the runtime.
 
 ## 6. node-webshot (screenshots; weakest member)
+- STATUS: VERIFIED (scoped), Session 9, 2026-11-22. Receipt rcpt-0004.
+  Own `npm test` (mocha, 28 tests, member files byte-identical before and
+  after): before (no binary) 2 pass / 26 fail; after (shim) 18 pass / 10
+  fail, identical in two runs. All 10 failures render google.com or
+  example.com and need internet (none from local fixtures); they are
+  reported separately, not as bridge failures. Four more tests pass without
+  saying anything about rendering (an unreachable host looks like the
+  expected error). Supplementary local-server run of the same calls: 10
+  pass, 1 known gap. Known gaps, not fixed: `page.customHeaders` is
+  ignored by the bridge, `zoomFactor` is not applied. One bridge fix:
+  `phantom.exit` after `page.close` could stall 3 s (gate check 9k). The
+  suite needs ImageMagick `identify` (and Ghostscript for the PDF test).
+  Muse's independent verification is still pending. Details:
+  members/node-webshot/RESURRECTED.md, SESSION-9-RESULT.md.
+- Version correction: 1.0.4, published 2020-05-30 (npm `time`); repo
+  master `e3a5cbf`, 2020-05-30.
 - Repo: github.com/Grace951/node-webshot. npm 1.0.4, May 2020; last
   commit May 2020. The registry lineage is entirely the Grace951
   fork (1.0.0 Dec 2017 to 1.0.4); the original brandonwamboldt repo

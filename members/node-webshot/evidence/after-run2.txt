@@ -1,0 +1,164 @@
+# node-webshot suite check: AFTER (path -> /home/hatch/workspace/ghostbridge/bin/phantomjs)
+
+> node-webshot@1.0.4 test
+> mocha --ui bdd --reporter spec --require should ./test/core.js ./test/options/*
+
+
+
+  Creating screenshot images
+    1) creates a screenshot
+    2) overwrites existing screenshots
+    3) streams a screenshot
+    ✔ streams a screenshot even if the page has JS errors (1916ms)
+    4) streams a screenshot with the old callback interface
+
+  Passing errors for bad input
+    ✔ passes an error if an invalid extension is given
+    ✔ passes an error if a misformatted address is given (1509ms)
+    ✔ passes an error if no webpage exists at the address (1510ms)
+    ✔ throws an error when called syncronously with invalid input
+
+  captureSelector
+    ✔ screenshots the page matching the selector (1415ms)
+
+  cookies
+    5) do not break page rendering
+
+  customHeaders
+    6) do not break page rendering
+
+  errorIfJSException
+    ✔ streams an error if there is an exception on the page (1112ms)
+
+  errorIfStatusIsNot200
+    7) screenshots a non-200 page status when not set to true
+    ✔ errors on non-200 page status when set to true (1607ms)
+
+  paperSize
+    8) creates a properly-sized page for pdf shots
+
+  shotOffset
+    9) creates a properly-sized image for partial shots
+    ✔ crops shots with right and bottom offsets (2028ms)
+
+  shotSize
+    ✔ resolves "all" to the full length of the body (1569ms)
+    ✔ resolves "all" to the full length of the page, if larger than the body (1325ms)
+
+  siteType
+    ✔ takes a screenshot of the provided html (1355ms)
+    ✔ handles very large html strings (1626ms)
+    ✔ takes a screenshot given a local path (1582ms)
+
+  timeout
+    ✔ produces an error message on a timeout (3004ms)
+    ✔ streams an error message on a timeout (3004ms)
+
+  windowSize
+    10) sets the size of the window the page is rendered in
+
+  zoomFactor
+    ✔ creates a properly-sized page for zoomed shots (3727ms)
+    ✔ creates a properly-sized page for zoomed shots that use a selector (1769ms)
+
+
+  18 passing (45s)
+  10 failing
+
+  1) Creating screenshot images
+       creates a screenshot:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  2) Creating screenshot images
+       overwrites existing screenshots:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  3) Creating screenshot images
+       streams a screenshot:
+     Uncaught TypeError: Cannot read properties of undefined (reading 'width')
+      at /home/hatch/gbtmp/s9/repo/test/core.js:56:18
+      at Accumulator.callback (node_modules/imagemagick/imagemagick.js:165:5)
+      at Accumulator.finish (node_modules/imagemagick/imagemagick.js:60:55)
+      at ChildProcess.<anonymous> (node_modules/imagemagick/imagemagick.js:93:11)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at Socket.<anonymous> (node:internal/child_process:527:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12)
+
+  4) Creating screenshot images
+       streams a screenshot with the old callback interface:
+     Uncaught TypeError: Cannot read properties of undefined (reading 'width')
+      at /home/hatch/gbtmp/s9/repo/test/core.js:94:20
+      at Accumulator.callback (node_modules/imagemagick/imagemagick.js:165:5)
+      at Accumulator.finish (node_modules/imagemagick/imagemagick.js:60:55)
+      at ChildProcess.<anonymous> (node_modules/imagemagick/imagemagick.js:93:11)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5)
+
+  5) cookies
+       do not break page rendering:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  6) customHeaders
+       do not break page rendering:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  7) errorIfStatusIsNot200
+       screenshots a non-200 page status when not set to true:
+
+      Uncaught AssertionError: expected false to be true
+      + expected - actual
+
+      -false
+      +true
+      
+      at Assertion.fail (node_modules/should/cjs/should.js:275:17)
+      at Assertion.value (node_modules/should/cjs/should.js:356:19)
+      at /home/hatch/gbtmp/s9/repo/test/options/errorIfStatusIsNot200.js:16:23
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  8) paperSize
+       creates a properly-sized page for pdf shots:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  9) shotOffset
+       creates a properly-sized image for partial shots:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+  10) windowSize
+       sets the size of the window the page is rendered in:
+     Error: PhantomJS exited with return value 1
+      at ChildProcess.<anonymous> (lib/webshot.js:251:13)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+
+
+
+--- stderr ---
+(node:34014) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:34014) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+
+SUMMARY exit=10 passing=18 failing=10 pending=0 wall=46.6s

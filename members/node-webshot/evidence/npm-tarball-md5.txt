@@ -1,0 +1,7 @@
+94ea283bd5597be74372b70f039e3ca4  package/.npmignore
+f46ef3e93ad311507e0237cfe1c3f985  package/.travis.yml
+699c5e0feeb44ff3c488c58d81cc12ea  package/README.md
+f31f0969132d8bfa29d5bbfc30979afe  package/lib/options.js
+26896a427e96f79fb25d3abd3b38cd00  package/lib/webshot.js
+8743e9825c542b813a25057905dd896f  package/lib/webshot.phantom.js
+a469904ede8ee9eb9dd4fb1245f5f6de  package/package.json

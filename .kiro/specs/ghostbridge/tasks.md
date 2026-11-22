@@ -196,12 +196,20 @@ GhostBridge only.
 - [ ] Proof of Life + receipt per member
 
 ## Phase 6: node-webshot (queue #6, screenshots)
-- [ ] Its render script runs unmodified; render options (window size,
+- Session 9 status: VERIFIED (scoped), 2026-11-22. Receipt rcpt-0004.
+  mocha, 28 tests: before 2 pass / 26 fail; after 18 pass / 10 fail in
+  two identical runs. The 10 failures all need external hosts
+  (google.com, example.com; no egress here). Known gaps, not fixed:
+  page.customHeaders ignored, zoomFactor not applied (open questions in
+  SESSION-9-RESULT.md). Independent verification by Muse pending. See
+  members/node-webshot/RESURRECTED.md.
+- [x] Its render script runs unmodified; render options (window size,
       shot size, stream output) honored by Chromium capture
-- [ ] Suite (test/, 17 paths) green under structural oracles: output
+- [x] Suite (test/, 17 paths) green under structural oracles: output
       exists, format correct, dimensions as requested, non-blank.
-      Pixel equality is never the criterion
-- [ ] Proof of Life + receipt
+      Pixel equality is never the criterion. Scoped: egress-blocked
+      tests reported separately (10 fail, 4 pass without evidence)
+- [x] Proof of Life + receipt (rcpt-0004; Muse re-verification pending)
 
 ## Phase 7: spooky (queue #7, process contract)
 - [ ] spooky spawns the CasperJS entry exactly as its README contract

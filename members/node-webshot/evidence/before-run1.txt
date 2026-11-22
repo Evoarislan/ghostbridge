@@ -1,0 +1,391 @@
+# node-webshot suite check: BEFORE (no binary: phantomjs-prebuilt path as installed)
+
+> node-webshot@1.0.4 test
+> mocha --ui bdd --reporter spec --require should ./test/core.js ./test/options/*
+
+
+
+  Creating screenshot images
+    1) creates a screenshot
+    2) overwrites existing screenshots
+    3) streams a screenshot
+    4) streams a screenshot even if the page has JS errors
+    5) streams a screenshot with the old callback interface
+
+  Passing errors for bad input
+    ✔ passes an error if an invalid extension is given
+    6) passes an error if a misformatted address is given
+    7) passes an error if no webpage exists at the address
+    ✔ throws an error when called syncronously with invalid input
+
+  captureSelector
+    8) screenshots the page matching the selector
+
+  cookies
+    9) do not break page rendering
+
+  customHeaders
+    10) do not break page rendering
+
+  errorIfJSException
+    11) streams an error if there is an exception on the page
+
+  errorIfStatusIsNot200
+    12) screenshots a non-200 page status when not set to true
+    13) errors on non-200 page status when set to true
+
+  paperSize
+    14) creates a properly-sized page for pdf shots
+
+  shotOffset
+    15) creates a properly-sized image for partial shots
+    16) crops shots with right and bottom offsets
+
+  shotSize
+    17) resolves "all" to the full length of the body
+    18) resolves "all" to the full length of the page, if larger than the body
+
+  siteType
+    19) takes a screenshot of the provided html
+    20) handles very large html strings
+    21) takes a screenshot given a local path
+
+  timeout
+    22) produces an error message on a timeout
+    23) streams an error message on a timeout
+
+  windowSize
+    24) sets the size of the window the page is rendered in
+
+  zoomFactor
+    25) creates a properly-sized page for zoomed shots
+    26) creates a properly-sized page for zoomed shots that use a selector
+
+
+  2 passing (65ms)
+  26 failing
+
+  1) Creating screenshot images
+       creates a screenshot:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  2) Creating screenshot images
+       overwrites existing screenshots:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  3) Creating screenshot images
+       streams a screenshot:
+     TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at module.exports (lib/webshot.js:121:12)
+      at Context.<anonymous> (test/core.js:47:24)
+      at process.processImmediate (node:internal/timers:574:21)
+
+  4) Creating screenshot images
+       streams a screenshot even if the page has JS errors:
+     TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at spawn (lib/webshot.js:103:14)
+      at module.exports (lib/webshot.js:121:12)
+      at Context.<anonymous> (test/core.js:66:24)
+      at process.processImmediate (node:internal/timers:574:21)
+
+  5) Creating screenshot images
+       streams a screenshot with the old callback interface:
+     TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at module.exports (lib/webshot.js:121:12)
+      at Context.<anonymous> (test/core.js:83:5)
+      at process.processImmediate (node:internal/timers:574:21)
+
+  6) Passing errors for bad input
+       passes an error if a misformatted address is given:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  7) Passing errors for bad input
+       passes an error if no webpage exists at the address:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  8) captureSelector
+       screenshots the page matching the selector:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  9) cookies
+       do not break page rendering:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  10) customHeaders
+       do not break page rendering:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  11) errorIfJSException
+       streams an error if there is an exception on the page:
+     TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at spawn (lib/webshot.js:103:14)
+      at module.exports (lib/webshot.js:121:12)
+      at Context.<anonymous> (test/options/errorIfJSException.js:13:24)
+      at process.processImmediate (node:internal/timers:574:21)
+
+  12) errorIfStatusIsNot200
+       screenshots a non-200 page status when not set to true:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  13) errorIfStatusIsNot200
+       errors on non-200 page status when set to true:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  14) paperSize
+       creates a properly-sized page for pdf shots:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  15) shotOffset
+       creates a properly-sized image for partial shots:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  16) shotOffset
+       crops shots with right and bottom offsets:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  17) shotSize
+       resolves "all" to the full length of the body:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  18) shotSize
+       resolves "all" to the full length of the page, if larger than the body:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  19) siteType
+       takes a screenshot of the provided html:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at spawn (lib/webshot.js:103:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  20) siteType
+       handles very large html strings:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at spawn (lib/webshot.js:103:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  21) siteType
+       takes a screenshot given a local path:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  22) timeout
+       produces an error message on a timeout:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  23) timeout
+       streams an error message on a timeout:
+     TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at module.exports (lib/webshot.js:121:12)
+      at Context.<anonymous> (test/options/timeout.js:31:24)
+      at process.processImmediate (node:internal/timers:574:21)
+
+  24) windowSize
+       sets the size of the window the page is rendered in:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  25) zoomFactor
+       creates a properly-sized page for zoomed shots:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+  26) zoomFactor
+       creates a properly-sized page for zoomed shots that use a selector:
+     Uncaught TypeError [ERR_INVALID_ARG_TYPE]: The "file" argument must be of type string. Received null
+      at normalizeSpawnArguments (node:child_process:585:3)
+      at Object.spawn (node:child_process:806:13)
+      at spawn (node_modules/cross-spawn/index.js:12:24)
+      at spawnPhantom (lib/webshot.js:203:32)
+      at spawn (lib/webshot.js:105:14)
+      at /home/hatch/gbtmp/s9/repo/lib/webshot.js:117:16
+      at suppressedCallback (node:fs:257:5)
+      at FSReqCallback.oncomplete (node:fs:187:23)
+
+
+
+
+--- stderr ---
+(node:12908) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+SUMMARY exit=26 passing=2 failing=26 pending=0 wall=0.9s

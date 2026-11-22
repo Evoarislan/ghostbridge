@@ -1,0 +1,68 @@
+GhostBridge Session 9: node-webshot verdict (family member 6)
+
+Repo: ~/workspace/ghostbridge (branch main, HEAD d18bd75). Read
+.kiro/steering/ first, then FAMILY-QUEUE.md entry 6 and
+SESSION-7-RESULT.md / SESSION-8-RESULT.md for the verdict method.
+Scratch: /home/hatch/gbtmp/s9 (create it; never work inside the
+member's own checkout in the repo tree).
+
+THE MEMBER
+node-webshot, npm 1.0.4 (published 2020-05-30; the Grace951 fork
+lineage, github.com/Grace951/node-webshot). Direct npm dependency on
+phantomjs-prebuilt: it spawns the phantomjs binary to render web
+pages to images/PDF. Suite: 17 paths under test/ (core.js + fixtures).
+Surgery class: screenshot render. License soft spot, record it
+honestly in the member file: MIT as declared in npm metadata, but the
+repo has no LICENSE file GitHub can detect.
+
+METHOD (same as Sessions 6-8; it is the family gate)
+1. Obtain the member exactly as published (npm pack node-webshot@1.0.4
+   or the repo at the matching state) into scratch. Record the file
+   list and hashes before anything runs. Install with
+   --ignore-scripts. Member code is NEVER modified; package files must
+   be byte-identical before and after (verify at the end).
+2. Before run: the member's own test suite with no usable phantomjs
+   binary (the phantomjs-prebuilt path export null/absent, as in the
+   Session 7 before runs). Record pass / fail / not-run exactly.
+3. After run: same suite, unmodified, with the GhostBridge shim
+   substituted for the phantomjs-prebuilt path export in memory (the
+   proofs/*-substitute.js preload pattern from Sessions 4 and 7;
+   write proofs/node-webshot-substitute.js and a suite-check harness
+   the same way). Two runs; if they differ, report both and say the
+   result is unstable.
+4. Tests needing external internet hosts, if any, are reported
+   separately, always, never counted as bridge failures (the sandbox
+   has no egress; Session 7 precedent).
+
+BRIDGE FIXES
+If the after run fails on a genuine GhostBridge gap (a missing or
+wrong bridge surface the member legitimately uses), you may fix the
+bridge: changes only in gb-*.js / bin/phantomjs, a gate check added
+per new or changed surface, full gate green before and after, and the
+fix described in the result file. No member workarounds. If a failure
+needs a design decision rather than a fix, stop at the decision,
+record it as an open question, and finish the session.
+
+VERDICT AND PAPERWORK
+- Fully green suite (egress-blocked tests aside): write
+  members/node-webshot/RESURRECTED.md (Session 6 member files are the
+  shape; include the license soft spot and the version correction:
+  1.0.4, 2020-05-30, Grace951 lineage) and append the receipt with
+  proofs/receipt.js (next id is rcpt-0004; verify the chain after).
+- Not fully green: members/node-webshot/NOT-VERIFIED.md with exact
+  counts, evidence files under members/node-webshot/evidence/, and
+  remaining blockers named.
+- FAMILY-QUEUE.md entry 6 updated either way.
+- .kiro/specs tasks/queue notes updated if the repo keeps them there
+  (follow the Session 7/8 pattern).
+- SESSION-9-RESULT.md at repo root: method, before/after counts per
+  run, fixes if any, timings, evidence paths, open questions.
+- Two commits: one code, one docs, "Session 9: ..." style.
+  DO NOT PUSH. Muse verifies independently and pushes.
+
+INVARIANTS
+Examples md5 unchanged (the gate checks them). Receipt chain head
+before this session (3 records):
+d99041f3fbee18af765e8ab60726b83cbf08bf8c9cb10982e934064a4cc2268f
+If file writes fail with EPERM, stop,
+leave the tree, and say the environment blocked the session.
