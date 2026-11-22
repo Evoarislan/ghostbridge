@@ -175,6 +175,11 @@ out=$(node test/surfaces-check.js 2>&1); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^SURFACES OK"; then ok "onInitialized + blocking onResourceRequested"; else bad "surfaces check (rc=$rc): $out"; fi
 
+# 9k. phantom.exit() right after page.close() from a timer callback must not stall on the console probe (Session 9, node-webshot)
+out=$(node test/exit-after-close-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^EXIT AFTER CLOSE OK"; then ok "exit after page.close does not stall"; else bad "exit-after-close check (rc=$rc): $out"; fi
+
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1
 while read -r sum f; do [ "$(md5sum "examples/$f" | cut -d' ' -f1)" = "$sum" ] || md5ok=0; done <<'SUMS'

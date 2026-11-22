@@ -612,6 +612,14 @@ async function drain(ctx) {
           new Promise((r) => setTimeout(() => r(1), 1000)), // runtime blocked (e.g. in a stdin read): not idle
         ]);
       } catch { timers = 1; }
+      // The probe above can be answered after phantom.exit() ran but before its deferred 'exit'
+      // op was sent (the pending-timer count is 0 once the calling timer started). Terminating
+      // now would probe a runtime that is about to block in that op, and wait out the whole
+      // console drain bound; let the 'exit' op arrive and carry the console count instead.
+      if (ctx.state.pendingExit != null && Date.now() - ctx.state.pendingExitAt < 1000) {
+        await new Promise((r) => setTimeout(r, 25));
+        continue;
+      }
       if (!timers || ctx.state.pendingExit != null) {
         terminate(ctx, ctx.state.pendingExit != null ? ctx.state.pendingExit : 0, { probeConsole: true });
         return;
