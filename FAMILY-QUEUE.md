@@ -204,6 +204,13 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   either point in public copy.
 
 ## 7. spooky (CasperJS from Node)
+- STATUS: NOT VERIFIED (Session 10, 2026-11-22). Own mocha suite (79
+  tests) with the shim as CasperJS's PhantomJS: before 3 failed, after
+  2 failed (77 pass), with the phantom.onError fix 1 failed (78 pass) in
+  fix-1 and again in fix-3. The onError test is closed. Blocker:
+  `bootstrap/emit "before each" hook` (4000ms timeout; in fix-1 "Child
+  terminated with non-zero exit code 1"), cause untraced. No receipt.
+  See members/spooky/NOT-VERIFIED.md and SESSION-10-RESULT.md.
 - Repo: github.com/WaterfallEngineering/SpookyJS. npm 0.2.5,
   Nov 2014 (11+ years); last commit May 2016. License: MIT. README
   carries an explicit "No Maintenance Intended" badge.
