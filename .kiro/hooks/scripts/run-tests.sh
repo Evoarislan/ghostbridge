@@ -180,6 +180,11 @@ out=$(node test/exit-after-close-check.js 2>&1); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^EXIT AFTER CLOSE OK"; then ok "exit after page.close does not stall"; else bad "exit-after-close check (rc=$rc): $out"; fi
 
+# 10a. phantom.onError receives uncaught runtime errors (fatal when unset); phantom.defaultPageSettings (Session 10, spooky)
+out=$(node test/phantom-onerror-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PHANTOM ONERROR OK"; then ok "phantom.onError and defaultPageSettings"; else bad "phantom-onerror check (rc=$rc): $out"; fi
+
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1
 while read -r sum f; do [ "$(md5sum "examples/$f" | cut -d' ' -f1)" = "$sum" ] || md5ok=0; done <<'SUMS'

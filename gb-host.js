@@ -278,6 +278,7 @@ async function main() {
   });
   // An uncaught error in the runtime (incl. the user script) is fatal.
   ctx.runtimePage.on('pageerror', (err) => {
+    if (ctx.state.errorsHandled > 0) { ctx.state.errorsHandled--; return; } // went to phantom.onError
     console.error('ghostbridge: runtime error: ' + (err && err.message ? err.message : err));
     if (!state.terminating) terminate(ctx, 1);
   });
@@ -365,6 +366,13 @@ async function handleChannel(req, res, ctx) {
     done();
     return sendJson(res, obj);
   };
+
+  if (op === 'errorHandled') {
+    // phantom.onError is about to handle an uncaught runtime error: the matching
+    // pageerror event (async, CDP) must not be fatal.
+    ctx.state.errorsHandled = (ctx.state.errorsHandled || 0) + 1;
+    return reply({ ok: true });
+  }
 
   if (op === 'evaluate') {
     const { pageId, src, args } = payload || {};

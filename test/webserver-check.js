@@ -120,6 +120,8 @@ page.open('http://127.0.0.1:${port}/self', function (st) {
     const b = await req(port, 'GET', '/bin');
     need(Buffer.compare(b.body, Buffer.from([0, 1, 200, 255])) === 0, 'binary body ' + b.body.toString('hex'));
 
+    // the script's own page.open of /self runs in parallel; /quit must not beat its callback
+    for (let i = 0; i < 200 && !/SELFOPEN/.test(out) && code === null; i++) await new Promise((r) => setTimeout(r, 100));
     const q = await req(port, 'GET', '/quit');
     need(q.body.toString() === 'bye', 'quit body ' + q.body);
     await Promise.race([exited, new Promise((r) => setTimeout(r, 30000))]);

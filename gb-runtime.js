@@ -155,6 +155,19 @@
     get: function () { return postSync('cookies', { fn: 'get' }); },
   });
   Object.defineProperty(phantom, 'cookiesEnabled', { enumerable: true, get: function () { return true; } });
+  // phantom.defaultPageSettings: the settings a new webpage starts with (PhantomJS
+  // 2.1.1 key set). userAgent is the one a new page really sends, so it matches
+  // page.settings.userAgent below. CasperJS reads it at module load (casper.js).
+  phantom.defaultPageSettings = {
+    XSSAuditingEnabled: false,
+    javascriptCanCloseWindows: true,
+    javascriptCanOpenWindows: true,
+    javascriptEnabled: true,
+    loadImages: true,
+    localToRemoteUrlAccessEnabled: false,
+    userAgent: navigator.userAgent,
+    webSecurityEnabled: true,
+  };
 
   // ---------------- webpage module ----------------
   var __pages = {};
@@ -585,6 +598,26 @@
   };
 
   // ---------------- globals the user script sees ----------------
+  // phantom.onError(msg, trace): PhantomJS calls it for an uncaught error in the
+  // script context. If it is set, the error goes to the handler instead of being
+  // fatal (gb-host.js pageerror counts 'errorHandled' notices to know this). If it
+  // is not set, the error stays fatal as before. Trace frames: {file, line, function}.
+  window.addEventListener('error', function (ev) {
+    if (typeof phantom.onError !== 'function') return;
+    var err = ev.error;
+    var msg = err && err.stack ? String(err.stack).split(/\n\s*at /)[0].trim() : String(ev.message || err).replace(/^Uncaught /, '');
+    var trace = [];
+    String(err && err.stack || '').split('\n').forEach(function (line) {
+      var m = /^\s*at (?:(.*?) \()?(.*?):(\d+):(\d+)\)?\s*$/.exec(line);
+      if (m) trace.push({ file: m[2], line: +m[3], 'function': m[1] || '' });
+    });
+    if (!trace.length && ev.filename) trace.push({ file: ev.filename, line: ev.lineno, 'function': '' });
+    postSync('errorHandled', {});
+    try { phantom.onError(msg, trace); } catch (e) {
+      postSync('stream', { stream: 'stderr', data: 'ghostbridge: phantom.onError threw: ' + (e && e.message || e) + '\n' });
+    }
+  });
+
   window.phantom = phantom;
   window.require = makeRequire(INIT.scriptDir || '.');
   window.__gbReady = true;
