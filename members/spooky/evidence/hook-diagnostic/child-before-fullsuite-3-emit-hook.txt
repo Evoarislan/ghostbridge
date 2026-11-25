@@ -1,0 +1,5 @@
+[1795534954079 wrapper] START pid=22202 cwd=/home/hatch/gbtmp/s10/spooky args=lib/bootstrap.js --port=8081 --spooky_lib=/home/hatch/gbtmp/s10/spooky/ --transport=stdio --command=casperjs --spawnOptions=[object Object]
+[1795534958172 wrapper] got TERM, forwarding
+[1795534958391 wrapper] EXIT rc=143
+[1795534961702 ERR] <EOF>
+[1795534961764 OUT] <EOF>

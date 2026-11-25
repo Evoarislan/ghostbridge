@@ -1,0 +1,19 @@
+# page-initiated navigation: onLoadStarted/onLoadFinished sequence, real PhantomJS 2.1.1 vs GhostBridge
+## script (nav2.js; index.html/form.html copied from casperjs tests/site)
+var page = require('webpage').create(), seen = [];
+page.onLoadStarted = function(){ seen.push('started'); };
+page.onLoadFinished = function(s){ seen.push('finished:' + s); };
+page.open('file:///tmp/s11f/index.html', function(s){
+  seen.push('opened:' + s);
+  page.evaluate(function(){ document.location = 'file:///tmp/s11f/form.html'; });
+  setTimeout(function(){ console.log(seen.join(',') + ' ' + page.evaluate(function(){return location.pathname;})); phantom.exit(0); }, 3000);
+});
+## real PhantomJS 2.1.1 (/home/hatch/workspace/survival/kiroween-entry/spike/deadbinary/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs)
+started,finished:success,opened:success,started,finished:success /tmp/s11f/form.html
+rc=0
+## GhostBridge bin/phantomjs with the Session 11 loadFinished fix
+Failed to load resource: net::ERR_FILE_NOT_FOUND
+started,finished:success,opened:success,started,finished:success /tmp/s11f/form.html
+rc=0
+## GhostBridge before the fix (measured in this session with the fix stashed; gate case G output):
+NAV started,finished:success,opened:success,started two

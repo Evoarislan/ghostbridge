@@ -1,0 +1,2011 @@
+# casperjs 1.1.4 selftest, one file per chunk (run-chunks.sh), label after-f1
+## summary.tsv
+tests/suites/casper/agent.js	completed	rc=1	10s	executed=1	passed=0	failed=1	dubious=0	skipped=0
+tests/suites/casper/alert.js	completed	rc=0	15s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/casper/auth.js	completed	rc=0	12s	executed=8	passed=8	failed=0	dubious=0	skipped=0
+tests/suites/casper/bypass.js	completed	rc=0	13s	executed=10	passed=10	failed=0	dubious=0	skipped=0
+tests/suites/casper/callback.js	completed	rc=0	12s	executed=1	passed=1	failed=0	dubious=0	skipped=0
+tests/suites/casper/callutils.js	completed	rc=0	12s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/casper/capture.js	completed	rc=0	19s	executed=7	passed=7	failed=0	dubious=0	skipped=0
+tests/suites/casper/click.js	timeout	rc=124	181s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/confirm.js	completed	rc=1	14s	executed=3	passed=1	failed=2	dubious=0	skipped=0
+tests/suites/casper/content.js	completed	rc=1	16s	executed=3	passed=0	failed=3	dubious=0	skipped=0
+tests/suites/casper/css3selector.js	completed	rc=0	13s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/debug.js	completed	rc=0	11s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/casper/elementattribute.js	completed	rc=0	12s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/encode.js	completed	rc=1	13s	executed=3	passed=1	failed=2	dubious=0	skipped=0
+tests/suites/casper/encodedurl.js	completed	rc=0	12s	executed=8	passed=8	failed=0	dubious=0	skipped=0
+tests/suites/casper/evaluate.js	completed	rc=1	23s	executed=15	passed=14	failed=1	dubious=0	skipped=0
+tests/suites/casper/events.js	completed	rc=0	10s	executed=7	passed=7	failed=0	dubious=0	skipped=0
+tests/suites/casper/exists.js	completed	rc=0	11s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/casper/fetchtext.js	completed	rc=0	18s	executed=5	passed=5	failed=0	dubious=0	skipped=0
+tests/suites/casper/formfill.js	timeout	rc=124	181s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/frames.js	completed	rc=1	17s	executed=17	passed=0	failed=17	dubious=0	skipped=0
+tests/suites/casper/getplaintext.js	completed	rc=1	13s	executed=1	passed=0	failed=1	dubious=0	skipped=0
+tests/suites/casper/global.js	completed	rc=0	13s	executed=3	passed=3	failed=0	dubious=0	skipped=0
+tests/suites/casper/headers.js	completed	rc=1	51s	executed=5	passed=4	failed=1	dubious=0	skipped=0
+tests/suites/casper/history.js	completed	rc=0	14s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/hooks.js	completed	rc=0	16s	executed=8	passed=8	failed=0	dubious=0	skipped=0
+tests/suites/casper/keys.js	completed	rc=1	18s	executed=5	passed=0	failed=5	dubious=0	skipped=0
+tests/suites/casper/location.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/logging.js	completed	rc=0	13s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/mouseevents.js	completed	rc=0	12s	executed=20	passed=20	failed=0	dubious=0	skipped=0
+tests/suites/casper/multiplepopups.js	completed	rc=1	22s	executed=2	passed=1	failed=1	dubious=0	skipped=0
+tests/suites/casper/navigation.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/newpage.js	completed	rc=0	15s	executed=5	passed=5	failed=0	dubious=0	skipped=0
+tests/suites/casper/onerror.js	completed	rc=1	12s	executed=1	passed=0	failed=1	dubious=0	skipped=0
+tests/suites/casper/open.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/pagerequest.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/popup.js	completed	rc=1	17s	executed=1	passed=0	failed=1	dubious=0	skipped=0
+tests/suites/casper/prompt.js	completed	rc=1	12s	executed=1	passed=0	failed=1	dubious=0	skipped=0
+tests/suites/casper/reload.js	timeout	rc=124	181s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/request.js	completed	rc=1	15s	executed=3	passed=2	failed=1	dubious=0	skipped=0
+tests/suites/casper/resources.js	completed	rc=1	16s	executed=5	passed=5	failed=0	dubious=1	skipped=0
+tests/suites/casper/scripts.js	completed	rc=0	16s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/scroll.js	completed	rc=0	15s	executed=3	passed=3	failed=0	dubious=0	skipped=0
+tests/suites/casper/sendAjax.js	completed	rc=1	15s	executed=3	passed=2	failed=1	dubious=0	skipped=0
+tests/suites/casper/start.js	completed	rc=0	14s	executed=4	passed=4	failed=0	dubious=0	skipped=0
+tests/suites/casper/steps.js	completed	rc=0	16s	executed=10	passed=10	failed=0	dubious=0	skipped=0
+tests/suites/casper/urls.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/viewport.js	completed	rc=1	20s	executed=6	passed=5	failed=1	dubious=0	skipped=0
+tests/suites/casper/visible.js	completed	rc=0	13s	executed=11	passed=11	failed=0	dubious=0	skipped=0
+tests/suites/casper/wait.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/xpath.js	timeout	rc=124	181s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/cli.js	completed	rc=0	13s	executed=82	passed=82	failed=0	dubious=0	skipped=0
+tests/suites/clientutils.js	completed	rc=0	17s	executed=85	passed=85	failed=0	dubious=0	skipped=0
+tests/suites/fs.js	completed	rc=0	11s	executed=14	passed=14	failed=0	dubious=0	skipped=0
+tests/suites/http_status.js	timeout	rc=124	180s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/pagestack.js	completed	rc=1	12s	executed=2	passed=1	failed=1	dubious=0	skipped=0
+tests/suites/require.js	completed	rc=1	12s	executed=2	passed=1	failed=1	dubious=0	skipped=0
+tests/suites/tester/assert.js	completed	rc=0	30s	executed=67	passed=67	failed=0	dubious=0	skipped=0
+tests/suites/tester/begin-config.js	completed	rc=0	11s	executed=10	passed=10	failed=0	dubious=0	skipped=0
+tests/suites/tester/setup-teardown-async.js	completed	rc=0	10s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/tester/setup-teardown.js	completed	rc=0	10s	executed=2	passed=2	failed=0	dubious=0	skipped=0
+tests/suites/tester/skip.js	completed	rc=0	12s	executed=4	passed=4	failed=0	dubious=0	skipped=5
+tests/suites/tester/test-order.js	completed	rc=0	10s	executed=1	passed=1	failed=0	dubious=0	skipped=0
+tests/suites/tester/testcase.js	completed	rc=0	11s	executed=26	passed=26	failed=0	dubious=0	skipped=0
+tests/suites/tester/testsuite.js	completed	rc=0	10s	executed=15	passed=15	failed=0	dubious=0	skipped=0
+tests/suites/utils.js	completed	rc=1	19s	executed=155	passed=153	failed=2	dubious=0	skipped=0
+tests/suites/xunit.js	completed	rc=0	16s	executed=15	passed=15	failed=0	dubious=0	skipped=0
+TOTAL 2825s
+
+## per-file logs (ANSI colour codes stripped)
+===== tests/suites/casper/agent.js
+Test file: tests/suites/casper/agent.js                                         
+# userAgent() tests
+FAIL Default user agent matches /CasperJS/
+#    type: assertMatch
+#    file: tests/suites/casper/agent.js
+#    subject: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/160.0.0.0 Safari/537.36"
+#    pattern: "/CasperJS/"
+PASS userAgent() tests (3 tests)
+FAIL 1 test executed in 0.186s, 0 passed, 1 failed, 0 dubious, 0 skipped.       
+
+Details for the 1 failed test:
+
+In tests/suites/casper/agent.js
+  userAgent() tests
+    assertMatch: Default user agent matches /CasperJS/
+===== tests/suites/casper/alert.js
+Test file: tests/suites/casper/alert.js                                         
+# alert events
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS alert event has been intercepted
+PASS alert events (1 test)
+# Casper.waitForAlert() waits for an alert
+PASS Casper.waitForAlert() can wait for an alert to be triggered
+PASS Casper.waitForAlert() waits for an alert (1 test)
+PASS 2 tests executed in 4.166s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/auth.js
+Test file: tests/suites/casper/auth.js                                          
+# HTTP authentication tests
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS HTTP authentication tests (8 tests)
+PASS 8 tests executed in 1.228s, 8 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/bypass.js
+Test file: tests/suites/casper/bypass.js                                        
+# Casper.bypass() can bypass a step
+PASS step.bypassed event has been catched
+PASS Step has been bypassed
+PASS Casper.bypass() can bypass a step (2 tests)
+# Casper.bypass() can bypass multiple steps
+PASS This test should be executed.
+PASS Casper.bypass() can bypass multiple steps (1 test)
+# Casper.thenBypass()
+PASS This test should be executed.
+PASS Casper.thenBypass() (1 test)
+# Casper.thenBypassIf()
+PASS This test should be executed.
+PASS This test should be executed.
+PASS This test should be executed.
+PASS Casper.thenBypassIf() (3 tests)
+# Casper.thenBypassUnless()
+PASS This test should be executed.
+PASS This test should be executed.
+PASS This test should be executed.
+PASS Casper.thenBypassUnless() (3 tests)
+PASS 10 tests executed in 2.881s, 10 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/casper/callback.js
+Test file: tests/suites/casper/callback.js                                      
+# callback events
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS callback event has been intercepted
+PASS callback events (1 test)
+PASS 1 test executed in 1.802s, 1 passed, 0 failed, 0 dubious, 0 skipped.       
+===== tests/suites/casper/callutils.js
+Test file: tests/suites/casper/callutils.js                                     
+# Casper.callUtils()
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.callUtils() invokes a client side utility
+PASS Casper.callUtils() raises an error if used inappropriately
+PASS Casper.callUtils() (2 tests)
+PASS 2 tests executed in 2.427s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/capture.js
+Test file: tests/suites/casper/capture.js                                       
+# Casper.capture() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.capture() captured a screenshot
+PASS Casper.capture() tests (1 test)
+# Casper.captureSelector() tests
+PASS Casper.captureSelector() captured from a selector
+PASS Casper.captureSelector() captured from a selector after scrolling
+PASS Casper.captureSelector() tests (2 tests)
+# Casper.captureBase64() tests
+PASS Casper.captureBase64() rendered a page capture as base64
+PASS Casper.captureBase64() rendered a capture from a selector as base64
+PASS Casper.captureBase64() rendered a capture from a clipRect as base64
+PASS Casper.captureBase64() rendered from a selector must be the same before and after scrolling
+PASS Casper.captureBase64() tests (4 tests)
+PASS 7 tests executed in 8.028s, 7 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/click.js
+Test file: tests/suites/casper/click.js                                         
+# click() tests
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/confirm.js
+Test file: tests/suites/casper/confirm.js                                       
+# can confirm dialog
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL confirmation dialog accepted
+#    type: assert
+#    file: tests/suites/casper/confirm.js
+#    subject: false
+FAIL confirmation message is ok
+#    type: assertEquals
+#    file: tests/suites/casper/confirm.js
+#    subject: undefined
+#    expected: "are you sure?"
+PASS can confirm dialog (2 tests)
+# can cancel dialog
+PASS confirmation dialog canceled
+PASS can cancel dialog (1 test)
+FAIL 3 tests executed in 3.799s, 1 passed, 2 failed, 0 dubious, 0 skipped.      
+
+Details for the 2 failed tests:
+
+In tests/suites/casper/confirm.js
+  can confirm dialog
+    assert: confirmation dialog accepted
+In tests/suites/casper/confirm.js
+  can confirm dialog
+    assertEquals: confirmation message is ok
+===== tests/suites/casper/content.js
+Test file: tests/suites/casper/content.js                                       
+# Casper.getPageContent() text/html content
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL Casper.getPageContent() retrieves text/html content
+#    type: assertMatch
+#    file: tests/suites/casper/content.js
+#    subject: undefined
+#    pattern: "/<title>CasperJS test target/"
+PASS Casper.getPageContent() text/html content (1 test)
+# Casper.getPageContent() non text/html content
+FAIL Casper.getPageContent() retrieves application/json content
+#    type: assertEquals
+#    file: tests/suites/casper/content.js
+#    subject: undefined
+#    expected: "{\"dummy\":\"json\"}\n"
+FAIL Casper.getPageContent() retrieves text/plain content
+#    type: assertEquals
+#    file: tests/suites/casper/content.js
+#    subject: undefined
+#    expected: "some dummy text\n"
+PASS Casper.getPageContent() non text/html content (2 tests)
+FAIL 3 tests executed in 5.535s, 0 passed, 3 failed, 0 dubious, 0 skipped.      
+
+Details for the 3 failed tests:
+
+In tests/suites/casper/content.js
+  Casper.getPageContent() text/html content
+    assertMatch: Casper.getPageContent() retrieves text/html content
+In tests/suites/casper/content.js
+  Casper.getPageContent() non text/html content
+    assertEquals: Casper.getPageContent() retrieves application/json content
+In tests/suites/casper/content.js
+  Casper.getPageContent() non text/html content
+    assertEquals: Casper.getPageContent() retrieves text/plain content
+===== tests/suites/casper/css3selector.js
+Test file: tests/suites/casper/css3selector.js                                  
+# selector() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.Evaluate() get css 3 selector content text
+PASS selector() tests (1 test)
+# withSelectorScope() tests
+PASS Casper.Evaluate() get css 3 selector content text from simple selector scope
+PASS Casper.Evaluate() get css 3 selector content text from double selector scope
+PASS Casper.Evaluate() get css 3 selector content text from another selector scope
+PASS withSelectorScope() tests (3 tests)
+PASS 4 tests executed in 4.02s, 4 passed, 0 failed, 0 dubious, 0 skipped.       
+===== tests/suites/casper/debug.js
+Test file: tests/suites/casper/debug.js                                         
+# getHTML() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.getHTML() retrieves inner HTML by default
+PASS Casper.getHTML() can retrieve outer HTML
+PASS getHTML() tests (2 tests)
+PASS 2 tests executed in 1.919s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/elementattribute.js
+Test file: tests/suites/casper/elementattribute.js                              
+# getElementAttribute() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.getElementAttribute() works with a CSS selector
+PASS Casper.getElementAttribute() works with a XPath selector
+PASS Casper.getElementsAttribute() works with a CSS selector
+PASS Casper.getElementsAttribute() works with a XPath selector
+PASS getElementAttribute() tests (4 tests)
+PASS 4 tests executed in 2.224s, 4 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/encode.js
+Test file: tests/suites/casper/encode.js                                        
+# base64encode() and download() tests
+FAIL Casper.base64encode() can retrieve base64 contents
+#    type: assertEquals
+#    file: tests/suites/casper/encode.js
+#    subject: 0
+#    expected: 6160
+PASS Casper.download() downloads a file
+FAIL Casper.base64encode() can retrieve base64 complex strings
+#    type: assertEquals
+#    file: tests/suites/casper/encode.js
+#    subject: ""
+#    expected: "إختبار,"
+PASS base64encode() and download() tests (8 tests)
+FAIL 3 tests executed in 2.906s, 1 passed, 2 failed, 0 dubious, 0 skipped.      
+
+Details for the 2 failed tests:
+
+In tests/suites/casper/encode.js
+  base64encode() and download() tests
+    assertEquals: Casper.base64encode() can retrieve base64 contents
+In tests/suites/casper/encode.js
+  base64encode() and download() tests
+    assertEquals: Casper.base64encode() can retrieve base64 complex strings
+===== tests/suites/casper/encodedurl.js
+Test file: tests/suites/casper/encodedurl.js                                    
+# phantomjs 2.1.1 tests/site/has%20space.html then tests/site/index.html
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS page.resource.requested 1
+PASS page.resource.received 1
+PASS status 200 for tests/site/has%20space.html
+PASS opened tests/site/has%20space.html
+PASS page.resource.requested 2
+PASS page.resource.received 2
+PASS status 200 for tests/site/index.html
+PASS opened tests/site/index.html
+PASS phantomjs 2.1.1 tests/site/has%20space.html then tests/site/index.html (8 tests)
+PASS 8 tests executed in 2.927s, 8 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/evaluate.js
+Test file: tests/suites/casper/evaluate.js                                      
+# mapping argument context
+FAIL Casper.evaluate() handles passed argument context correcly
+#    type: assertEquals
+#    file: tests/suites/casper/evaluate.js
+#    subject: "boolean,boolean,number,number,string,object,object,object"
+#    expected: "boolean,boolean,number,number,string,object,object,function"
+PASS mapping argument context (1 test)
+# handling no argument context
+PASS Casper.evaluate() handles evaluation with no context passed
+PASS handling no argument context (1 test)
+# handling of object context (BC mode)
+PASS Casper.evaluate() accepts an object as arguments context
+PASS Casper.evaluate() accepts an object as arguments context
+PASS Casper.evaluate() accepts an object as arguments context
+PASS handling of object context (BC mode) (3 tests)
+# handling of array context
+PASS Casper.evaluate() accepts an array as arguments context
+PASS Casper.evaluate() accepts an array as arguments context
+PASS Casper.evaluate() accepts an array as arguments context
+PASS handling of array context (3 tests)
+# natural arguments context (phantomjs equivalent)
+PASS Casper.evaluate() accepts natural arguments context
+PASS Casper.evaluate() accepts natural arguments context
+PASS Casper.evaluate() accepts natural arguments context
+PASS natural arguments context (phantomjs equivalent) (3 tests)
+# thenEvaluate() tests
+PASS Casper.thenEvaluate() sets args
+PASS Casper.thenEvaluate() sets args the same way evaluate() does
+PASS thenEvaluate() tests (2 tests)
+# evaluate() returns a value which can be altered
+PASS evaluate() returns a cloned value which can be altered
+PASS evaluate() returns a value which can be altered (1 test)
+# evaluate() with js disabled, throws error
+PASS Casper.evaluate() raises an error if JavaScript is disabled in the page
+PASS evaluate() with js disabled, throws error (1 test)
+FAIL 15 tests executed in 12.199s, 14 passed, 1 failed, 0 dubious, 0 skipped.   
+
+Details for the 1 failed test:
+
+In tests/suites/casper/evaluate.js
+  mapping argument context
+    assertEquals: Casper.evaluate() handles passed argument context correcly
+===== tests/suites/casper/events.js
+Test file: tests/suites/casper/events.js                                        
+# events
+PASS on() has set an event handler
+PASS emit() emits an event
+PASS events (2 tests)
+# filters
+PASS setFilter() has set a filter
+PASS filter() filters a value
+PASS filter() applies the correct context
+PASS filters (3 tests)
+# events order
+PASS mowed has the correct value
+PASS mowed has the correct value
+PASS events order (2 tests)
+PASS 7 tests executed in 0.291s, 7 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/exists.js
+Test file: tests/suites/casper/exists.js                                        
+# exists() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.exists() can check if an element exists
+PASS Casper.exists() can check than an element does not exist
+PASS exists() tests (2 tests)
+PASS 2 tests executed in 1.973s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/fetchtext.js
+Test file: tests/suites/casper/fetchtext.js                                     
+# fetchText() basic tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.fetchText() can retrieve text contents
+PASS fetchText() basic tests (1 test)
+# fetchText() basic tests
+PASS Casper.fetchText() can retrieve text contents from an input element
+PASS fetchText() basic tests (1 test)
+# fetchText() handles HTML entities
+PASS Casper.fetchText() fetches decoded text
+PASS fetchText() handles HTML entities (1 test)
+# fetchText() handles empty elements
+PASS Casper.fetchText() fetches empty string
+PASS fetchText() handles empty elements (1 test)
+# fetchText() handles plain texts
+PASS Casper.fetchText() handles plain texts
+PASS fetchText() handles plain texts (1 test)
+PASS 5 tests executed in 9.224s, 5 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/formfill.js
+Test file: tests/suites/casper/formfill.js                                      
+# fill() & fillNames() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS can fill an input[type=text] form field
+PASS can fill an input[type=password] form field
+PASS can fill a textarea form field
+PASS can pick a value from a select form field
+PASS can pick a set of values from a multiselect form field
+PASS can check a form checkbox
+PASS can check a form radio button 1/2
+PASS can check a form radio button 2/2
+PASS can fill a list of checkboxes
+PASS can select a file to upload
+PASS can check a form file value
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/frames.js
+Test file: tests/suites/casper/frames.js                                        
+# handling frames
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Page title is: "CasperJS frame 1"
+#    type: assertTitle
+#    file: tests/suites/casper/frames.js
+#    subject: "CasperJS test frames"
+#    expected: "CasperJS frame 1"
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Page title is: "CasperJS frame 2"
+#    type: assertTitle
+#    file: tests/suites/casper/frames.js
+#    subject: "CasperJS test frames"
+#    expected: "CasperJS frame 2"
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Page title is: "CasperJS frame 3"
+#    type: assertTitle
+#    file: tests/suites/casper/frames.js
+#    subject: "CasperJS test frames"
+#    expected: "CasperJS frame 3"
+FAIL TypeError: this.page.childFramesCount is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesCount is not a function
+#           TypeError: this.page.childFramesCount is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2263:35)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Page title is: "CasperJS frame 1"
+#    type: assertTitle
+#    file: tests/suites/casper/frames.js
+#    subject: "CasperJS test frames"
+#    expected: "CasperJS frame 1"
+FAIL TypeError: this.page.childFramesCount is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesCount is not a function
+#           TypeError: this.page.childFramesCount is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2263:35)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Page title is: "CasperJS frame 3"
+#    type: assertTitle
+#    file: tests/suites/casper/frames.js
+#    subject: "CasperJS test frames"
+#    expected: "CasperJS frame 3"
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_self"]
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_self"]
+
+#    stack: not provided
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL TypeError: this.page.childFramesName is not a function
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: this.page.childFramesName is not a function
+#           TypeError: this.page.childFramesName is not a function
+#               at Casper.switchToChildFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2267:26)
+#               at Casper.switchToFrame (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2288:10)
+#               at Casper._step (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2809:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_parent"]
+#    type: uncaughtError
+#    file: tests/suites/casper/frames.js
+#    error: Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_parent"]
+
+#    stack: not provided
+TypeError: Cannot read properties of undefined (reading 'indexOf')              
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2682 in Casper._check
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2422 in _check
+  /home/hatch/gbtmp/s11/cj/pkg/package/http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58
+FAIL TypeError: Cannot read properties of undefined (reading 'indexOf')
+#    type: error
+#    file: tests/suites/casper/frames.js
+#    subject: false
+#    error: "TypeError: Cannot read properties of undefined (reading 'indexOf')"
+#    stack: in Casper._check() in eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2682
+in _check() in eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2422
+in anonymous() in http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58
+PASS handling frames (37 tests)
+FAIL 17 tests executed in 5.619s, 0 passed, 17 failed, 0 dubious, 0 skipped.    
+
+Details for the 17 failed tests:
+
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    assertTitle: Page title is: "CasperJS frame 1"
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    assertTitle: Page title is: "CasperJS frame 2"
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    assertTitle: Page title is: "CasperJS frame 3"
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesCount is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    assertTitle: Page title is: "CasperJS frame 1"
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesCount is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    assertTitle: Page title is: "CasperJS frame 3"
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_self"]
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: TypeError: this.page.childFramesName is not a function
+In tests/suites/casper/frames.js
+  handling frames
+    uncaughtError: Cannot dispatch mousedown event on nonexistent selector: xpath selector: //*[text()="_parent"]
+In tests/suites/casper/frames.js
+  handling frames
+    error: TypeError: Cannot read properties of undefined (reading 'indexOf')
+TypeError: Cannot read properties of undefined (reading 'indexOf')              
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2682 in Casper._check
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2422 in _check
+  /home/hatch/gbtmp/s11/cj/pkg/package/http:/127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58
+FAIL TypeError: Cannot read properties of undefined (reading 'indexOf')
+#    type: error
+#    file: tests/suites/casper/frames.js
+#    subject: false
+#    error: "TypeError: Cannot read properties of undefined (reading 'indexOf')"
+#    stack: in Casper._check() in eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2682
+in _check() in eval at resolve (http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:557:19), <anonymous>:2422
+in anonymous() in http://127.0.0.1:40829/b3fc3fd4992495560852d10a6ce2e261/gb-runtime.js:58
+PASS Untitled suite in tests/suites/casper/frames.js
+===== tests/suites/casper/getplaintext.js
+Test file: tests/suites/casper/getplaintext.js                                  
+# getPlainText() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL Casper.getPlainText() can retrieve plain text with no content type
+#    type: assertEquals
+#    file: tests/suites/casper/getplaintext.js
+#    subject: undefined
+#    expected: "This is a plain and very simple sentence."
+PASS getPlainText() tests (1 test)
+FAIL 1 test executed in 1.978s, 0 passed, 1 failed, 0 dubious, 0 skipped.       
+
+Details for the 1 failed test:
+
+In tests/suites/casper/getplaintext.js
+  getPlainText() tests
+    assertEquals: Casper.getPlainText() can retrieve plain text with no content type
+===== tests/suites/casper/global.js
+Test file: tests/suites/casper/global.js                                        
+# getGLobal() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.getGlobal() can retrieve a remote global variable
+PASS Casper.getGlobal() can retrieves a serializable object
+PASS Casper.getGlobal() does not fail trying to encode an unserializable global
+PASS getGLobal() tests (3 tests)
+PASS 3 tests executed in 2.123s, 3 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/headers.js
+Test file: tests/suites/casper/headers.js                                       
+# Casper.headers.get() using file protocol
+PASS Empty http response on local page
+PASS Casper.headers.get() using file protocol (1 test)
+# Casper.headers.get() using http protocol
+PASS Checking existing header (case sensitive)
+PASS Checking existing header (case insensitive)
+PASS Checking unexisting header
+PASS Casper.headers.get() using http protocol (3 tests)
+# Casper.headers.check() checks useraagent in popup
+FAIL index.html did not pop up in 5000ms
+#    type: uncaughtError
+#    file: tests/suites/casper/headers.js
+#    error: index.html did not pop up in 5000ms
+
+#    stack: not provided
+PASS Casper.headers.check() checks useraagent in popup (1 test)
+FAIL 5 tests executed in 41.504s, 4 passed, 1 failed, 0 dubious, 0 skipped.     
+
+Details for the 1 failed test:
+
+In tests/suites/casper/headers.js
+  Casper.headers.check() checks useraagent in popup
+    uncaughtError: index.html did not pop up in 5000ms
+===== tests/suites/casper/history.js
+Test file: tests/suites/casper/history.js                                       
+# handling navigation history
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.back() can go back an history step
+PASS Casper.forward() can go forward an history step
+PASS Casper.history contains urls
+PASS Casper.history has the correct first url
+PASS handling navigation history (4 tests)
+PASS 4 tests executed in 3.907s, 4 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/hooks.js
+Test file: tests/suites/casper/hooks.js                                         
+# onStepComplete() hook tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.options.onStepComplete() is called on step complete
+PASS onStepComplete() hook tests (1 test)
+# onResourceRequested() & onResourceReceived() hook tests
+PASS onResourceRequested() receives page requests
+PASS onResourceRequested() receives image requests
+PASS onResourceReceived() receives page response on load start
+PASS onResourceReceived() receives page response on load end
+PASS onResourceReceived() receives image response on load start
+PASS onResourceReceived() receives image response on load end
+PASS onResourceRequested() & onResourceReceived() hook tests (6 tests)
+# onAlert() hook tests
+PASS Casper.options.onAlert() can intercept an alert message
+PASS onAlert() hook tests (1 test)
+PASS 8 tests executed in 6.39s, 8 passed, 0 failed, 0 dubious, 0 skipped.       
+===== tests/suites/casper/keys.js
+Test file: tests/suites/casper/keys.js                                          
+# sendKeys() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL TypeError: Cannot read properties of undefined (reading 'modifier')
+#    type: uncaughtError
+#    file: tests/suites/casper/keys.js
+#    error: Cannot read properties of undefined (reading 'modifier')
+#           TypeError: Cannot read properties of undefined (reading 'modifier')
+#               at Casper.sendKeys (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1745:59)
+#               at Casper.eval (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/casper/keys.js:7:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:58:97
+#    stack: not provided
+PASS sendKeys() tests (4 tests)
+# sendKeys() works on content-editable elements
+FAIL TypeError: Cannot read properties of undefined (reading 'modifier')
+#    type: uncaughtError
+#    file: tests/suites/casper/keys.js
+#    error: Cannot read properties of undefined (reading 'modifier')
+#           TypeError: Cannot read properties of undefined (reading 'modifier')
+#               at Casper.sendKeys (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1745:59)
+#               at Casper.eval (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/casper/keys.js:31:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:58:97
+#    stack: not provided
+FAIL Find "A Clockwork Orange" within the selector "#content-editable-div"
+#    type: assertSelectorHasText
+#    file: tests/suites/casper/keys.js
+#    subject: false
+#    selector: "#content-editable-div"
+#    text: "A Clockwork Orange"
+#    actualContent: ""
+PASS sendKeys() works on content-editable elements (1 test)
+# sendKeys() key modifiers tests
+FAIL TypeError: Cannot read properties of undefined (reading 'modifier')
+#    type: uncaughtError
+#    file: tests/suites/casper/keys.js
+#    error: Cannot read properties of undefined (reading 'modifier')
+#           TypeError: Cannot read properties of undefined (reading 'modifier')
+#               at Casper.sendKeys (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1745:59)
+#               at Casper.eval (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/casper/keys.js:48:18)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:58:97
+#    stack: not provided
+PASS sendKeys() key modifiers tests (1 test)
+# sendKeys() reset option
+FAIL TypeError: Cannot read properties of undefined (reading 'modifier')
+#    type: uncaughtError
+#    file: tests/suites/casper/keys.js
+#    error: Cannot read properties of undefined (reading 'modifier')
+#           TypeError: Cannot read properties of undefined (reading 'modifier')
+#               at Casper.sendKeys (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1745:59)
+#               at Casper.eval (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/casper/keys.js:65:14)
+#               at Casper.runStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:1686:27)
+#               at checkStep (eval at resolve (http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:557:19), <anonymous>:415:21)
+#               at http://127.0.0.1:34803/a59f9761e08f7ee3a065457cc6819e8d/gb-runtime.js:58:97
+#    stack: not provided
+PASS sendKeys() reset option (1 test)
+FAIL 5 tests executed in 8.351s, 0 passed, 5 failed, 0 dubious, 0 skipped.      
+
+Details for the 5 failed tests:
+
+In tests/suites/casper/keys.js
+  sendKeys() tests
+    uncaughtError: TypeError: Cannot read properties of undefined (reading 'modifier')
+In tests/suites/casper/keys.js
+  sendKeys() works on content-editable elements
+    uncaughtError: TypeError: Cannot read properties of undefined (reading 'modifier')
+In tests/suites/casper/keys.js
+  sendKeys() works on content-editable elements
+    assertSelectorHasText: Find "A Clockwork Orange" within the selector "#content-editable-div"
+In tests/suites/casper/keys.js
+  sendKeys() key modifiers tests
+    uncaughtError: TypeError: Cannot read properties of undefined (reading 'modifier')
+In tests/suites/casper/keys.js
+  sendKeys() reset option
+    uncaughtError: TypeError: Cannot read properties of undefined (reading 'modifier')
+===== tests/suites/casper/location.js
+Test file: tests/suites/casper/location.js                                      
+# document.location tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/logging.js
+Test file: tests/suites/casper/logging.js                                       
+# logging tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.log() adds a log entry
+PASS ClientUtils.log() adds a log entry
+PASS ClientUtils.log() adds a log entry at a given level
+PASS Casper.log() logged messages
+PASS logging tests (4 tests)
+PASS 4 tests executed in 2.093s, 4 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/mouseevents.js
+Test file: tests/suites/casper/mouseevents.js                                   
+# mouseEvent() tests
+PASS Casper.mouseEvent() can dispatch a mousedown event
+PASS Casper.mouseEvent() can dispatch a mousedown event handled by unobstrusive js
+PASS Casper.mouseEvent() can dispatch a mouseup event
+PASS Casper.mouseEvent() can dispatch a mouseup event handled by unobstrusive js
+PASS Casper.mouseEvent() can dispatch a mouseover event
+PASS Casper.mouseEvent() can dispatch a mouseover event handled by unobstrusive js
+PASS Casper.mouseEvent() can dispatch a mouseout event
+PASS Casper.mouseEvent() can dispatch a mouseout event handled by unobstrusive js
+PASS Casper.mouseEvent() can dispatch a click event on an hidden element
+PASS Casper.mouseEvent() can dispatch a click event handled by unobstrusive js on an hidden element 
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.mouseEvent() triggered mousedown
+PASS Casper.mouseEvent() triggered mousedown via unobstrusive js
+PASS Casper.mouseEvent() triggered mouseup
+PASS Casper.mouseEvent() triggered mouseup via unobstrusive js
+PASS Casper.mouseEvent() triggered mouseover
+PASS Casper.mouseEvent() triggered mouseover via unobstrusive js
+PASS Casper.mouseEvent() triggered mouseout
+PASS Casper.mouseEvent() triggered mouseout via unobstrusive js
+PASS Casper.mouseEvent() triggered click on an hidden element
+PASS Casper.mouseEvent() triggered click on an hidden element via unobstrusive js
+PASS mouseEvent() tests (20 tests)
+PASS 20 tests executed in 2.615s, 20 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/casper/multiplepopups.js
+Test file: tests/suites/casper/multiplepopups.js                                
+# multiple-popups tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Find an element matching: .openpopup
+FAIL /close\.html/ did not pop up in 5000ms
+#    type: uncaughtError
+#    file: tests/suites/casper/multiplepopups.js
+#    error: /close\.html/ did not pop up in 5000ms
+
+#    stack: not provided
+PASS multiple-popups tests (20 tests)
+PASS Casper.withPopup() has reverted to main page after using the popup
+FAIL 2 tests executed in 12.322s, 1 passed, 1 failed, 0 dubious, 0 skipped.     
+
+Details for the 1 failed test:
+
+In tests/suites/casper/multiplepopups.js
+  multiple-popups tests
+    uncaughtError: /close\.html/ did not pop up in 5000ms
+PASS Casper.withPopup() has ropened a new page after closing main page
+===== tests/suites/casper/navigation.js
+Test file: tests/suites/casper/navigation.js                                    
+# Link Navigation updates response
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/newpage.js
+Test file: tests/suites/casper/newpage.js                                       
+# newPage() tests
+PASS Casper.start() started
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.start() opened the first page
+PASS Casper.start() injects ClientUtils instance within remote DOM
+PASS casper.newPage() created a new page object
+PASS Casper.newPage() injects ClientUtils instance within remote DOM
+PASS newPage() tests (5 tests)
+PASS 5 tests executed in 4.027s, 5 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/onerror.js
+Test file: tests/suites/casper/onerror.js                                       
+# page.error event tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL page.error event has been caught OK
+#    type: assertEquals
+#    file: tests/suites/casper/onerror.js
+#    subject: "ReferenceError: plop is not defined"
+#    expected: "ReferenceError: Can't find variable: plop"
+PASS page.error event tests (2 tests)
+FAIL 1 test executed in 1.855s, 0 passed, 1 failed, 0 dubious, 0 skipped.       
+
+Details for the 1 failed test:
+
+In tests/suites/casper/onerror.js
+  page.error event tests
+    assertEquals: page.error event has been caught OK
+===== tests/suites/casper/open.js
+Test file: tests/suites/casper/open.js                                          
+# open() GET tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.open() can open and load a location using GET
+PASS Casper.open() used the expected GET settings
+PASS open() GET tests (2 tests)
+# open() GET casing tests
+PASS Casper.open() can open and load a location using GET
+PASS Casper.open() used the expected GET settings
+PASS open() GET casing tests (2 tests)
+# open() (JS disabled) tests
+PASS Casper.open() can open and load a location using GET, with JS disabled
+PASS Casper.open() used the expected GET settings
+PASS Response Code is 200
+PASS open() (JS disabled) tests (3 tests)
+# open() POST tests
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/pagerequest.js
+Test file: tests/suites/casper/pagerequest.js                                   
+# event page.resource.requested tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/popup.js
+Test file: tests/suites/casper/popup.js                                         
+# popup tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL index.html did not pop up in 5000ms
+#    type: uncaughtError
+#    file: tests/suites/casper/popup.js
+#    error: index.html did not pop up in 5000ms
+
+#    stack: not provided
+PASS popup tests (30 tests)
+FAIL 1 test executed in 7.118s, 0 passed, 1 failed, 0 dubious, 0 skipped.       
+
+Details for the 1 failed test:
+
+In tests/suites/casper/popup.js
+  popup tests
+    uncaughtError: index.html did not pop up in 5000ms
+===== tests/suites/casper/prompt.js
+Test file: tests/suites/casper/prompt.js                                        
+# prompt tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+FAIL prompted value has been received
+#    type: assertEquals
+#    file: tests/suites/casper/prompt.js
+#    subject: null
+#    expected: "Chuck Norris"
+PASS prompt tests (1 test)
+FAIL 1 test executed in 1.978s, 0 passed, 1 failed, 0 dubious, 0 skipped.       
+
+Details for the 1 failed test:
+
+In tests/suites/casper/prompt.js
+  prompt tests
+    assertEquals: prompted value has been received
+===== tests/suites/casper/reload.js
+Test file: tests/suites/casper/reload.js                                        
+# reload() tests
+PASS Subject is strictly true
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/request.js
+Test file: tests/suites/casper/request.js                                       
+# requests tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.open() sets no custom header by default
+FAIL Casper.open() can set a custom header
+#    type: assert
+#    file: tests/suites/casper/request.js
+#    subject: false
+PASS Casper.open() custom headers option is not persistent
+PASS requests tests (3 tests)
+FAIL 3 tests executed in 3.889s, 2 passed, 1 failed, 0 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/casper/request.js
+  requests tests
+    assert: Casper.open() can set a custom header
+===== tests/suites/casper/resources.js
+Test file: tests/suites/casper/resources.js                                     
+# Basic resources tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS only one resource found
+PASS two resources found
+PASS phantom image found via test RegExp
+PASS phantom image found via test Function
+PASS phantom image found via test String
+PASS Basic resources tests (5 tests)
+# "resource.error" event
+Test server url not found: /tests/site/non-existant.html (file: /home/hatch/gbtmp/s11/cj/pkg/package//tests/site/non-existant.html) warning
+⚠  "resource.error" event: 3 tests planned, 0 tests executed
+PASS "resource.error" event (3 tests)
+FAIL 5 tests executed in 2.179s, 5 passed, 0 failed, 1 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/casper/resources.js
+  "resource.error" event
+    dubious: "resource.error" event: 3 tests planned, 0 tests executed
+===== tests/suites/casper/scripts.js
+Test file: tests/suites/casper/scripts.js                                       
+# remote script includes tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.includeRemoteScripts() includes a first remote script on start
+PASS Casper.includeRemoteScripts() includes a second remote script on start
+PASS Casper.includeRemoteScripts() includes a first remote script on second step
+PASS Casper.includeRemoteScripts() includes a second remote script on second step
+PASS remote script includes tests (4 tests)
+PASS 4 tests executed in 3.927s, 4 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/scroll.js
+Test file: tests/suites/casper/scroll.js                                        
+# Casper.scrollTo()
+PASS scrollTo() scrolls to X position
+PASS scrollTo() scrolls to Y position
+PASS Casper.scrollTo() (2 tests)
+# Casper.scrollToBottom()
+PASS scrollToBottom() scrolls to max Y by default
+PASS Casper.scrollToBottom() (1 test)
+PASS 3 tests executed in 4.786s, 3 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/sendAjax.js
+Test file: tests/suites/casper/sendAjax.js                                      
+# __utils__.sendAJAX() POST Custom Headers tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS AJAX POST Request has been received!
+PASS Data from AJAX POST Request has been received!
+FAIL User-Agent is set! Server thinks we're a googlebot!
+#    type: assertEquals
+#    file: tests/suites/casper/sendAjax.js
+#    subject: undefined
+#    expected: "Googlebot/2.1 (+http://www.google.com/bot.html)"
+PASS __utils__.sendAJAX() POST Custom Headers tests (8 tests)
+FAIL 3 tests executed in 2.885s, 2 passed, 1 failed, 0 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/casper/sendAjax.js
+  __utils__.sendAJAX() POST Custom Headers tests
+    assertEquals: User-Agent is set! Server thinks we're a googlebot!
+===== tests/suites/casper/start.js
+Test file: tests/suites/casper/start.js                                         
+# start() tests
+PASS Casper.start() started
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.start() can chain a next step
+PASS Casper.start() opened the passed url
+PASS Casper.start() injects ClientUtils instance within remote DOM
+PASS start() tests (4 tests)
+PASS 4 tests executed in 2.125s, 4 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/casper/steps.js
+Test file: tests/suites/casper/steps.js                                         
+# steps tests
+PASS Casper.then() can add a new step
+PASS Casper.thenOpen() can add a new step
+PASS Casper.thenOpen() can add a new step for opening, plus another step
+PASS Casper.each() passes a contextualized index
+PASS Casper.each() passes a contextualized index
+PASS Casper.each() passes a contextualized index
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.then() added a new step
+PASS Casper.thenOpen() opened a location and executed a step
+PASS steps tests (8 tests)
+# eachThen() tests
+PASS Casper.eachThen() passes item to step data
+PASS Casper.eachThen() passes falsy items to step data
+PASS eachThen() tests (2 tests)
+PASS 10 tests executed in 5.557s, 10 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/casper/urls.js
+Test file: tests/suites/casper/urls.js                                          
+# urls tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS HTTP status code is: 200
+PASS Casper.start loads URL with fragment
+PASS location.hash equals fragment
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/casper/viewport.js
+Test file: tests/suites/casper/viewport.js                                      
+# viewport() tests
+PASS Casper.viewport() can change the width of page viewport
+PASS Casper.viewport() can change the height of page viewport
+PASS Casper.viewport() validates viewport size data
+PASS viewport() tests (3 tests)
+# viewport() asynchronous tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.viewport() changes width asynchronously
+PASS Casper.viewport() changes height asynchronously
+FAIL index.html did not pop up in 5000ms
+#    type: uncaughtError
+#    file: tests/suites/casper/viewport.js
+#    error: index.html did not pop up in 5000ms
+
+#    stack: not provided
+PASS viewport() asynchronous tests (4 tests)
+FAIL 6 tests executed in 9.316s, 5 passed, 1 failed, 0 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/casper/viewport.js
+  viewport() asynchronous tests
+    uncaughtError: index.html did not pop up in 5000ms
+===== tests/suites/casper/visible.js
+Test file: tests/suites/casper/visible.js                                       
+# visibility tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.visible() can detect if an element is invisible
+PASS Casper.visible() can detect if an element is visible
+PASS Casper.visible() can detect if an element is invisible
+PASS Casper.visible() can detect if an element with display:flex is visible
+PASS Casper.visible() can detect if an element is visible
+PASS Casper.visible() can detect if an element is invisible when parent has display none
+PASS Casper.visible() can detect if an element is visible when parent is visible
+PASS Casper.visible() can detect if an element inside svg is visible
+PASS Casper.visible() can detect if an element inside svg is invisible when parent has display none
+PASS Casper.waitWhileVisible() can wait while an element is visible
+PASS Casper.waitWhileVisible() can wait while an element is visible until parent is hidden
+PASS visibility tests (11 tests)
+PASS 11 tests executed in 2.73s, 11 passed, 0 failed, 0 dubious, 0 skipped.     
+===== tests/suites/casper/wait.js
+Test file: tests/suites/casper/wait.js                                          
+# wait() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Casper.wait() can wait for a given amount of time
+PASS wait() tests (1 test)
+# waitFor() tests
+PASS Casper.waitFor() can wait for something to happen
+ghostbridge: chromium disconnected unexpectedly
+ghostbridge: handler error: Protocol error (Runtime.callFunctionOn): Target closed
+===== tests/suites/casper/xpath.js
+Test file: tests/suites/casper/xpath.js                                         
+# XPath tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS XPath selector can find an element
+PASS XPath selector does not retrieve a nonexistent element
+PASS selectXPath() shortcut can find an element as well
+PASS Correct number of elements are found
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/cli.js
+Test file: tests/suites/cli.js                                                  
+# parsing an empty argument list
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() does not return inexistant positional arg
+PASS parse() does not return inexistant option
+PASS has() checks if an arg is set
+PASS has() checks if an option is set
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() does not return inexistant positional arg
+PASS parse() does not return inexistant option
+PASS has() checks if a raw arg is set
+PASS has() checks if a raw option is set
+PASS parsing an empty argument list (12 tests)
+# parsing an basic argument list
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() retrieve first positional arg
+PASS parse() retrieve second positional arg
+PASS has() checks if an arg is set
+PASS has() checks if an arg is set
+PASS has() checks if an arg is not set
+PASS parse() returns expected positional raw args array
+PASS parse() returns expected raw options object
+PASS parse() retrieve first positional raw arg
+PASS parse() retrieve second positional raw arg
+PASS has() checks if a arw arg is set
+PASS has() checks if a arw arg is set
+PASS has() checks if a arw arg is not set
+PASS parsing an basic argument list (14 tests)
+# parsing some options
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() retrieve an option value
+PASS parse() retrieve boolean option flag
+PASS has() checks if an option is set
+PASS has() checks if an option is set
+PASS parse() returns expected positional raw args array
+PASS parse() returns expected options raw object
+PASS parse() retrieve an option raw value
+PASS parse() retrieve boolean raw option flag
+PASS has() checks if a raw option is set
+PASS has() checks if a raw option is set
+PASS parsing some options (12 tests)
+# parsing an empty argument list
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() handles options with exotic names
+PASS has() checks if an option is set
+PASS parse() returns expected positional raw args array
+PASS parse() returns expected options raw object
+PASS parse() handles raw options with exotic names
+PASS has() checks if a raw option is set
+PASS parsing an empty argument list (8 tests)
+# parsing commands containing args and options
+PASS parse() returns expected positional args array
+PASS parse() returns expected options object
+PASS parse() can cast a numeric option value
+PASS parse() can cast a float option value
+PASS parse() can cast a boolean value
+PASS parse() can get a flag value by its option name
+PASS parse() can cast a boolean value
+PASS parse() can cast a boolean value
+PASS has() checks if an arg is set
+PASS has() checks if an arg is set
+PASS has() checks if an option is set
+PASS has() checks if an option is set
+PASS has() checks if an option is set
+PASS has() checks if an option is set
+PASS drop() dropped arg
+PASS drop() dropped option
+PASS drop() dropped raw option
+PASS drop() did not affect other args
+PASS drop() did not affect other options
+PASS parse() cast and raw args share same length
+PASS parse() cast and raw options share same length
+PASS parse() returns expected positional raw args array
+PASS parse() returns expected options raw object
+PASS parse() does not cast a raw float option value
+PASS parse() does not cast a numeric value
+PASS parse() can get a flag value by its option name
+PASS parse() can cast a boolean value
+PASS parse() can cast a boolean value
+PASS drop() dropped raw arg
+PASS drop() dropped raw option
+PASS drop() did not affect other raw args
+PASS drop() did not affect other raw options
+PASS drop() dropped raw option
+PASS drop() dropped cast option as well
+PASS parsing commands containing args and options (34 tests)
+# default values
+PASS get() can return a default arg value
+PASS get() can return a default option value
+PASS default values (2 tests)
+PASS 82 tests executed in 2.022s, 82 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/clientutils.js
+Test file: tests/suites/clientutils.js                                          
+# ClientUtils.encode() tests
+PASS ClientUtils.encode() encodes and decodes an empty string
+PASS ClientUtils.encode() encodes and decodes a word
+PASS ClientUtils.encode() encodes and decodes a null char
+PASS ClientUtils.encode() encodes and decodes an utf8 string
+PASS ClientUtils.encode() encodes and decodes song lyrics
+PASS ClientUtils.encode() encodes and decodes a file contents
+PASS ClientUtils.encode() tests (6 tests)
+# ClientUtils.exists() tests
+PASS ClientUtils.exists() checks that an element exist
+PASS ClientUtils.exists() checks that an element exist
+PASS ClientUtils.exists() checks that an element exist
+PASS ClientUtils.exists() checks that an element exist using XPath
+PASS ClientUtils.exists() checks that an element exist using XPath
+PASS ClientUtils.exists() tests (5 tests)
+# ClientUtils.exists() with svg tests
+PASS ClientUtils.exists() checks that an svg element exist
+PASS ClientUtils.exists() checks that an svg element exist using XPath
+PASS ClientUtils.exists() checks that an svg element exist using XPath
+PASS ClientUtils.exists() with svg tests (3 tests)
+# ClientUtils.exists() with mathml tests
+PASS ClientUtils.exists() checks that an math element exist
+PASS ClientUtils.exists() checks that an math element exist using XPath
+PASS ClientUtils.exists() checks that an math element exist using XPath
+PASS ClientUtils.exists() with mathml tests (3 tests)
+# ClientUtils.findAll() tests
+PASS ClientUtils.findAll() can find matching DOM elements
+PASS ClientUtils.findAll() can find matching DOM elements
+PASS ClientUtils.findAll() can find matching DOM elements
+PASS ClientUtils.findAll() can find matching DOM elements
+PASS ClientUtils.findAll() can find matching DOM elements within a given scope
+PASS ClientUtils.findAll() can find matching DOM elements within a given scope
+PASS ClientUtils.findAll() can find matching DOM elements using XPath within a given scope
+PASS ClientUtils.findAll() tests (7 tests)
+# ClientUtils.findOne() tests
+PASS ClientUtils.findOne() can find a matching DOM element
+PASS ClientUtils.findOne() can find a matching DOM element
+PASS ClientUtils.findOne() can find a matching DOM element within a given scope
+PASS ClientUtils.findOne() can find a matching DOM element using XPath within a given scope
+PASS ClientUtils.findOne() tests (4 tests)
+# ClientUtils.processSelector() tests
+PASS ClientUtils.processSelector() can process a CSS3 selector
+PASS ClientUtils.processSelector() can process a CSS3 selector
+PASS ClientUtils.processSelector() can process a CSS3 selector
+PASS ClientUtils.processSelector() can process a XPath selector
+PASS ClientUtils.processSelector() can process a XPath selector
+PASS ClientUtils.processSelector() can process a XPath selector
+PASS ClientUtils.processSelector() tests (6 tests)
+# ClientUtils.getElementBounds() tests
+PASS ClientUtils.getElementBounds() retrieves element boundaries
+PASS ClientUtils.getElementsBounds() retrieves multiple elements boundaries
+PASS ClientUtils.getElementsBounds() retrieves multiple elements boundaries
+PASS ClientUtils.getElementBounds() tests (3 tests)
+# ClientUtils.getElementBounds() page zoom factor tests
+PASS ClientUtils.getElementBounds() is aware of the page zoom factor
+PASS ClientUtils.getElementsBounds() is aware of the page zoom factor
+PASS ClientUtils.getElementsBounds() is aware of the page zoom factor
+PASS ClientUtils.getElementBounds() page zoom factor tests (3 tests)
+# ClientUtils.getElementInfo() tests
+PASS ClientUtils.getElementInfo() retrieves element name
+PASS ClientUtils.getElementInfo() retrieves element attributes
+PASS ClientUtils.getElementInfo() retrieves element html content
+PASS ClientUtils.getElementInfo() retrieves element text
+PASS ClientUtils.getElementInfo() retrieves element x pos
+PASS ClientUtils.getElementInfo() retrieves element y pos
+PASS ClientUtils.getElementInfo() retrieves element width
+PASS ClientUtils.getElementInfo() retrieves element height
+PASS ClientUtils.getElementInfo() retrieves element visibility
+PASS ClientUtils.getElementInfo() retrieves element whole tag contents
+PASS ClientUtils.getElementInfo() tests (10 tests)
+# ClientUtils.getElementsInfo() first element tests
+PASS ClientUtils.getElementsInfo() retrieves first element name
+PASS ClientUtils.getElementsInfo() retrieves first element attributes
+PASS ClientUtils.getElementsInfo() retrieves first element html content
+PASS ClientUtils.getElementsInfo() retrieves first element text
+PASS ClientUtils.getElementsInfo() retrieves first element x pos
+PASS ClientUtils.getElementsInfo() retrieves first element y pos
+PASS ClientUtils.getElementsInfo() retrieves first element width
+PASS ClientUtils.getElementsInfo() retrieves first element height
+PASS ClientUtils.getElementsInfo() retrieves first element visibility
+PASS ClientUtils.getElementsInfo() retrieves first element whole tag contents
+PASS ClientUtils.getElementsInfo() first element tests (10 tests)
+# ClientUtils.getElementsInfo() second element tests
+PASS ClientUtils.getElementsInfo() retrieves second element name
+PASS ClientUtils.getElementsInfo() retrieves second element attributes
+PASS ClientUtils.getElementsInfo() retrieves second element html content
+PASS ClientUtils.getElementsInfo() retrieves second element text
+PASS ClientUtils.getElementsInfo() retrieves second element x pos
+PASS ClientUtils.getElementsInfo() retrieves second element y pos
+PASS ClientUtils.getElementsInfo() retrieves second element width
+PASS ClientUtils.getElementsInfo() retrieves second element height
+PASS ClientUtils.getElementsInfo() retrieves second element visibility
+PASS ClientUtils.getElementsInfo() retrieves second element whole tag contents
+PASS ClientUtils.getElementsInfo() second element tests (10 tests)
+# ClientUtils.getElementInfo() visibility tests
+PASS ClientUtils.getElementInfo() retrieves element visibility with display inline
+PASS ClientUtils.getElementInfo() retrieves element visibility with display inline-block
+PASS ClientUtils.getElementInfo() retrieves element visibility with visibility hidden
+PASS ClientUtils.getElementInfo() retrieves element visibility with display none
+PASS ClientUtils.getElementInfo() retrieves element visibility with display inline-flex
+PASS ClientUtils.getElementInfo() retrieves element visibility with display flex
+PASS ClientUtils.getElementInfo() retrieves element visibility when parent's display is set to none
+PASS ClientUtils.getElementInfo() visibility tests (7 tests)
+# ClientUtils.makeSelector() tests
+PASS ClientUtils.makeSelector() can process a CSS3 selector
+PASS ClientUtils.makeSelector() can process a XPath selector
+PASS ClientUtils.makeSelector() can process a XPath selector
+PASS ClientUtils.makeSelector() can process a XPath selector
+PASS ClientUtils.makeSelector() can process a XPath selector
+PASS ClientUtils.makeSelector() can process a Label selector
+PASS ClientUtils.makeSelector() can process a Label selector
+PASS ClientUtils.makeSelector() can process a Label selector
+PASS ClientUtils.makeSelector() tests (8 tests)
+PASS 85 tests executed in 7.123s, 85 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/fs.js
+Test file: tests/suites/fs.js                                                   
+# fs.dirname() tests
+PASS fs.dirname() does its job for /local/plop/foo.js
+PASS fs.dirname() does its job for local/plop/foo.js
+PASS fs.dirname() does its job for ./local/plop/foo.js
+PASS fs.dirname() does its job for c:\local\plop\foo.js
+PASS fs.dirname() does its job for D:\local\plop\foo.js
+PASS fs.dirname() does its job for D:\local\plop\
+PASS fs.dirname() does its job for c:\
+PASS fs.dirname() does its job for c:
+PASS fs.dirname() tests (8 tests)
+# fs.isWindows() tests
+PASS fs.isWindows() does its job for /
+PASS fs.isWindows() does its job for /local/plop/foo.js
+PASS fs.isWindows() does its job for D:\local\plop\
+PASS fs.isWindows() does its job for c:\
+PASS fs.isWindows() does its job for c:
+PASS fs.isWindows() does its job for \\Server\Plop
+PASS fs.isWindows() tests (6 tests)
+PASS 14 tests executed in 1.262s, 14 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/http_status.js
+Test file: tests/suites/http_status.js                                          
+# HTTP status code handling
+PASS file:// protocol does not set a HTTP status
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: undefined
+#    expected: 101
+ghostbridge: webserver handler error: Cannot read properties of null (reading '1')
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 200 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 201 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 202 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 203 handled
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 203
+#    expected: 204
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 203
+#    expected: 205
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 206 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 207 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 210 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 300 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 301 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 302 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 303 handled
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 303
+#    expected: 304
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 305 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 307 handled
+PASS Status is stored in resource.status
+PASS Status is stored in casper.currentHTTPStatus
+PASS HTTP 310 handled
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 102
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 118
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 400
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 401
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 402
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 403
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 404
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 405
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 406
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 407
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 409
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 410
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 411
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 412
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 413
+FAIL Status is stored in resource.status
+#    type: assertEquals
+#    file: tests/suites/http_status.js
+#    subject: 310
+#    expected: 414
+ghostbridge: chromium disconnected unexpectedly
+===== tests/suites/pagestack.js
+Test file: tests/suites/pagestack.js                                            
+# pagestack module tests
+PASS Subject equals the expected value
+FAIL Subject is strictly true
+#    type: assert
+#    file: tests/suites/pagestack.js
+#    subject: false
+PASS pagestack module tests (14 tests)
+FAIL 2 tests executed in 0.916s, 1 passed, 1 failed, 0 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/pagestack.js
+  pagestack module tests
+    assert: Subject is strictly true
+===== tests/suites/require.js
+Test file: tests/suites/require.js                                              
+# Javascript module loading
+PASS require() patched version can load a js module
+PASS Javascript module loading (1 test)
+# JSON module loading
+FAIL require() patched version can load a json module
+#    type: fail
+#    file: tests/suites/require.js
+#    subject: false
+PASS JSON module loading (1 test)
+FAIL 2 tests executed in 2.338s, 1 passed, 1 failed, 0 dubious, 0 skipped.      
+
+Details for the 1 failed test:
+
+In tests/suites/require.js
+  JSON module loading
+    fail: require() patched version can load a json module
+===== tests/suites/tester/assert.js
+Test file: tests/suites/tester/assert.js                                        
+# Common assertions tests
+PASS Tester.assertTextExists() checks that page body contains text
+PASS Tester.assertTextExist() checks that page body contains text [alias]
+PASS Tester.assertTextDoesntExist() checks that page body doesn't contain provided text
+PASS Tester.assertSelectorHasText() works as expected
+PASS Tester.assertSelectorDoesntHaveText() works as expected
+PASS Tester.assert() works as expected
+PASS Tester.assertTrue() works as expected [alias]
+PASS Tester.assertTruthy() works as expected
+PASS Tester.assertFalsy() works as expected
+PASS Tester.assertNot() works as expected
+PASS Tester.assertEquals() works as expected
+PASS Tester.assertEqual() works as expected [alias]
+PASS Tester.assertNotEquals() works as expected
+PASS Tester.assertEval() works as expected
+PASS Tester.assertEvaluate() works as expected [alias]
+PASS Tester.assertEvalEquals() works as expected
+PASS Tester.assertEvalEqual() works as expected [alias]
+PASS Tester.assertElementCount() works as expected
+PASS Tester.assertElementCount() works as expected
+PASS Tester.assertElementCount() works as expected
+PASS Tester.assertExists() works as expected
+PASS Tester.assertExist() works as expected [alias]
+PASS Tester.assertFail() tests for a failing assertion
+PASS Tester.assertSelectorExists() works as expected [alias]
+PASS Tester.assertSelectorExist() works as expected [alias]
+PASS Tester.assertDoesntExist() works as expected
+PASS Tester.assertNotExists() works as expected [alias]
+PASS Tester.assertHttpStatus() works as expected
+PASS Tester.assertMatch() works as expected
+PASS Tester.assertMatches() works as expected [alias]
+PASS Tester.assertRaises() works as expected
+PASS Tester.assertRaises() doesn't pass when no error is thrown
+PASS Tester.assertResourceExists() works as expected
+PASS Tester.assertResourceExist() works as expected [alias]
+PASS Tester.assertTitle() works as expected
+PASS Tester.assertTitleMatch() works as expected
+PASS Tester.assertTitleMatches() works as expected [alias]
+PASS Tester.assertType() works as expected
+PASS Tester.assertInstanceOf() works as expected
+PASS Tester.assertUrlMatch() works as expected
+PASS Tester.assertUrlMatches() works as expected [alias]
+PASS Tester.assertVisible() works as expected
+PASS Tester.assertAllVisible() passes as expected
+PASS Tester.assertAllVisible() fails as expected.
+PASS Tester.assertNotVisible() works as expected
+PASS Tester.assertInvisible() works as expected [alias]
+PASS Tester.assertExists() works as expected with reserved word id
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Common assertions tests (50 tests)
+# Tester.assertField(): filled inputs
+PASS Tester.assertField() works as expected with inputs
+PASS Tester.assertField() works as expected with textarea
+PASS Tester.assertField() works as expected with checkboxes
+PASS Tester.assertField() works as expected with radios
+PASS Tester.assertField() works as expected with selects
+PASS Tester.assertField() works as expected with file inputs
+PASS Tester.assertField() works as expected with check lists
+PASS Tester.assertField(): filled inputs (7 tests)
+# Tester.assertField(): unfilled inputs
+PASS Tester.assertField() works as expected with inputs
+PASS Tester.assertField() works as expected with textarea
+PASS Tester.assertField() works as expected with checkboxes
+PASS Tester.assertField() works as expected with radios
+PASS Tester.assertField() works as expected with selects
+PASS Tester.assertField() works as expected with file inputs
+PASS Tester.assertField() works as expected with check lists
+PASS Tester.assertField(): unfilled inputs (7 tests)
+# Tester.assertField(): nonexistent fields
+PASS Tester.assertField() only checks for existing fields
+PASS Tester.assertField(): nonexistent fields (2 tests)
+# Tester.assertField(): CSS selectors
+PASS Tester.assertField() works as expected with CSS selectors
+PASS Tester.assertField(): CSS selectors (1 test)
+# Tester.assertField(): XPath selectors
+PASS Tester.assertField() works as expected with XPath selectors
+PASS Tester.assertField(): XPath selectors (1 test)
+# Tester.assertField(): invalid selectors
+PASS should throw an error for an invalid selector
+PASS Tester.assertField(): invalid selectors (1 test)
+# Tester.assertFieldCSS(): CSS selectors
+PASS Tester.assertFieldCSS() works as expected with CSS selectors
+PASS Tester.assertFieldCSS(): CSS selectors (1 test)
+# Tester.assertFieldXPath(): XPath selectors
+PASS Tester.assertFieldXPath() works as expected with XPath selectors
+PASS Tester.assertFieldXPath(): XPath selectors (1 test)
+PASS 67 tests executed in 19.201s, 67 passed, 0 failed, 0 dubious, 0 skipped.   
+===== tests/suites/tester/begin-config.js
+Test file: tests/suites/tester/begin-config.js                                  
+# Tester.begin() configuration
+PASS config.setUp() has been called
+PASS config.setUp() is using the expected context
+PASS config.setUp() accesses fixtures
+PASS config.test() has been called
+PASS config.tearDown() is using the expected context
+PASS config.test() accesses fixtures
+PASS config.tearDown() has been called
+PASS config.test() is using the expected context
+PASS config.tearDown() accesses fixtures
+PASS Tester.begin() has processed the configuration in the expected order
+PASS Tester.begin() configuration (10 tests)
+PASS 10 tests executed in 0.401s, 10 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/tester/setup-teardown-async.js
+Test file: tests/suites/tester/setup-teardown-async.js                          
+# setUp() tests
+PASS Tester.setUp() executed the async setup function
+PASS setUp() tests (1 test)
+# tearDown() tests
+PASS Tester.tearDown() executed the async tear down function
+PASS tearDown() tests (1 test)
+PASS 2 tests executed in 0.397s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/tester/setup-teardown.js
+Test file: tests/suites/tester/setup-teardown.js                                
+# setUp() tests
+PASS Tester.setUp() executed the setup function
+PASS setUp() tests (1 test)
+# tearDown() tests
+PASS Tester.tearDown() executed the tear down function
+PASS tearDown() tests (1 test)
+PASS 2 tests executed in 0.264s, 2 passed, 0 failed, 0 dubious, 0 skipped.      
+===== tests/suites/tester/skip.js
+Test file: tests/suites/tester/skip.js                                          
+# Skip tests after
+PASS First test executed
+PASS Second test executed
+SKIP Two tests skipped
+PASS Skip tests after (4 tests)
+# Skip tests before
+SKIP Two tests skipped
+PASS Third test executed
+PASS Fourth test executed
+PASS Skip tests before (4 tests)
+# Skip tests (asynchronous)
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+SKIP 1 test skipped
+PASS Skip tests (asynchronous) (1 test)
+PASS 4 tests executed in 0.215s, 4 passed, 0 failed, 0 dubious, 5 skipped.      
+===== tests/suites/tester/test-order.js
+Test file: tests/suites/tester/test-order.js                                    
+# Tester.sortFiles()
+PASS findTestFiles() find test files and sort them
+PASS Tester.sortFiles() (1 test)
+PASS 1 test executed in 0.949s, 1 passed, 0 failed, 0 dubious, 0 skipped.       
+===== tests/suites/tester/testcase.js
+Test file: tests/suites/tester/testcase.js                                      
+# TestCaseResult.constructor() tests
+PASS TestCaseResult.constructor() name is undefined by default
+PASS TestCaseResult.constructor() file is undefined by default
+PASS TestCaseResult.constructor() can set name
+PASS TestCaseResult.constructor() can set file
+PASS TestCaseResult.constructor() tests (4 tests)
+# TestCaseResult.addSuccess() and TestCaseResult.addFailure() tests
+PASS test case result counts no assertion by default
+PASS test case result counts no success by default
+PASS test case result counts no failure by default
+PASS TestCaseResult.calculateDuration() computes initial tests duration
+PASS test case result counts one assertion
+PASS test case result counts one success
+PASS test case result counts no failure
+PASS TestCaseResult.addSuccess() added a success to the stack
+PASS TestCaseResult.addSuccess() added test duration
+PASS TestCaseResult.addSuccess() added suite name
+PASS TestCaseResult.calculateDuration() computes tests duration
+PASS test case result counts two assertions
+PASS test case result counts one success
+PASS test case result counts no failure
+PASS TestCaseResult.addFailure() added a failure to the stack
+PASS TestCaseResult.addFailure() added test duration
+PASS TestCaseResult.addFailure() added suite name
+PASS TestCaseResult.calculateDuration() computes new tests duration
+PASS test case result counts three assertions
+PASS test case result counts two successes
+PASS test case result counts one failure
+PASS TestCaseResult.calculateDuration() computes new tests duration
+PASS TestCaseResult.addSuccess() and TestCaseResult.addFailure() tests (22 tests)
+PASS 26 tests executed in 0.601s, 26 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/tester/testsuite.js
+Test file: tests/suites/tester/testsuite.js                                     
+# TestSuiteResult() basic tests
+PASS TestSuiteResult() is derived from Array
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS TestSuiteResult() basic tests (8 tests)
+# TestSuiteResult() accumulation tests
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS TestSuiteResult() accumulation tests (7 tests)
+PASS 15 tests executed in 0.459s, 15 passed, 0 failed, 0 dubious, 0 skipped.    
+===== tests/suites/utils.js
+Test file: tests/suites/utils.js                                                
+# utils.betterTypeOf() tests
+PASS betterTypeOf() detects expected type "number"
+PASS betterTypeOf() detects expected type "string"
+PASS betterTypeOf() detects expected type "object"
+PASS betterTypeOf() detects expected type "array"
+PASS betterTypeOf() detects expected type "undefined"
+PASS betterTypeOf() detects expected type "null"
+PASS betterTypeOf() detects expected type "function"
+PASS betterTypeOf() detects expected type "domwindow"
+PASS betterTypeOf() detects expected type "date"
+PASS betterTypeOf() detects expected type "regexp"
+PASS utils.betterTypeOf() tests (10 tests)
+# utils.betterInstanceOf() tests
+PASS betterInstanceOf() detects expected constructor "Number"
+PASS betterInstanceOf() detects expected constructor "String"
+PASS betterInstanceOf() detects expected constructor "Object"
+PASS betterInstanceOf() detects expected constructor "Array"
+PASS betterInstanceOf() detects expected constructor "Array"
+PASS betterInstanceOf() detects expected constructor "Array"
+PASS betterInstanceOf() detects expected constructor "Function"
+PASS betterInstanceOf() detects expected constructor "Date"
+PASS betterInstanceOf() detects expected constructor "RegExp"
+PASS betterInstanceOf() detects expected constructor "XMLDocument"
+PASS betterInstanceOf() detects expected constructor "Cow"
+PASS betterInstanceOf() detects expected constructor "SuperCow"
+PASS betterInstanceOf() detects expected constructor "Cow"
+PASS utils.betterInstanceOf() tests (13 tests)
+# utils.cleanUrl() tests
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS cleanUrl() cleans an URL
+PASS utils.cleanUrl() tests (11 tests)
+# utils.clone() tests
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS utils.clone() tests (2 tests)
+# utils.computeModifier() tests
+FAIL TypeError: Cannot read properties of undefined (reading 'modifier')
+#    type: uncaughtError
+#    file: tests/suites/utils.js
+#    error: Cannot read properties of undefined (reading 'modifier')
+#           TypeError: Cannot read properties of undefined (reading 'modifier')
+#               at Object.eval [as test] (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/utils.js:84:58)
+#               at Tester.eval (eval at resolve (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:557:19), <anonymous>:1133:20)
+#               at Tester.begin (eval at resolve (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:557:19), <anonymous>:1154:20)
+#               at eval (/home/hatch/gbtmp/s11/cj/pkg/package/tests/suites/utils.js:83:17)
+#               at eval (<anonymous>)
+#               at Object.injectJs (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:150:16)
+#               at Tester.exec (eval at resolve (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:557:19), <anonymous>:1315:13)
+#               at Tester.runTest (eval at resolve (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:557:19), <anonymous>:1674:10)
+#               at _check (eval at resolve (http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:557:19), <anonymous>:1659:18)
+#               at http://127.0.0.1:43077/84261d67fc2ffa6e34be6ad665ddee60/gb-runtime.js:58:97
+#    stack: not provided
+PASS utils.computeModifier() tests (7 tests)
+# decodeUrl() tests
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS Subject equals the expected value
+PASS decodeUrl() tests (4 tests)
+# equals() tests
+PASS equals() null equality
+PASS equals() null vs. undefined inequality
+PASS equals() string equality
+PASS equals() string inequality
+PASS equals() number equality
+PASS equals() number equality without implicit cast
+PASS equals() number equality with cast
+PASS equals() number inequality
+PASS equals() empty array equality
+PASS equals() array equality
+PASS equals() complex array equality
+PASS equals() complex array inequality
+PASS equals() shuffled array inequality
+PASS equals() array length inequality
+PASS equals() empty object equality
+PASS equals() object length equality
+PASS equals() shuffled object keys equality
+PASS equals() object inequality
+PASS equals() complex object equality
+PASS equals() complex object inequality
+PASS equals() function equality
+PASS equals() function inequality
+PASS equals() arrays of objects
+PASS equals() tests (23 tests)
+# fileExt() tests
+PASS fileExt() extract file extension
+PASS fileExt() extract file extension
+PASS fileExt() extract file extension
+PASS fileExt() extract file extension
+PASS fileExt() extract file extension
+PASS fileExt() extract file extension
+PASS fileExt() tests (6 tests)
+# fillBlanks() tests
+PASS fillBlanks() fills blanks
+PASS fillBlanks() fills blanks
+PASS fillBlanks() fills blanks
+PASS fillBlanks() tests (3 tests)
+# getPropertyPath() tests
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() gets a property using a path
+PASS getPropertyPath() tests (7 tests)
+# isArray() tests
+PASS isArray() checks for an Array
+PASS isArray() checks for an Array
+PASS isArray() checks for an Array
+PASS isArray() tests (3 tests)
+# isClipRect() tests
+PASS isClipRect() checks for a ClipRect
+PASS isClipRect() checks for a ClipRect
+PASS isClipRect() checks for a ClipRect
+PASS isClipRect() checks for a ClipRect
+PASS isClipRect() checks for a ClipRect
+PASS isClipRect() tests (5 tests)
+# isHTTPResource() tests
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() checks for an HTTP resource
+PASS isHTTPResource() tests (6 tests)
+# isObject() tests
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() checks for an Object
+PASS isObject() tests (8 tests)
+# isValidSelector() tests
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() checks for a valid selector
+PASS isValidSelector() tests (10 tests)
+# isWebPage() tests
+PASS isWebPage() checks for a WebPage instance
+FAIL isWebPage() checks for a WebPage instance
+#    type: assertEquals
+#    file: tests/suites/utils.js
+#    subject: false
+#    expected: true
+PASS isWebPage() tests (3 tests)
+# isJsFile() tests
+PASS isJsFile() checks for js file
+PASS isJsFile() checks for js file
+PASS isJsFile() checks for js file
+PASS isJsFile() checks for js file
+PASS isJsFile() checks for js file
+PASS isJsFile() tests (5 tests)
+# mergeObjects() tests
+PASS mergeObjects() can merge objects
+PASS mergeObjects() can merge objects
+PASS mergeObjects() can merge objects
+PASS mergeObjects() can merge objects
+PASS mergeObjects() can merge objects
+PASS mergeObjects() can merge objects
+PASS mergeObjects() creates deep clones #1
+PASS mergeObjects() creates deep clones #2
+PASS disabling references should not point to same object
+PASS enabling references should point to same object
+PASS mergeObjects() tests (10 tests)
+# objectValues() tests
+PASS objectValues() can extract object values
+PASS objectValues() can extract object values
+PASS objectValues() tests (2 tests)
+# quoteXPathAttributeString() tests
+Test server url not found: /favicon.ico (file: /home/hatch/gbtmp/s11/cj/pkg/package//favicon.ico) warning
+PASS Xpath selector "//a[text()=concat("Label with double ", '"', "quotes", '"', "")]" is found on "tests/site/click.html" page
+PASS Xpath selector "//a[text()="Label with single 'quotes'"]" is found on "tests/site/click.html" page
+PASS quoteXPathAttributeString() tests (2 tests)
+# unique() tests
+PASS unique() computes unique values of an array
+PASS unique() computes unique values of an array
+PASS unique() computes unique values of an array
+PASS unique() computes unique values of an array
+PASS unique() tests (4 tests)
+# cmpVersion() tests
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version strings
+PASS cmpVersion() can compare version objects
+PASS cmpVersion() can compare version objects
+PASS cmpVersion() can compare version objects
+PASS cmpVersion() tests (10 tests)
+# gteVersion() tests
+PASS gteVersion() checks for a greater or equal version
+PASS gteVersion() checks for a greater or equal version
+PASS gteVersion() checks for a greater or equal version
+PASS gteVersion() checks for a greater or equal version
+PASS gteVersion() tests (4 tests)
+# ltVersion() tests
+PASS ltVersion() checks for a lesser version
+PASS ltVersion() checks for a lesser version
+PASS ltVersion() checks for a lesser version
+PASS ltVersion() checks for a lesser version
+PASS ltVersion() tests (4 tests)
+FAIL 155 tests executed in 7.971s, 153 passed, 2 failed, 0 dubious, 0 skipped.  
+
+Details for the 2 failed tests:
+
+In tests/suites/utils.js
+  utils.computeModifier() tests
+    uncaughtError: TypeError: Cannot read properties of undefined (reading 'modifier')
+In tests/suites/utils.js
+  isWebPage() tests
+    assertEquals: isWebPage() checks for a WebPage instance
+===== tests/suites/xunit.js
+Test file: tests/suites/xunit.js                                                
+# XUnitReporter() initialization
+PASS XML can be generated
+PASS XUnitReporter() initialization (1 test)
+# XUnitReporter() can hold test suites
+PASS 2 test suites exist
+PASS Element 'testsuites' has time attribute
+PASS Package foo exists
+PASS Package bar exists
+PASS XUnitReporter() can hold test suites (4 tests)
+# XUnitReporter() can hold a suite with a successful test
+PASS Successful test case exists
+PASS XUnitReporter() can hold a suite with a successful test (1 test)
+# XUnitReporter() can handle a failed test
+PASS Failure node exists
+PASS Subject equals the expected value
+PASS XUnitReporter() can handle a failed test (2 tests)
+# XUnitReporter() can handle custom name attribute for a test case
+PASS Failure node exists
+PASS Subject equals the expected value
+PASS XUnitReporter() can handle custom name attribute for a test case (2 tests)
+# XUnitReporter() does not have default XML namespace
+PASS No default namespace
+PASS XUnitReporter() does not have default XML namespace (1 test)
+# XUnitReporter() can handle markup in nodes
+PASS Node exists
+PASS Handles markup in failure node
+PASS Handles markup in error node
+PASS Handles markup in error node
+PASS XUnitReporter() can handle markup in nodes (4 tests)
+PASS 15 tests executed in 5.85s, 15 passed, 0 failed, 0 dubious, 0 skipped.     

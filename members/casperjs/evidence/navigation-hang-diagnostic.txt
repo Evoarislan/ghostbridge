@@ -1,0 +1,33 @@
+# navigation hang diagnostic (after the loadFinished fix): a scratch CasperJS script, not a member file
+## /tmp script
+var casper = require('casper').create({ verbose: true, logLevel: 'debug' });
+var hb = 0; setInterval(function(){ hb++; if (hb % 4 === 0) console.log('HB ' + hb + ' loading=' + casper.loadInProgress + ' navreq=' + casper.navigationRequested + ' bi=' + casper.page.browserInitializing); }, 250);
+casper.start('file://' + require('fs').workingDirectory + '/tests/site/index.html', function() {
+  this.evaluate(function() { document.location = 'form.html'; });
+  console.log('after evaluate');
+});
+casper.then(function(){ console.log('URL ' + this.getCurrentUrl()); });
+casper.run(function(){ console.log('DONE'); this.exit(0); });
+## output (casperjs launcher, PHANTOMJS_EXECUTABLE=bin/phantomjs, 40 s limit)
+[info] [phantom] Starting...
+[info] [phantom] Running suite: 3 steps
+[debug] [phantom] opening url: file:///home/hatch/gbtmp/s11/cj/pkg/package/tests/site/index.html, HTTP GET
+[debug] [phantom] Navigation requested: url=file:///home/hatch/gbtmp/s11/cj/pkg/package/tests/site/index.html, type=Other, willNavigate=true, isMainFrame=true
+[debug] [phantom] url changed to "file:///home/hatch/gbtmp/s11/cj/pkg/package/tests/site/index.html"
+[debug] [phantom] Successfully injected Casper client-side utilities
+after evaluate
+[info] [phantom] Step anonymous 2/3: done in 2200ms.
+[debug] [phantom] Navigation requested: url=file:///home/hatch/gbtmp/s11/cj/pkg/package/tests/site/form.html, type=Other, willNavigate=true, isMainFrame=true
+ghostbridge: handler error: page.switchToMainFrame: not available inside page.onInitialized (the page is paused before its scripts run)
+[debug] [phantom] url changed to "file:///home/hatch/gbtmp/s11/cj/pkg/package/tests/site/form.html"
+Error: Execution context was destroyed, most likely because of a navigation.    
+  /home/hatch/gbtmp/s11/cj/pkg/package/http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:76 in postSync
+  /home/hatch/gbtmp/s11/cj/pkg/package/http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:358 in Webpage.evaluate
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:557:19), <anonymous>:1371 in Casper.injectClientUtils
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:557:19), <anonymous>:759 in Casper.evaluate
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:557:19), <anonymous>:1063 in Casper.getCurrentUrl
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:557:19), <anonymous>:1661 in Casper.runStep
+  /home/hatch/gbtmp/s11/cj/pkg/package/eval at resolve (http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:557:19), <anonymous>:415 in checkStep
+  /home/hatch/gbtmp/s11/cj/pkg/package/http:/127.0.0.1:38871/2327d59613c862ad39fcac5a4c6cc059/gb-runtime.js:58
+HB 4 loading=undefined navreq=false bi=false
+rc=1

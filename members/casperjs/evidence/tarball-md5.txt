@@ -1,0 +1,1 @@
+004f3047a0681e8006a7b09d6a70cd2a  casperjs-1.1.4.tgz

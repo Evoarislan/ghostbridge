@@ -1,0 +1,14 @@
+
+
+  bootstrap/emit
+    ◦ provides emit, which emits an event: [2K[0G    1) "before each" hook
+
+  ✖ 1 of 2 tests failed:
+
+  1) bootstrap/emit "before each" hook:
+     Error: timeout of 4000ms exceeded
+      at Timeout.<anonymous> (/home/hatch/gbtmp/s10/spooky/node_modules/mocha/lib/runnable.js:142:14)
+      at listOnTimeout (node:internal/timers:685:17)
+      at process.processTimers (node:internal/timers:618:7)
+
+

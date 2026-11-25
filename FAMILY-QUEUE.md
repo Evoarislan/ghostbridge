@@ -204,13 +204,19 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   either point in public copy.
 
 ## 7. spooky (CasperJS from Node)
-- STATUS: NOT VERIFIED (Session 10, 2026-11-22). Own mocha suite (79
-  tests) with the shim as CasperJS's PhantomJS: before 3 failed, after
-  2 failed (77 pass), with the phantom.onError fix 1 failed (78 pass) in
-  fix-1 and again in fix-3. The onError test is closed. Blocker:
-  `bootstrap/emit "before each" hook` (4000ms timeout; in fix-1 "Child
-  terminated with non-zero exit code 1"), cause untraced. No receipt.
-  See members/spooky/NOT-VERIFIED.md and SESSION-10-RESULT.md.
+- STATUS: NOT VERIFIED (Session 10, 2026-11-22; updated Session 11,
+  2026-11-25). Own mocha suite (79 tests) with the shim as CasperJS's
+  PhantomJS. Session 11 re-run on the current tree: `1 of 79 failed`, the
+  `bootstrap/emit "before each" hook` (4000ms timeout). Mocha 1.3.2 ends
+  the run on a failed hook, so the real figure is 2 pass, 1 hook failure,
+  76 not run (Session 10's "78 pass" was wrong on that point). The hook
+  cause is traced (V8 `Function.prototype.toString` keeps the space in
+  `function create (options)`, which tiny-jsonrpc cannot parse; the child
+  also needs 17.5 to 20.6 s to start against a 4 s budget); one real
+  bridge gap (timers after `phantom.exit()`) was fixed on the way. No
+  receipt; casperjs (#8) is not verified either. See
+  members/spooky/NOT-VERIFIED.md, members/spooky/evidence/hook-diagnostic/,
+  SESSION-11-RESULT.md.
 - Repo: github.com/WaterfallEngineering/SpookyJS. npm 0.2.5,
   Nov 2014 (11+ years); last commit May 2016. License: MIT. README
   carries an explicit "No Maintenance Intended" badge.
@@ -229,6 +235,20 @@ html-pdf, karma-phantomjs-launcher); the rest are structural.
   it spawns. If CasperJS fails, spooky stays dead with that reason.
 
 ## 8. casperjs (the finale)
+- STATUS: NOT VERIFIED (Session 11, 2026-11-25). Own selftest, one file per
+  chunk, 67 suite files, two full after runs with identical per-file
+  results: 36 files green, 19 with failures, 1 dubious (`resources.js`),
+  11 timed out at 180 s; across the 56 files that printed a summary, 695
+  assertions executed, 651 passed, 44 failed, 1 dubious. The 34-file CLI
+  chunk (42 methods) did not run: `tests/clitests/runtests.py` is Python 2
+  code and dies with a TypeError on Python 3.12 (member tooling, not the
+  bridge). Blockers: page-initiated navigation hang
+  (`page.switchToMainFrame` not allowed inside `page.onInitialized`) and
+  missing bridge surfaces behind 19 failing files (dialogs, popups, frames, key
+  modifiers, custom headers, and others). Receipts rcpt-0005 and
+  rcpt-0006 held; chain unchanged at 4 records. 162 files under `tests/`,
+  not 163. Details: members/casperjs/NOT-VERIFIED.md,
+  SESSION-11-RESULT.md.
 - Repo: github.com/casperjs/casperjs (archived). npm 1.1.4,
   May 2017; last commit Apr 2020. License: MIT per the repo LICENSE
   (the npm license field is blank; cite the repo). 7,153 stars.

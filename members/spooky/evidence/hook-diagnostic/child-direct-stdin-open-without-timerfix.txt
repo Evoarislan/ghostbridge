@@ -1,0 +1,6 @@
+[1795537696831 wrapper] START pid=69090 cwd=/home/hatch/gbtmp/s10/spooky args=lib/bootstrap.js --port=8081 --spooky_lib=/home/hatch/gbtmp/s10/spooky/ --transport=stdio --command=casperjs
+[1795537714322 OUT] "{\"jsonrpc\":\"2.0\",\"method\":\"emit\",\"params\":[\"error\",\"Cannot provide anonymous function: function create (opt...\",[]]}\n"
+[1795537731668 ERR] "ghostbridge: fatal: TimeoutError: Navigation timeout of 30000 ms exceeded\n    at new Deferred (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/util/Deferred.js:60:34)\n    at Deferred.create (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/util/Deferred.js:21:16)\n    at new LifecycleWatcher (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/cdp/LifecycleWatcher.js:69:60)\n    at CdpFrame.goto (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/cdp/Frame.js:149:29)\n    at CdpFrame.<anonymous> (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/util/decorators.js:109:27)\n    at CdpPage.goto (/home/hatch/workspace/ghostbridge/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Page.js:574:43)\n    at main (/home/hatch/workspace/ghostbridge/gb-host.js:286:25)\n"
+[1795537731758 wrapper] EXIT rc=1
+[1795537732580 ERR] <EOF>
+[1795537732596 OUT] <EOF>

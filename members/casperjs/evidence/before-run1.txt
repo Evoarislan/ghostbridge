@@ -1,0 +1,206 @@
+# casperjs 1.1.4 selftest, one file per chunk (run-chunks.sh), label before-1
+## summary.tsv
+tests/suites/casper/agent.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/alert.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/auth.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/bypass.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/callback.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/callutils.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/capture.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/click.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/confirm.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/content.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/css3selector.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/debug.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/elementattribute.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/encode.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/encodedurl.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/evaluate.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/events.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/exists.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/fetchtext.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/formfill.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/frames.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/getplaintext.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/global.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/headers.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/history.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/hooks.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/keys.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/location.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/logging.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/mouseevents.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/multiplepopups.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/navigation.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/newpage.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/onerror.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/open.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/pagerequest.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/popup.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/prompt.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/reload.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/request.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/resources.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/scripts.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/scroll.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/sendAjax.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/start.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/steps.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/urls.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/viewport.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/visible.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/wait.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/casper/xpath.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/cli.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/clientutils.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/fs.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/http_status.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/pagestack.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/require.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/assert.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/begin-config.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/setup-teardown-async.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/setup-teardown.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/skip.js	no-summary	rc=1	1s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/test-order.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/testcase.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/tester/testsuite.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/utils.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+tests/suites/xunit.js	no-summary	rc=1	0s	executed=-	passed=-	failed=-	dubious=-	skipped=-
+TOTAL 9s
+
+## per-file logs (ANSI colour codes stripped)
+===== tests/suites/casper/agent.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/alert.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/auth.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/bypass.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/callback.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/callutils.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/capture.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/click.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/confirm.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/content.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/css3selector.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/debug.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/elementattribute.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/encode.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/encodedurl.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/evaluate.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/events.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/exists.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/fetchtext.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/formfill.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/frames.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/getplaintext.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/global.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/headers.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/history.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/hooks.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/keys.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/location.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/logging.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/mouseevents.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/multiplepopups.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/navigation.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/newpage.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/onerror.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/open.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/pagerequest.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/popup.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/prompt.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/reload.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/request.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/resources.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/scripts.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/scroll.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/sendAjax.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/start.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/steps.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/urls.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/viewport.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/visible.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/wait.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/casper/xpath.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/cli.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/clientutils.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/fs.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/http_status.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/pagestack.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/require.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/assert.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/begin-config.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/setup-teardown-async.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/setup-teardown.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/skip.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/test-order.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/testcase.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/tester/testsuite.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/utils.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?
+===== tests/suites/xunit.js
+ERROR - Fatal: No such file or directory; did you install phantomjs?

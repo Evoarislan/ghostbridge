@@ -1,0 +1,18 @@
+# Function.prototype.toString, same script (fts.js below), real PhantomJS 2.1.1 vs GhostBridge shim
+## fts.js
+function create (options) { return 1; }
+var o={ m: function (a,b) {}, n: function named (x) {} };
+console.log(JSON.stringify([create.toString(), o.m.toString(), o.n.toString(), (function(){}).toString(), String(function  spaced   (q) {})]));
+phantom.exit(0);
+
+## real PhantomJS 2.1.1 (/home/hatch/workspace/survival/kiroween-entry/spike/deadbinary/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs, OPENSSL_CONF=/dev/null)
+["function create(options) { return 1; }","function (a, b) {}","function named(x) {}","function () {}","function spaced(q) {}"]
+## GhostBridge bin/phantomjs
+["function create (options) { return 1; }","function (a,b) {}","function named (x) {}","function(){}","function  spaced   (q) {}"]
+
+## tiny-jsonrpc server.js:67 regex /function\s+(\w+)?\((.*)\)/ applied to both forms (node)
+"function create (options) {" -> name undefined
+"function create(options) {" -> name "create"
+
+## spooky lib/bootstrap/casper.js:98 (member file, unmodified)
+    return function create (options) {

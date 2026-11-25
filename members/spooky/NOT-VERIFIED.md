@@ -1,8 +1,8 @@
-# spooky 0.2.5: NOT VERIFIED (Session 10, 2026-11-22)
+# spooky 0.2.5: NOT VERIFIED (Session 10, 2026-11-22; updated Session 11, 2026-11-25)
 
 Spooky's own suite is not fully green, so Proof of Life has not passed.
 No receipt is written. The family lock also holds spooky's receipt until
-casperjs (#8) verifies.
+casperjs (#8) verifies, and casperjs is NOT VERIFIED (Session 11).
 
 ## Counts
 
@@ -49,6 +49,34 @@ committed or uncommitted code, so it may be a timing race in the
 spawn/stdio path. Open question for the next session: what the child
 CasperJS process prints and why it exits 1 in fix 1, and why it hangs in
 fix 3. Because the hook fails, the emit test body does not run.
+
+## Session 11 update (2026-11-25)
+
+**Hook diagnostic.** The cause of the `bootstrap/emit "before each" hook`
+failure is traced; full write-up in `evidence/hook-diagnostic/HOOK-DIAGNOSTIC.md`.
+Summary: (1) the PhantomJS-side child dies with exit 1 on a parse error,
+because spooky's `function create (options)` (space before the paren) is
+read through `Function.prototype.toString`, and V8 returns the source text
+while PhantomJS 2.1.1 returns a rebuilt form without the space; (2) the child
+needs 17.5 to 20.6 s to start, against the hook's 4000 ms; (3) after `ready`
+the stdin loop blocks start-up. Whichever of the timer or the exit 1 comes
+first sets the visible error, which explains the two modes. One real bridge
+gap was found and fixed on the way: script timers kept running after
+`phantom.exit()` (gate check 10b, `test/timer-after-exit-check.js`). It does
+not turn the hook green. The other three causes are engine or latency issues
+that need design decisions and are left as open questions.
+
+**Correction to the counts above.** Spooky's mocha 1.3.2 ends the whole run
+when a hook fails (`runner.js:163-166`), so "78 of 79 pass" counted 76 tests
+that never ran. The real figure is 2 pass, 1 hook failure, 76 not run.
+
+**Re-run on the Session 11 tree** (Session 10 setup, shim as PhantomJS, hook
+fix in place): `TEST_REPORTER=spec make test` reports `1 of 79 tests failed`,
+the same `bootstrap/emit "before each" hook`, `Error: timeout of 4000ms
+exceeded`; 2 tests pass (`phantom.onError` 3740 ms, unknown transport 2905
+ms), 76 not run. `npm test` exits 2 in 13 s, `make test` exits 2 in 12 s.
+Logs: `evidence/s11-closeout.log`, `evidence/s11-closeout-npmtest.log`.
+Spooky and CasperJS md5 lists are unchanged. No receipt written.
 
 ## Other caveats
 

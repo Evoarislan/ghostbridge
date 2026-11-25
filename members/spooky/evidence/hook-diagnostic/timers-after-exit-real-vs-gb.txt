@@ -1,0 +1,17 @@
+# timers after phantom.exit(): errorder.js, stdin held open 6 s
+var system=require('system');
+phantom.onError=function(msg,trace){ console.log('onError: '+msg); phantom.exit(1); };
+setTimeout(function(){ system.stderr.writeLine('timer fired; blocking on readLine'); var l=system.stdin.readLine(); system.stderr.writeLine('got:'+l); phantom.exit(0); },0);
+system.stderr.writeLine('about to throw');
+throw new Error('top-level boom');
+
+## real PhantomJS 2.1.1
+495 ms: about to throw
+520 ms: onError: Error: top-level boom
+rc=1
+## GhostBridge with the Session 11 fix
+6323 ms: about to throw
+6418 ms: onError: Error: top-level boom
+rc=1
+## GhostBridge before the fix (HEAD aaf91ed), measured earlier this session:
+4053 ms: about to throw / 4072 ms: onError: Error: top-level boom / 4077 ms: timer fired; blocking on readLine / 8014 ms: got:hello / rc=1

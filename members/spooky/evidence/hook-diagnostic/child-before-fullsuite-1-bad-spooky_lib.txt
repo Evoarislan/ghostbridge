@@ -1,0 +1,5 @@
+[1795534946034 wrapper] START pid=21946 cwd=/home/hatch/gbtmp/s10/spooky args=/home/hatch/gbtmp/s10/spooky/tests/util/../../lib/bootstrap.js --spooky_lib=invalid --command=casperjs --transport=stdio
+[1795534956089 OUT] "{\"jsonrpc\":\"2.0\",\"method\":\"emit\",\"params\":[\"error\",\"CasperError: Can't find module invalidlib/bootstrap/emit\",[{\"file\":\"http://127.0.0.1:34503/206d082ad6446bb56d1d7649d955868a/user-script.js\",\"line\":307,\"function\":\"\"}]]}\n"
+[1795534956755 wrapper] EXIT rc=1
+[1795534958156 ERR] <EOF>
+[1795534958364 OUT] <EOF>

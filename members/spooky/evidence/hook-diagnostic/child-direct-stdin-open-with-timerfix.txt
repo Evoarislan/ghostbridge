@@ -1,0 +1,5 @@
+[1795537596293 wrapper] START pid=68581 cwd=/home/hatch/gbtmp/s10/spooky args=lib/bootstrap.js --port=8081 --spooky_lib=/home/hatch/gbtmp/s10/spooky/ --transport=stdio --command=casperjs
+[1795537616887 OUT] "{\"jsonrpc\":\"2.0\",\"method\":\"emit\",\"params\":[\"error\",\"Cannot provide anonymous function: function create (opt...\",[]]}\n"
+[1795537617194 wrapper] EXIT rc=1
+[1795537617983 ERR] <EOF>
+[1795537618001 OUT] <EOF>

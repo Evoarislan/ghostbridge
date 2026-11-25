@@ -1,0 +1,173 @@
+# casperjs 1.1.4: every file under tests/ in the published npm tarball, by name
+# The tarball has 162 files under tests/ (find tests -type f | wc -l); the brief and FAMILY-QUEUE.md say 163.
+# Roles: SUITE = a selftest suite file the runner runs (Tester.findTestFiles, modules/tester.js:1336-1355, recursive under tests/suites,
+#   filtered by utils.isJsFile, modules/utils.js:464-472, which keeps js/coffee only if present in require.extensions: .js and .json on 2.1.1).
+# NOT-COLLECTED = under tests/suites but not collected by the runner on PhantomJS 2.1.1 (.coffee has no require.extensions entry; .casper is not a test file).
+# CLI = tests/clitests, driven only by tests/clitests/runtests.py (42 test methods); runtests.py cannot start on this machine (see cli-*.txt).
+# FIXTURE = test data used by suite or CLI tests (site pages, sample modules, runner fixtures, run.js/selftest.js runner glue); not a test on its own.
+# Columns: file | role | before run 1 | before run 2 | after run 1 | after run 2
+
+tests/clitests/error/syntax.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/fail-fast/manual-abort/index.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/fail-fast/standard/hook.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/fail-fast/standard/test1.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/fail-fast/standard/test2.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/fail-fast/standard/test3.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/mod.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/node_modules/bar.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/node_modules/baz/baz.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/node_modules/baz/package.json | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/node_modules/foo/index.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/node_modules/json.json | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/sub/coffeemod.coffee | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/sub/mod.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_coffee.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_node_json.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_node_mod.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_node_mod_index.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_node_mod_json_package.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_node_subdir/test_node_mod.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/modules/test_patched_require.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/runtests.py | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/scripts/options.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/scripts/script.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/casper-instance-override.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/dubious.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/exit.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/failing.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/mytest.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/passing.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/skipped.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/step_throws.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/clitests/tester/waitFor_timeout.js | CLI | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (FileNotFoundError: phantomjs) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47) | not run: runtests.py died at import (Python 2 code on Python 3.12, runtests.py:46-47)
+tests/run.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/sample_modules/config.json | FIXTURE | n/a | n/a | n/a | n/a
+tests/sample_modules/csmodule.coffee | FIXTURE | n/a | n/a | n/a | n/a
+tests/sample_modules/jsmodule.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/selftest.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/alert.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/area.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/callback.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/click.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/close.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/confirm.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/csv/base64encode.csv | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/dummy.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/dummy.json | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/dummy.txt | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/elementattribute.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/error.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/field-array.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/field-file-multiple.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/form.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/frame1.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/frame2.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/frame3.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/frame4.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/frames.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/global.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/has%20space.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/images/phantom.png | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/includes/include1.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/includes/include2.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/index.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/mouse-events.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/multiple-forms.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/multiple-popups.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/page1.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/page2.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/page3.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/plaintext.notype | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/popup.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/prompt.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/redirect.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/resources.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/result.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/selector.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/test.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/urls.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/visible.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/site/waitFor.html | FIXTURE | n/a | n/a | n/a | n/a
+tests/suites/.casper | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/casper/.casper | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/casper/agent.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/alert.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/auth.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/bypass.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/callback.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 1 executed, 1 passed, 0 failed, 0 dubious, 0 skipped | green: 1 executed, 1 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/callutils.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/capture.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 7 executed, 7 passed, 0 failed, 0 dubious, 0 skipped | green: 7 executed, 7 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/click.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/confirm.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 3 executed, 1 passed, 2 failed, 0 dubious, 0 skipped | NOT green: 3 executed, 1 passed, 2 failed, 0 dubious, 0 skipped
+tests/suites/casper/content.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 3 executed, 0 passed, 3 failed, 0 dubious, 0 skipped | NOT green: 3 executed, 0 passed, 3 failed, 0 dubious, 0 skipped
+tests/suites/casper/css3selector.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/debug.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/elementattribute.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/encode.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 3 executed, 1 passed, 2 failed, 0 dubious, 0 skipped | NOT green: 3 executed, 1 passed, 2 failed, 0 dubious, 0 skipped
+tests/suites/casper/encodedurl.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/evaluate.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 15 executed, 14 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 15 executed, 14 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/events.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 7 executed, 7 passed, 0 failed, 0 dubious, 0 skipped | green: 7 executed, 7 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/exists.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/fetchtext.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 5 executed, 5 passed, 0 failed, 0 dubious, 0 skipped | green: 5 executed, 5 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/flow.coffee | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/casper/formfill.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/frames.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 17 executed, 0 passed, 17 failed, 0 dubious, 0 skipped | NOT green: 17 executed, 0 passed, 17 failed, 0 dubious, 0 skipped
+tests/suites/casper/getplaintext.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/global.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 3 executed, 3 passed, 0 failed, 0 dubious, 0 skipped | green: 3 executed, 3 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/headers.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 5 executed, 4 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 5 executed, 4 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/history.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/hooks.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped | green: 8 executed, 8 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/keys.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 5 executed, 0 passed, 5 failed, 0 dubious, 0 skipped | NOT green: 5 executed, 0 passed, 5 failed, 0 dubious, 0 skipped
+tests/suites/casper/location.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/logging.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/mouseevents.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 20 executed, 20 passed, 0 failed, 0 dubious, 0 skipped | green: 20 executed, 20 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/multiplepopups.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/navigation.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/newpage.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 5 executed, 5 passed, 0 failed, 0 dubious, 0 skipped | green: 5 executed, 5 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/onerror.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/open.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/pagerequest.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/popup.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/prompt.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 1 executed, 0 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/reload.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/request.coffee | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/casper/request.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 3 executed, 2 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 3 executed, 2 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/resources.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 5 executed, 5 passed, 0 failed, 1 dubious, 0 skipped | NOT green: 5 executed, 5 passed, 0 failed, 1 dubious, 0 skipped
+tests/suites/casper/scripts.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/scroll.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 3 executed, 3 passed, 0 failed, 0 dubious, 0 skipped | green: 3 executed, 3 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/sendAjax.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 3 executed, 2 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 3 executed, 2 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/start.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/steps.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/urls.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/viewport.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 6 executed, 5 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 6 executed, 5 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/casper/visible.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 11 executed, 11 passed, 0 failed, 0 dubious, 0 skipped | green: 11 executed, 11 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/casper/wait.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/casper/xpath.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/cli.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 82 executed, 82 passed, 0 failed, 0 dubious, 0 skipped | green: 82 executed, 82 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/clientutils.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 85 executed, 85 passed, 0 failed, 0 dubious, 0 skipped | green: 85 executed, 85 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/coffee.coffee | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/fs.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 14 executed, 14 passed, 0 failed, 0 dubious, 0 skipped | green: 14 executed, 14 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/http_status.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | TIMEOUT (180 s, no summary) | TIMEOUT (180 s, no summary)
+tests/suites/pagestack.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/require.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped | NOT green: 2 executed, 1 passed, 1 failed, 0 dubious, 0 skipped
+tests/suites/tester/.casper | NOT-COLLECTED | n/a | n/a | n/a | n/a
+tests/suites/tester/assert.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 67 executed, 67 passed, 0 failed, 0 dubious, 0 skipped | green: 67 executed, 67 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/begin-config.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped | green: 10 executed, 10 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/setup-teardown-async.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/setup-teardown.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped | green: 2 executed, 2 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/skip.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 4 executed, 4 passed, 0 failed, 0 dubious, 5 skipped | green: 4 executed, 4 passed, 0 failed, 0 dubious, 5 skipped
+tests/suites/tester/test-order.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 1 executed, 1 passed, 0 failed, 0 dubious, 0 skipped | green: 1 executed, 1 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/testcase.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 26 executed, 26 passed, 0 failed, 0 dubious, 0 skipped | green: 26 executed, 26 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/tester/testsuite.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 15 executed, 15 passed, 0 failed, 0 dubious, 0 skipped | green: 15 executed, 15 passed, 0 failed, 0 dubious, 0 skipped
+tests/suites/utils.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | NOT green: 155 executed, 153 passed, 2 failed, 0 dubious, 0 skipped | NOT green: 155 executed, 153 passed, 2 failed, 0 dubious, 0 skipped
+tests/suites/xunit.js | SUITE | not run (launcher: no phantomjs) | not run (launcher: no phantomjs) | green: 15 executed, 15 passed, 0 failed, 0 dubious, 0 skipped | green: 15 executed, 15 passed, 0 failed, 0 dubious, 0 skipped
+tests/testdir/01_a/abc.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/01_a/def.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/02_b/abc.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/03_a.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/03_b.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/04/01_init.js | FIXTURE | n/a | n/a | n/a | n/a
+tests/testdir/04/02_do.js | FIXTURE | n/a | n/a | n/a | n/a
+
+# role counts: CLI 34, FIXTURE 55, NOT-COLLECTED 6, SUITE 67, total 162

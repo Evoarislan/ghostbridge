@@ -1,0 +1,5 @@
+[1795534950061 wrapper] START pid=22144 cwd=/home/hatch/gbtmp/s10/spooky args=/home/hatch/gbtmp/s10/spooky/tests/util/../../lib/bootstrap.js --transport=invalid --command=casperjs --spooky_lib=/home/hatch/gbtmp/s10/spooky/tests/util/../../
+[1795534962888 OUT] "{\"jsonrpc\":\"2.0\",\"method\":\"emit\",\"params\":[\"error\",\"Error: Unknown transport: invalid\",[{\"file\":\"/home/hatch/gbtmp/s10/spooky/tests/util/../../lib/bootstrap.js\",\"line\":51,\"function\":\"eval\"},{\"file\":\"http://127.0.0.1:34155/c876411d9f960cfd61c80d906e488d51/gb-runtime.js\",\"line\":147,\"function\":\"Object.injectJs\"},{\"file\":\"http://127.0.0.1:34155/c876411d9f960cfd61c80d906e488d51/user-script.js\",\"line\":456,\"function\":\"\"},{\"file\":\"http://127.0.0.1:34155/c876411d9f960cfd61c80d906e488d51/user-script.js\",\"line\":459,\"function\":\"\"}]]}\n"
+[1795534963155 wrapper] EXIT rc=1
+[1795534963879 ERR] <EOF>
+[1795534963897 OUT] <EOF>

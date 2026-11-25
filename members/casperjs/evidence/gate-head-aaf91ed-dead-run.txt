@@ -1,0 +1,132 @@
+PASS: syntax gb-host.js
+PASS: syntax gb-runtime.js
+PASS: syntax gb-chromium.js
+PASS: syntax gb-fs.js
+PASS: syntax gb-page.js
+PASS: syntax gb-warm.js
+PASS: syntax gb-server.js
+PASS: syntax proofs/sync-channel.js
+PASS: syntax proofs/serve-test-page.js
+PASS: syntax bin/phantomjs
+[proof] synchronous loopback XHR from a dedicated Chromium page context
+  host secret     : GB_HOST_VALUE_8j66sw4z
+  received value  : GB_HOST_VALUE_8j66sw4z <- matches host secret
+  http status     : 200
+  elapsed         : 514.00 ms (host delay was 500 ms)
+  blocked         : YES - XHR blocked until host responded
+  verdict         : BLOCKED + REAL VALUE - sync channel viable
+[proof] PASS
+PASS: sync-channel proof
+via system.stdout: ok
+scriptName: test/require-test.js
+system.args: ["test/require-test.js","alpha","beta"]
+phantom.args: ["alpha","beta"]
+env.PATH present: true
+pid: 9481
+version: 2.1.1
+helper.greet: hello from GhostBridge
+PASS: require-test
+script start
+onLoadFinished: success
+opened: success
+title: GhostBridge Demo
+evaluate returned: 42
+PASS: hello.js
+about to exit with code 7
+PASS: exit-code.js
+contents: "hello ghostbridge\nsecond line\nthird line\n"
+size: 41
+list: [".","..","hello.txt"]
+readLine: hello ghostbridge
+FS OK
+PASS: fs-test.js
+injectJs returned: true
+INJECTED_VALUE: injected-ok-42
+injectedAdd(2,3): 5
+missing injectJs returned: false
+PASS: inject-test.js
+viewport seen by page: 640x480
+clipped png: 120x60
+jpeg prefix: /9j/
+jpeg bytes q100=45569 q5=2465
+onError: Error: boom | frames: 1
+p2 userAgent: GhostBridgeTest/1.0, title: before
+PAGE OK
+PASS: page-test.js
+PASS: console drain before phantom.exit (10 runs, all 302 stdout lines + stderr line)
+PASS: console drain with delayed delivery (phantom.exit)
+PASS: console drain with delayed delivery (idle exit)
+PASS: shim --version prints 2.1.1
+PASS: shim unknown option (stderr text, exit 1)
+PASS: shim unsupported option fails honestly
+Page title is GhostBridge Loadspeed Test Page
+Loading time 425 msec
+PASS: loadspeed.js
+open: success
+plainText: "Local test page for loadspeed.js\n\nThis page exists only so loadspeed.js can open it and report a known title."
+png size: 12682
+base64 prefix: iVBORw0KGgoA
+pdf header: %PDF-, size: 16898
+RENDER OK
+PASS: render-test.js
+
+PASS: rasterize.js png
+
+PASS: rasterize.js pdf
+* Script running in the Phantom context.
+* Script will 'inject' itself in a page...
+* Script running in the Page context.
+... done injecting itself!
+PASS: injectme.js
+Page title is GhostBridge Loadspeed Test Page
+Loading time 172 msec
+PASS: shim loadspeed.js
+
+PASS: shim rasterize.js png
+
+PASS: shim rasterize.js pdf
+* Script running in the Phantom context.
+* Script will 'inject' itself in a page...
+* Script running in the Page context.
+... done injecting itself!
+PASS: shim injectme.js
+about to exit with code 7
+PASS: shim exit code 7
+scriptName: test/require-test.js
+system.args: ["test/require-test.js","alpha","beta"]
+phantom.args: ["alpha","beta"]
+env.PATH present: true
+pid: 14127
+version: 2.1.1
+helper.greet: hello from GhostBridge
+via system.stdout: ok
+PASS: shim args passthrough
+PASS: shim missing script (stderr, exit 1)
+CWD OK /tmp/gb-cwd-ejgeFD
+PASS: cwd-test (different cwd, script ok)
+PASS: fs.write landed in cwd
+PASS: render landed in cwd
+PASS: nothing written next to script or repo root
+line 1
+pipestatus=0
+PASS: shim into closing consumer (EPIPE, exit 0)
+FAVICON OK
+PASS: favicon fetches filtered, page-issued kept
+PROXY OK
+PASS: setProxy routes through proxy
+PDF PAPER OK
+PASS: pdf paperSize header/footer
+OPEN FLAGS OK
+PASS: web-security/ssl-protocol flags + encoded file URL
+WARM OK
+PASS: warm Chromium reuse + isolation
+WEBSERVER OK
+PASS: webserver module round trip
+SURFACES OK
+PASS: onInitialized + blocking onResourceRequested
+EXIT AFTER CLOSE OK (2875, 2991, 3015 ms)
+PASS: exit after page.close does not stall
+PHANTOM ONERROR OK
+PASS: phantom.onError and defaultPageSettings
+PASS: examples md5 unchanged
+ALL TESTS PASS
