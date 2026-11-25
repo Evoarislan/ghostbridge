@@ -185,6 +185,18 @@ out=$(node test/phantom-onerror-check.js 2>&1); rc=$?
 echo "$out" >>"$log"
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^PHANTOM ONERROR OK"; then ok "phantom.onError and defaultPageSettings"; else bad "phantom-onerror check (rc=$rc): $out"; fi
 
+# 10b. no script timer fires after phantom.exit() (Session 11, spooky bootstrap hook)
+out=$(node test/timer-after-exit-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^TIMER AFTER EXIT OK"; then ok "no timers after phantom.exit"; else bad "timer-after-exit check (rc=$rc): $out"; fi
+
+# 10c. runtime surfaces CasperJS 1.1.4 needs: defaultErrorHandler, per-file module cache, require.extensions,
+#      customHeaders default, about:blank loadStarted, evaluate undefined -> null,
+#      loadFinished for page-initiated navigation (Session 11, casperjs)
+out=$(node test/casper-surfaces-check.js 2>&1); rc=$?
+echo "$out" >>"$log"
+if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q "^CASPER SURFACES OK"; then ok "casperjs runtime surfaces"; else bad "casper-surfaces check (rc=$rc): $out"; fi
+
 # 10. examples/ are the unmodified upstream PhantomJS originals (md5 recorded in README and SESSION-2-RESULT.md)
 md5ok=1
 while read -r sum f; do [ "$(md5sum "examples/$f" | cut -d' ' -f1)" = "$sum" ] || md5ok=0; done <<'SUMS'

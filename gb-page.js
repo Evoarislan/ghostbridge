@@ -541,6 +541,9 @@ async function createTarget(ctx, pageId) {
       } });
     }
     if (mainNav(req) && !entry.navigating) {
+      // A main-frame navigation the page started itself (link, form submit,
+      // location change): no op is waiting on it, so its 'load' raises loadFinished.
+      if (!entry.hostNav) entry.pageNav = true;
       if (h.onLoadStarted) emit('loadStarted', []);
       if (h.onNavigationRequested) emit('navigationRequested', [req.url(), entry.nextNav, true, true]);
       entry.nextNav = 'Other';
@@ -562,6 +565,15 @@ async function createTarget(ctx, pageId) {
     if (!live().onResourceError) return;
     const f = req.failure();
     emit('resourceError', [{ id: 0, url: req.url(), errorCode: 0, errorString: f ? f.errorText : 'failed' }]);
+  });
+  // PhantomJS 2.1.1 raises onLoadFinished for every main-frame load, including ones
+  // the page started itself (checked against the real binary: a document.location
+  // change from evaluate gives loadStarted, then loadFinished('success')). Loads
+  // driven by open/setContent/navigate ops raise it from the op instead.
+  tpage.on('load', () => {
+    if (!entry.pageNav || entry.hostNav || entry.navigating) return;
+    entry.pageNav = false;
+    emit('loadFinished', 'success');
   });
   tpage.on('framenavigated', (frame) => {
     if (frame === tpage.mainFrame() && live().onUrlChanged) emit('urlChanged', [frame.url()]);

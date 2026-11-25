@@ -425,9 +425,17 @@ async function handleChannel(req, res, ctx) {
           entry.nextHttp = Object.assign({ url: href }, http);
         }
         let status = 'success';
+        // about: URLs make no network request, so the 'request' hook (gb-page.js) never
+        // raises loadStarted for them. PhantomJS 2.1.1 does raise it for about:blank
+        // (checked against the real binary); CasperJS clears page.browserInitializing in
+        // onLoadStarted and waits forever without it.
+        if (/^about:/i.test(String(url)) && (ctx.pageConfigs && ctx.pageConfigs[pageId] || { handlers: {} }).handlers.onLoadStarted) {
+          await dispatch(ctx, pageId, 'loadStarted', []);
+        }
+        entry.hostNav = true; entry.pageNav = false; // this load's loadFinished comes from here
         try {
           await entry.page.goto(url, { waitUntil: 'load', timeout: 30000 });
-        } catch { status = 'fail'; }
+        } catch { status = 'fail'; } finally { entry.hostNav = false; }
         entry.nextHttp = null;
         await dispatch(ctx, pageId, 'loadFinished', status);
         await dispatch(ctx, pageId, 'openCallback', status);

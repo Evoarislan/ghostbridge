@@ -44,7 +44,10 @@
     var extra = Array.prototype.slice.call(arguments, 2);
     var id;
     var cb = typeof fn === 'function' ? fn : function () { (0, eval)(String(fn)); };
-    id = _st.call(window, function () { delete __timers[id]; return cb.apply(window, extra); }, ms);
+    // After phantom.exit() no script timer callback runs (checked against the real
+    // PhantomJS 2.1.1: a 0 ms timer armed before exit() never fires). Without this a
+    // blocking callback armed earlier (spooky's stdin.readLine loop) stalls the exit.
+    id = _st.call(window, function () { delete __timers[id]; if (window.__gbExiting) return undefined; return cb.apply(window, extra); }, ms);
     __timers[id] = 1;
     return id;
   };
@@ -52,7 +55,7 @@
   window.setInterval = function (fn, ms) {
     var extra = Array.prototype.slice.call(arguments, 2);
     var cb = typeof fn === 'function' ? fn : function () { (0, eval)(String(fn)); };
-    var id = _si.call(window, function () { return cb.apply(window, extra); }, ms);
+    var id = _si.call(window, function () { if (window.__gbExiting) return undefined; return cb.apply(window, extra); }, ms);
     __timers[id] = 1;
     return id;
   };
@@ -168,6 +171,18 @@
     userAgent: navigator.userAgent,
     webSecurityEnabled: true,
   };
+  // phantom.defaultErrorHandler(message, stack): PhantomJS 2.1.1's built-in handler,
+  // same output (checked against the real binary): the message, a blank line, then
+  // "  file:line[ in function]" per frame, all through console.log. CasperJS's
+  // bootstrap calls it from its own phantom.onError (bin/bootstrap.js:145).
+  phantom.defaultErrorHandler = function (message, stack) {
+    console.log(message + '\n');
+    (stack || []).forEach(function (item) {
+      var m = item.file + ':' + item.line;
+      if (item['function']) m += ' in ' + item['function'];
+      console.log('  ' + m);
+    });
+  };
 
   // ---------------- webpage module ----------------
   var __pages = {};
@@ -199,6 +214,7 @@
     this.clipRect = { top: 0, left: 0, width: 0, height: 0 };
     this.paperSize = null;
     this.zoomFactor = 1; // stored only; not applied (see SESSION-2-RESULT.md)
+    this.customHeaders = {}; // PhantomJS 2.1.1 default; CasperJS clones it in Casper.open
     __pages[this.__id] = this;
   }
   // Events the host has to watch for (it only wires the ones a script assigned).
@@ -339,7 +355,10 @@
     // Synchronous: the function is stringified, run in the TARGET page by
     // the host, and its return value comes back here before this returns.
     var args = Array.prototype.slice.call(arguments, 1);
-    return postSync('evaluate', { pageId: this.__id, src: fn.toString(), args: args });
+    var v = postSync('evaluate', { pageId: this.__id, src: fn.toString(), args: args });
+    // PhantomJS 2.1.1 returns null, never undefined, when the function returns nothing
+    // (checked against the real binary). CasperJS's evaluate JSON-clones the result.
+    return v === undefined ? null : v;
   };
   Webpage.prototype.close = function () {
     if (!__pages[this.__id]) return;
@@ -503,8 +522,17 @@
     parts.pop();
     return parts.join('/') || '.';
   }
+  // require.extensions: the PhantomJS 2.1.1 key set ('.js', '.json'), one object shared
+  // by every require function, as in the real binary. CasperJS reads only the keys
+  // (utils.isJsFile). GhostBridge's loader is not pluggable, so the entries throw if called.
+  var __extensions = {};
+  ['.js', '.json'].forEach(function (ext) {
+    __extensions[ext] = function () { throw new Error('ghostbridge: require.extensions[\'' + ext + '\'] loaders are not callable'); };
+  });
   function makeRequire(fromDir) {
-    return function (name) { return resolve(name, fromDir); };
+    var req = function (name) { return resolve(name, fromDir); };
+    req.extensions = __extensions;
+    return req;
   }
   function resolve(name, fromDir) {
     fromDir = fromDir || INIT.scriptDir || '.';
@@ -516,8 +544,14 @@
     }
     var r = postSync('resolveModule', { name: name, from: fromDir });
     // postSync throws on {ok:false}; on success r = { source, filename }
+    // One module object per resolved file, as in PhantomJS 2.1.1: the same file
+    // reached by another name or from another directory gets the cached exports.
+    // CasperJS depends on this (utils.isCasperObject: `instanceof require('casper').Casper`,
+    // with every module requiring through its own patched require by absolute path).
+    var fileKey = 'file::' + r.filename;
+    if (__cache[fileKey]) { __cache[key] = __cache[fileKey]; return __cache[fileKey].exports; }
     var moduleObj = { exports: {} };
-    __cache[key] = moduleObj;
+    __cache[key] = __cache[fileKey] = moduleObj;
     // CommonJS wrapper: the required module runs HERE, in the runtime
     // context, not in Node and not in the page under test.
     var wrapper = new Function('module', 'exports', 'require', 'phantom', 'system', '__filename', r.source);
